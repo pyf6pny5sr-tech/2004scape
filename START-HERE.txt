@@ -1,0 +1,27 @@
+2004SCAPE — SEARCHABLE KNOWLEDGE BASE
+
+Open Search.html in Microsoft Edge or Chrome to search offline. No installation or account is needed for the browser page.
+
+31,207 searchable records from 2,927 retained source files, plus short guide summaries and explanatory notes.
+Target: Lost City revision 274; Content README date November 23, 2004.
+Collected: 2026-11-14 (America/New_York).
+
+FILES
+Search.html — self-contained offline search page.
+knowledge-base.sqlite — full-text database for autonomous agents.
+knowledge-base.jsonl — portable records, one JSON object per line.
+search.mjs — local search command, requires Node.js 24 or newer.
+manifest.json — sources, pinned commits, coverage, file hashes.
+sources/ — original source text and MIT licenses.
+AI-INSTRUCTIONS.txt — retrieval, evidence, and state-checking guidance.
+
+EXAMPLES (run from this folder)
+node search.mjs "Cook's Assistant" --limit 5
+node search.mjs "iron mining" --category skills --json
+node search.mjs "Rune Mysteries" --category quests --limit 5
+node search.mjs --id quest-cook-brief --json
+node search.mjs "experience units" --json
+
+Sources are versioned implementation evidence, historical guide summaries, or player advice. A source-based statement is not a gameplay observation. Several Magic Mario RS2 sections are unfinished. Redkiwi's later route is a plan. Full copyrighted guide texts are not copied.
+
+The database uses keyword search, not semantic embeddings. It does not train a model, launch the game, or provide a game controller. Binary assets, maps, and live prices are excluded.

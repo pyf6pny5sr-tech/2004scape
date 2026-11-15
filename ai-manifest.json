@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "title": "2004Scape knowledge library",
+  "homepage": "https://pyf6pny5sr-tech.github.io/2004scape/",
+  "repository": "https://github.com/pyf6pny5sr-tech/2004scape",
+  "target_revision": "274",
+  "target_date": "2004-11-23",
+  "record_count": 31207,
+  "ai_instructions": "https://pyf6pny5sr-tech.github.io/2004scape/AI-INSTRUCTIONS.txt",
+  "starter_notes": "https://pyf6pny5sr-tech.github.io/2004scape/starter-notes.json",
+  "provenance": "https://pyf6pny5sr-tech.github.io/2004scape/manifest.json",
+  "downloads": [
+    {
+      "file": "2004scape-knowledge-base.zip",
+      "url": "https://github.com/pyf6pny5sr-tech/2004scape/releases/download/v1.0.0/2004scape-knowledge-base.zip",
+      "bytes": 22698915,
+      "sha256": "ef5aa0758360ade71cd2fd50f6cde0b16d839866750a9ab7f3beb9335386895e"
+    },
+    {
+      "file": "knowledge-base.jsonl.gz",
+      "url": "https://github.com/pyf6pny5sr-tech/2004scape/releases/download/v1.0.0/knowledge-base.jsonl.gz",
+      "bytes": 5579065,
+      "sha256": "757edc799190ebfe1c4a1be624c019582e18983e7299f062957d661cb1b1d8d1"
+    },
+    {
+      "file": "knowledge-base.sqlite.gz",
+      "url": "https://github.com/pyf6pny5sr-tech/2004scape/releases/download/v1.0.0/knowledge-base.sqlite.gz",
+      "bytes": 15488368,
+      "sha256": "fdc12d27a11b49b1aa90340ebac1a4c96b6f0a827bec7692b6c4fcab024cbfaf"
+    },
+    {
+      "file": "search.mjs",
+      "url": "https://pyf6pny5sr-tech.github.io/2004scape/search.mjs",
+      "bytes": 3064,
+      "sha256": "b1eff44a80ed99d09b23cd615a6a5632156b4329c837c0106be6bdd40ca1a7cd"
+    }
+  ]
+}

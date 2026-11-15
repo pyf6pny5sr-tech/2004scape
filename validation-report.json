@@ -1,0 +1,52 @@
+{
+  "validated_at": "2026-11-15T03:39:17.984Z",
+  "record_count": 31207,
+  "retained_files": 2927,
+  "raw_records_verified_against_source_lines": 31179,
+  "evidence_references_checked": 98,
+  "sqlite_integrity": "ok",
+  "guide_summary_words": {
+    "magic_mario": 76,
+    "redkiwi": 112
+  },
+  "cli_tests": [
+    {
+      "query": "Cook's Assistant --limit 5",
+      "result_count": 5,
+      "expected_record_found": "quest-cook-brief",
+      "first_result": "quest-cook-brief"
+    },
+    {
+      "query": "iron mining --category skills --limit 5",
+      "result_count": 5,
+      "expected_record_found": "mining-iron_rock_table",
+      "first_result": "mining-iron_rock_table"
+    },
+    {
+      "query": "Rune Mysteries --category quests --limit 5",
+      "result_count": 5,
+      "expected_record_found": "quest-rune-mysteries-brief",
+      "first_result": "quest-rune-mysteries-brief"
+    },
+    {
+      "query": "experience units --limit 5",
+      "result_count": 1,
+      "expected_record_found": "units-experience",
+      "first_result": "units-experience"
+    },
+    {
+      "query": "quest order --source redkiwi-2026",
+      "result_count": 1,
+      "expected_record_found": "guide-redkiwi",
+      "first_result": "guide-redkiwi"
+    },
+    {
+      "query": "--id quest-cook-brief",
+      "result_count": 1,
+      "expected_record_found": "quest-cook-brief",
+      "first_result": "quest-cook-brief"
+    }
+  ],
+  "offline_page_logic": "passed: index decompression, ranking, search aliases, source filter, record details, empty results",
+  "visual_preview": "Not performed: the in-app browser blocks file URLs. No alternate browser route was used."
+}

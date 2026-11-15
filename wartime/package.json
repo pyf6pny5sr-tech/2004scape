@@ -1,0 +1,9 @@
+{
+  "name": "wartime-2004scape-controller",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Model-driven Voyager-style learning with 2004Scape retrieval and RS-SDK controls",
+  "scripts": { "test": "node --test test/*.test.mjs", "setup:knowledge": "node setup-knowledge.mjs" },
+  "engines": { "node": ">=24" }
+}

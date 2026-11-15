@@ -1,5 +1,7 @@
 # Wartime · 2004Scape controller
 
+**New implementation:** [Wartime v2: persistent host, model bridge and church maintenance](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [separate validation report](v2/validation-report.json) distinguishes disposable cloud gameplay from outstanding online/model validation. The v1 implementation and historical report below remain intact.
+
 This is a portable, model-driven integration for https://rs-sdk-demo.fly.dev/:
 - the model supplies Voyager-style curriculum, planning and critique;
 - the 31,207-record knowledge library supplies cited historical reference material;

@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 2,
+  "validatedAt": "2026-11-15T14:38:36.086780+00:00",
+  "environment": {
+    "provider": "Codex Cloud",
+    "environmentId": "ccarenv_b64_Y2NhcmVudl82NTE4MDEyYmNjYTQ4MTkxOGE4MmU1ZTM3ZWRlMjUxNQ",
+    "os": "Linux x64",
+    "node": "24.22.1",
+    "bun": "1.4.4 (38afee6c8)",
+    "windowsExecution": false,
+    "onlineAccountsCreated": false
+  },
+  "sources": {
+    "repository": "https://github.com/pyf6pny5sr-tech/2004scape",
+    "branch": "wartime-integration",
+    "baseCommit": "48dc7e0cbeabfc2a1acc0e06b8f122e1142b87d4",
+    "historicalV1Commit": "945d842460c4329e19d94a8b7d4ad61fa2b3c877",
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "previousSdkCommit": "aff0406ea1cc651a0ae5f1626c6fb02043179f26",
+    "sdkChoice": "Inspected six changed files: server logging/storage changes, SDK action and execution-context API unchanged. Deliberately pinned current supplied commit.",
+    "unavailableControllerZipInspected": false,
+    "testedFinalSourceSha256": {
+      "adapter.ts": "92efb80b124680bffda8cece463cd260ce659f70b2546f064b00775151042f50",
+      "client.mjs": "6121c98dab9c190418e0edb5c552b8b0444be1269918217de158e824e694c265",
+      "executor.mjs": "0dba78f561f00a2382bb3b8260ffd680fefc4d7ea6cd6d15c177a48bb368f245",
+      "host.ts": "026c1e364913f5b00d6ebcfb143355b3d59f77f74dd16d8b3e4195470cbf64ec",
+      "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+      "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+      "ownership.mjs": "3ca40a99ba2786b86a8e0b185f288728c205b451924e68174b6c70db1930925a",
+      "preflight.mjs": "2965641132f610b43f9c55a69710e64c4e8f00d90df40bded82b2b97fcffaada",
+      "protocol.mjs": "dbfdb4f4a77b5c5b54a772a0cbec1db1737c34bfa98f769306ed245194ae4b2e",
+      "telemetry.mjs": "e7b5ff1e2568d23c72434fda716820bba099e7f48032dbbfec079a105f8b6c2b",
+      "test/adapter.test.ts": "fa57e177e42457cb6e6851120bf4749419862ffa7ba55b47bfbbd1b765ec306c",
+      "test/cloud-gameplay.ts": "9b1ac31d681fc266d2208967053b1afe415aed2454d8be48bf71a74c8c131bf2",
+      "test/cloud-gather.ts": "4ccfe17de8621c0963b67b8caa35c931900d40e8ffe09fa1f81f22bcb59f74c9",
+      "test/cloud-player.ts": "d3227f27f96c5698b4d2d06af6eaf441daa1968a6775438b46881bf1147c4456",
+      "test/executor.test.mjs": "c64d8ebfea017089f4a6ef3e507fc75cd773dc7dbd884900d16bc459a6bdf5e4",
+      "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+      "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841"
+    },
+    "commitIdentity": "The commit containing this report; source hashes avoid a self-referential commit ID."
+  },
+  "checks": [
+    {
+      "name": "v2 Node deterministic/regression tests",
+      "command": "node --test wartime/v2/test/*.test.mjs",
+      "passed": 22,
+      "failed": 0
+    },
+    {
+      "name": "v2 Bun executor and actual SDK adapter tests",
+      "command": "bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts",
+      "passed": 26,
+      "failed": 0
+    },
+    {
+      "name": "preserved v1 Node controller tests",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "name": "preserved v1 Bun actual agent/MCP tests",
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "name": "pinned upstream SDK regressions",
+      "command": "bun test sdk/test/execution-cancellation.test.ts sdk/test/walkto-tolerance.test.ts sdk/test/mine-rock.test.ts sdk/test/attack-observation.test.ts sdk/test/pvp-targeting.test.ts",
+      "passed": 41,
+      "failed": 0
+    },
+    {
+      "name": "real local standalone host gameplay",
+      "passed": true,
+      "world": "http://localhost:8888",
+      "gateway": "ws://localhost:7780/",
+      "engineRevision": 289,
+      "tickRateChangedForTest": false,
+      "client": "actual RS-SDK lite client",
+      "start": {
+        "x": 3222,
+        "z": 3222
+      },
+      "end": {
+        "x": 3243,
+        "z": 3209
+      },
+      "routineReplay": "verified",
+      "retrieval": {
+        "recordId": "quest-cook-brief",
+        "citationCount": 7
+      },
+      "verifiedActions": 19,
+      "windowMs": 22928.415812,
+      "metrics": {
+        "windowMs": 22928.415812,
+        "counts": {
+          "avoidableIdleTicks": 0,
+          "noApprovedRoutineTicks": 1,
+          "dispatches": 19,
+          "ongoingActionTicks": 39,
+          "verifiedActions": 19,
+          "routineCycles": 9,
+          "episodes": 3,
+          "intentionalMaintenanceTicks": 19,
+          "maintenanceCompleted": 1
+        },
+        "distributions": {
+          "observationToDispatchMs": {
+            "n": 19,
+            "p50": 1.5989470000004076,
+            "p95": 74.73020599999995,
+            "p99": 74.73020599999995,
+            "min": 0.6961349999992308,
+            "max": 74.73020599999995
+          },
+          "publicationAgeAtDispatchMs": {
+            "n": 19,
+            "p50": 3,
+            "p95": 380,
+            "p99": 380,
+            "min": 2,
+            "max": 380
+          },
+          "tickCadenceMs": {
+            "n": 58,
+            "p50": 404.6179659999998,
+            "p95": 415.8330100000003,
+            "p99": 958.5324069999999,
+            "min": 0.5671429999999873,
+            "max": 958.5324069999999
+          },
+          "tickJitterMs": {
+            "n": 57,
+            "p50": 17.602545000001555,
+            "p95": 48.05649999999969,
+            "p99": 957.7208029999999,
+            "min": 0.0635679999977583,
+            "max": 957.7208029999999
+          },
+          "dispatchAckMs": {
+            "n": 29,
+            "p50": 17.877481999999873,
+            "p95": 22.05347400000028,
+            "p99": 23.89912800000093,
+            "min": 11.384369999999763,
+            "max": 23.89912800000093
+          },
+          "actionToEffectMs": {
+            "n": 19,
+            "p50": 798.0698560000001,
+            "p95": 6364.430273,
+            "p99": 6364.430273,
+            "min": 771.1296220000004,
+            "max": 6364.430273
+          },
+          "plannerRequestMs": {
+            "n": 1,
+            "p50": 6352.280119999999,
+            "p95": 6352.280119999999,
+            "p99": 6352.280119999999,
+            "min": 6352.280119999999,
+            "max": 6352.280119999999
+          },
+          "maintenanceMs": {
+            "n": 1,
+            "p50": 7573.325831,
+            "p95": 7573.325831,
+            "p99": 7573.325831,
+            "min": 7573.325831,
+            "max": 7573.325831
+          }
+        },
+        "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+      },
+      "traceNote": "Navigation/church trace captured before the final focused gathering guard, completion-cooldown and client-only-combat-proof refinements. It is a measured local reference trace, not a final-version or online speed comparison. Final focused gathering and all regression tests ran after those relevant refinements."
+    },
+    {
+      "name": "actual standalone bridge and gathering",
+      "passed": true,
+      "logsGain": 2,
+      "observedSdkXpGain": 1250,
+      "interactionPackets": 2,
+      "transport": {
+        "type": "HTTP over private Unix socket, not MCP stdio",
+        "entrypoint": "host.ts standalone child process",
+        "sdkConsoleLines": 4,
+        "jsonResponsesParsed": true,
+        "stdoutIsNotTheToolTransport": true
+      },
+      "metrics": {
+        "windowMs": 10125.686088,
+        "counts": {
+          "avoidableIdleTicks": 0,
+          "noApprovedRoutineTicks": 2,
+          "routineCycles": 2,
+          "episodes": 2,
+          "dispatches": 2,
+          "packetDispatches:interactLoc": 2,
+          "helperPendingTicks": 24,
+          "helperPendingWithoutObservedProgressTicks": 21,
+          "ongoingActionTicks": 24,
+          "animationObservedTicks": 5,
+          "observedProgressPublications": 3,
+          "observedGatherProgressPublications": 2,
+          "verifiedActions": 2,
+          "cooldownDecisions": 1,
+          "eligibleTicks": 1,
+          "packetDispatches:clickDialogOption": 3
+        },
+        "distributions": {
+          "tickCadenceMs": {
+            "n": 26,
+            "p50": 404.93737500000134,
+            "p95": 426.7448429999995,
+            "p99": 440.2572459999992,
+            "min": 81.12330000000009,
+            "max": 440.2572459999992
+          },
+          "observationToDispatchMs": {
+            "n": 2,
+            "p50": 0.2293680000002496,
+            "p95": 43.20153499999992,
+            "p99": 43.20153499999992,
+            "min": 0.2293680000002496,
+            "max": 43.20153499999992
+          },
+          "publicationAgeAtDispatchMs": {
+            "n": 2,
+            "p50": 1,
+            "p95": 52,
+            "p99": 52,
+            "min": 1,
+            "max": 52
+          },
+          "dispatchAckMs": {
+            "n": 5,
+            "p50": 17.70397200000025,
+            "p95": 20.088792000000467,
+            "p99": 20.088792000000467,
+            "min": 3.9619649999999638,
+            "max": 20.088792000000467
+          },
+          "tickJitterMs": {
+            "n": 25,
+            "p50": 18.10001700000157,
+            "p95": 59.85226999999941,
+            "p99": 293.5011199999998,
+            "min": 0.20615899999756948,
+            "max": 293.5011199999998
+          },
+          "actionToEffectMs": {
+            "n": 2,
+            "p50": 4449.335349,
+            "p95": 5161.980901999999,
+            "p99": 5161.980901999999,
+            "min": 4449.335349,
+            "max": 5161.980901999999
+          }
+        },
+        "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+      },
+      "limits": "The two observed local trees deplete per log; continuous-tree non-resend is separately covered by deterministic observed-gain/animation tests. Pending helper ticks alone are not proof of productive work."
+    },
+    {
+      "name": "isolated player-target probe",
+      "coverage": "Typed player packet dispatched against a second disposable local character, client combat target observed, verified escape. No damage observed. Later system feedback confirmed outside-wilderness refusal.",
+      "noChatSent": true,
+      "serverAcceptedAttackProven": false,
+      "duelOrKillProven": false,
+      "falseSuccessFix": "Client combat target alone is no longer accepted as verified server success or learnable skill; a dedicated regression covers it. Combat-skill XP expectation is required for additional outcome evidence.",
+      "traceLimit": "The original local trace preceded this stricter verifier and is retained only as targeting/escape evidence, not as a final accepted PvP effect test."
+    },
+    {
+      "name": "focused continuous gathering guard",
+      "scope": "Deterministic supplemental test with real observed-state deltas and ongoing animation, not real continuous-tree gameplay",
+      "result": "One dispatched interaction, three observed log/XP gains, two continued verified effects, no re-dispatch. A separate pending-helper test has no observed gains and is not classified as productive."
+    },
+    {
+      "name": "knowledge",
+      "records": 31207,
+      "source": "Original pinned public SQLite library reused unchanged",
+      "compressedSha256": "fdc12d27a11b49b1aa90340ebac1a4c96b6f0a827bec7692b6c4fcab024cbfaf",
+      "baseline": "Historical LostCity revision 274, not proof of modified revision-289 or online rules"
+    },
+    {
+      "name": "diff whitespace",
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "plannerEvidence": {
+    "realFrontierModelCalled": false,
+    "providerConfigured": false,
+    "normalExecutorArtificialThinkingSleepMs": 0,
+    "localPendingBridgeDurationMs": {
+      "n": 1,
+      "p50": 6352.280119999999,
+      "p95": 6352.280119999999,
+      "p99": 6352.280119999999,
+      "min": 6352.280119999999,
+      "max": 6352.280119999999
+    },
+    "dispatchesWhileAnyPlannerRequestPending": 18,
+    "interpretation": "External bridge request left pending during actual local movement; no real model was called. Other automatic prefetch requests also remained pending. This proves nonblocking scheduling under local pending requests, not real frontier-model latency or online performance."
+  },
+  "maintenance": {
+    "from": "steady-1",
+    "to": "cautious-2",
+    "ownerUnchanged": true,
+    "churchAnchors": [
+      {
+        "id": 409,
+        "x": 3243,
+        "z": 3205,
+        "level": 0
+      }
+    ],
+    "checkpointed": true,
+    "resumed": true,
+    "durationMs": {
+      "n": 1,
+      "p50": 7573.325831,
+      "p95": 7573.325831,
+      "p99": 7573.325831,
+      "min": 7573.325831,
+      "max": 7573.325831
+    },
+    "arrival": "Actual Lumbridge church region and observed altar ID 409 at (3243,3205,0), with current health/combat/player-clearance checks",
+    "activation": "Actual trusted policy-module swap steady-1 (one-tick minimum cooldown) to cautious-2 (two-tick minimum), one SDK owner throughout. Not a no-op callback.",
+    "limits": "Fixed trusted registry and operator startup staging. Does not hot-replace arbitrary supervisor, adapter or runtime binaries. Church does not pause ticks or confer PvP immunity.",
+    "rollback": "Exercised in deterministic revalidation failure test, not injected into a real online character.",
+    "resume": "Saved goal restored; subsequent real approved movement verified. Interrupted in-flight routines require re-planning rather than blind replay.",
+    "upstreamLocalBuildException": "Existing local engine build.verify=false for upstream custom-content .loc checksum mismatch. Original v1 report unchanged."
+  },
+  "performanceInterpretation": {
+    "navigationThroughputActionsPerSecond": 0.8286660603065304,
+    "routineCyclesPerSecond": 0.3925260285662513,
+    "finalGatherSamples": {
+      "tickCadenceMs": {
+        "n": 26,
+        "p50": 404.93737500000134,
+        "p95": 426.7448429999995,
+        "p99": 440.2572459999992,
+        "min": 81.12330000000009,
+        "max": 440.2572459999992
+      },
+      "observationToDispatchMs": {
+        "n": 2,
+        "p50": 0.2293680000002496,
+        "p95": 43.20153499999992,
+        "p99": 43.20153499999992,
+        "min": 0.2293680000002496,
+        "max": 43.20153499999992
+      },
+      "publicationAgeAtDispatchMs": {
+        "n": 2,
+        "p50": 1,
+        "p95": 52,
+        "p99": 52,
+        "min": 1,
+        "max": 52
+      },
+      "dispatchAckMs": {
+        "n": 5,
+        "p50": 17.70397200000025,
+        "p95": 20.088792000000467,
+        "p99": 20.088792000000467,
+        "min": 3.9619649999999638,
+        "max": 20.088792000000467
+      },
+      "tickJitterMs": {
+        "n": 25,
+        "p50": 18.10001700000157,
+        "p95": 59.85226999999941,
+        "p99": 293.5011199999998,
+        "min": 0.20615899999756948,
+        "max": 293.5011199999998
+      },
+      "actionToEffectMs": {
+        "n": 2,
+        "p50": 4449.335349,
+        "p95": 5161.980901999999,
+        "p99": 5161.980901999999,
+        "min": 4449.335349,
+        "max": 5161.980901999999
+      }
+    },
+    "sampleCaution": "Small local windows; p95/p99 with n=2 or n=19 often equal an extreme observation and are not robust population estimates. Different activity/route lengths are mixed; no controlled before/after online comparison.",
+    "dispatchMeaning": "observer-callback to helper entry; publication age also reported. Raw SDK acknowledgement is distinct from observed game effect. Acknowledgement samples can include client path/dialog queries.",
+    "idleLimits": "Avoidable-idle counter is scheduler-only: approved eligible work, no active helper, and no dispatch. It cannot identify hidden server idleness inside an unresolved SDK promise. helperPendingTicks counts waiting, not productivity; animation alone is not progress. Actual inventory/XP/movement changes are counted separately.",
+    "finalGatherWaiting": {
+      "helperPendingTicks": 24,
+      "helperPendingWithoutObservedProgressTicks": 21,
+      "observedGatherProgressPublications": 2,
+      "avoidableIdleTicks": 0
+    },
+    "serverClockLimits": "Client tick counter is session-relative, not global server phase. Publication revisions can advance within a tick. Network batching affects observed cadence/jitter."
+  },
+  "liveValidation": {
+    "intendedExplicitService": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "freshHttpGatewayProbe": {
+      "httpStatus": 200,
+      "authenticated": false
+    },
+    "freshBunWebSocketProbe": {
+      "result": "TRANSPORT_FAILED",
+      "sdkStyle": "Raw Bun WebSocket using the configured endpoint; no account/control handshake sent",
+      "authenticated": false
+    },
+    "environmentNetworkPolicy": {
+      "mode": "unrestricted",
+      "state": "enforced",
+      "freshExplicitPolicyDenialObserved": false
+    },
+    "previousReportedPolicyDenial": "Respected as prior network-block evidence, never ownership contention. No policy/TLS/proxy bypass or alternate endpoint used.",
+    "credentialsAvailableForUsersExistingPlayer": false,
+    "realPlayerConnected": false,
+    "realModelProviderConfigured": false,
+    "status": "BLOCKED_FOR_ONLINE_GAMEPLAY",
+    "requiredNextSteps": [
+      "Use Wartime's already-authorized host and existing player; resolve supported WebSocket transport/access there without endpoint rotation or bypass.",
+      "Run the read-only private-config preflight, then prefer attached-owner injection. Never treat failed status as zero.",
+      "Connect the real model asynchronously through the private bridge and record actual response durations and comparable live activity.",
+      "Verify live church arrival/update/resume when safe and report actual PvP coverage."
+    ],
+    "command": "bun wartime/v2/preflight.mjs /private/runtime/config.json --transport"
+  },
+  "ownershipLimits": {
+    "injectedOwnerPreferred": true,
+    "standaloneRequiresExplicitHandoff": true,
+    "strictStatusUnknownNeverZero": true,
+    "localStartupReservationBeforeHandshake": true,
+    "automaticReconnect": false,
+    "gatewayAtomicCompareAndSwapAvailable": false,
+    "crossMachinePreflightRaceEliminated": false,
+    "warning": "Existing last-controller-wins gateway cannot provide an atomic distributed ownership guarantee. Unknown status, auth/access denial and transport failure are distinct from observed occupied ownership."
+  },
+  "privacyAndPublication": {
+    "runtimeMemoryPrivateAndIgnored": true,
+    "credentialsOrRawAccountLogsIncluded": false,
+    "v1SourceAndHistoricalReportPreserved": true,
+    "mainMerged": false,
+    "websiteDeployed": false,
+    "onlyPermittedBranch": "wartime-integration",
+    "screenshot": "/workspace/artifacts/wartime-v2-cloud.png (cloud artifact, not committed)"
+  },
+  "readyForUsersRealPlayer": false,
+  "deliveryStatus": "Implemented and cloud-tested; online transport, authorized existing-player credentials/runtime and real model validation remain required."
+}

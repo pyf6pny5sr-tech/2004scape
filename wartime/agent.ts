@@ -11,7 +11,8 @@ export default async function main({ bot, sdk, args = {} }: any) {
     try { return operation === 'search' ? kb.search(args.query, {limit:args.limit??6,category:args.category}) : kb.get(args.id); }
     finally { kb.close(); }
   }
-  const controller = new WartimeController({ bot, sdk });
+  const controller = new WartimeController({ bot, sdk, testWorld: process.env.WARTIME_TEST_WORLD_ORIGIN || process.env.WARTIME_TEST_GATEWAY
+    ? {origin:process.env.WARTIME_TEST_WORLD_ORIGIN, gateway:process.env.WARTIME_TEST_GATEWAY} : undefined });
   switch(operation) {
     case 'observe': return { observation:controller.observe(), goal:await controller.memory.goal(), skills:await controller.memory.listSkills() };
     case 'checkpoint': return controller.memory.checkpoint(args.goal);

@@ -83,3 +83,39 @@ test('an already satisfied destination sends no action and is not a newly learne
 test('malicious skill names cannot escape the private memory directory',async()=>{
   const f=await fixture();await assert.rejects(f.controller.memory.skill('../outside'),/skill name/);
 });
+
+test('verification refuses disconnected and invalid-age observations',async()=>{
+  for(const age of [-1,NaN,Infinity]) {
+    const f=await fixture();const original=f.bot.chopTree;
+    f.bot.chopTree=async t=>{const r=await original(t);f.setAge(age);return r;};
+    assert.equal((await f.controller.runPlan(chop())).status,'needs_replan');
+  }
+  const f=await fixture();const original=f.bot.chopTree;
+  f.bot.chopTree=async t=>{const r=await original(t);f.sdk.isConnected=()=>false;return r;};
+  assert.equal((await f.controller.runPlan(chop())).status,'needs_replan');
+});
+test('changed gateway or character cannot reuse a controller',async()=>{
+  const f=await fixture();f.sdk.config.gatewayUrl='ws://localhost:7780';
+  assert.equal((await f.controller.runPlan(chop())).status,'needs_replan');assert.equal(f.calls.length,0);
+  f.sdk.config.gatewayUrl='wss://rs-sdk-demo.fly.dev/gateway';f.sdk.config.botUsername='someone_else';
+  assert.equal((await f.controller.runPlan(chop())).status,'needs_replan');assert.equal(f.calls.length,0);
+});
+test('test worlds require explicit loopback binding and separate memory',async()=>{
+  const f=await fixture();f.sdk.config.gatewayUrl='ws://localhost:7780';
+  const testWorld={origin:'http://localhost:8888',gateway:'ws://localhost:7780/'};
+  const local=new WartimeController({sdk:f.sdk,bot:f.bot,directory:f.directory,testWorld});
+  assert.equal(local.observe().world,testWorld.origin);
+  assert.notEqual(local.memory.directory,f.controller.memory.directory);
+  const run=await local.runPlan(chop());assert.equal(run.world,testWorld.origin);assert.equal(run.status,'verified');
+  for(const origin of ['https://example.com','http://localhost.evil:8888','http://localhost:8888/path'])
+    assert.throws(()=>new WartimeController({sdk:f.sdk,bot:f.bot,testWorld:{...testWorld,origin}}),/loopback/);
+  assert.throws(()=>new WartimeController({sdk:f.sdk,bot:f.bot}),/configured only/);
+});
+test('observed bank slots and NPC indices survive target resolution',async()=>{
+  const f=await fixture();f.state.bank={isOpen:true,items:[{slot:17,id:436,name:'Copper ore',count:9}]};
+  f.bot.withdrawItem=async(item,amount)=>{assert.equal(item.slot,17);assert.equal(amount,2);f.state.inventory.push({slot:4,id:436,name:'Copper ore',count:2});f.update();return {success:true};};
+  assert.equal((await f.controller.runPlan({goal:'Withdraw',steps:[{action:'withdraw',target:{id:436},amount:2,expect:[{type:'inventory_gain',item:{id:436},amount:2}]}]})).status,'verified');
+  f.state.nearbyNpcs=[{kind:'npc',id:123,index:42,name:'Cook',distance:1,reachable:true}];
+  f.bot.talkTo=async npc=>{assert.equal(npc.index,42);assert.equal(npc.id,123);f.state.dialog={isOpen:true,options:[]};f.update();return {success:true};};
+  assert.equal((await f.controller.runPlan({goal:'Talk',steps:[{action:'talk',target:{id:123},expect:[{type:'dialog_changed'}]}]})).status,'verified');
+});

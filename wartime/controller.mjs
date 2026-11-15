@@ -72,15 +72,29 @@ export function validateStep(step) {
 }
 
 export class WartimeController {
-  constructor({ sdk, bot, directory, maxStateAgeMs = 3000 }) {
+  constructor({ sdk, bot, directory, testWorld, maxStateAgeMs = 3000 }) {
     this.sdk=sdk; this.bot=bot;
     this.maxStateAgeMs=integer(maxStateAgeMs,1,10000,'Maximum state age');
-    const gateway=new URL(sdk.config.gatewayUrl || `ws://${sdk.config.host}:${sdk.config.port}`);
-    if(gateway.origin !== 'wss://rs-sdk-demo.fly.dev' || gateway.pathname!=='/gateway' || gateway.search || gateway.username || gateway.password) throw new Error('Controller is configured only for wss://rs-sdk-demo.fly.dev/gateway. Correct SERVER/GATEWAY_URL before connecting.');
+    const configured=sdk.config.gatewayUrl || `ws://${sdk.config.host}:${sdk.config.port}`;
+    this.world=WORLD;
+    this.gateway='wss://rs-sdk-demo.fly.dev/gateway';
+    if(testWorld) {
+      const origin=new URL(testWorld.origin), gateway=new URL(testWorld.gateway);
+      const local=url=>['localhost','127.0.0.1','[::1]'].includes(url.hostname)&&!url.username&&!url.password&&!url.search&&!url.hash;
+      if(!local(origin)||!local(gateway)||origin.protocol!=='http:'||gateway.protocol!=='ws:'||origin.pathname!=='/'||!['/','/gateway'].includes(gateway.pathname)||origin.hostname!==gateway.hostname) throw new Error('Test worlds require explicit matching loopback HTTP origin and WebSocket gateway.');
+      this.world=origin.origin;
+      this.gateway=gateway.href;
+    }
+    if(new URL(configured).href!==this.gateway) throw new Error('Controller is configured only for '+this.gateway+'. Correct SERVER/GATEWAY_URL before connecting.');
     this.player=text(sdk.config.botUsername,'Bot username');
-    this.memory=new Memory({world:WORLD,player:this.player,directory});
+    this.memory=new Memory({world:this.world,player:this.player,directory});
+  }
+  assertBinding() {
+    const configured=this.sdk.config.gatewayUrl || `ws://${this.sdk.config.host}:${this.sdk.config.port}`;
+    if(new URL(configured).href!==this.gateway || this.sdk.config.botUsername!==this.player) throw new Error('World or character configuration changed; create a new controller.');
   }
   ready() {
+    this.assertBinding();
     const state=this.sdk.getState();
     if(!this.sdk.isConnected() || !state?.inGame || !state.player) throw new Error('No connected, in-game character state.');
     const age=this.sdk.getStateAge();
@@ -89,12 +103,13 @@ export class WartimeController {
     return clone(state);
   }
   observe() {
+    this.assertBinding();
     const state=this.sdk.getState();
-    if(!state) return {world:WORLD,connected:this.sdk.isConnected(),inGame:false,state:null};
+    if(!state) return {world:this.world,connected:this.sdk.isConnected(),inGame:false,state:null};
     // Copy only game observations. SDK configuration contains credentials and is never returned.
     const keys=['tick','revision','inGame','player','skills','inventory','equipment','nearbyNpcs','nearbyLocs','groundItems','dialog','interface','bank','shop','modalOpen','modalInterface','prayers','combatStyle'];
     const visible=Object.fromEntries(keys.filter(k=>state[k]!==undefined).map(k=>[k,state[k]]));
-    return clone({world:WORLD,connected:this.sdk.isConnected(),stateAgeMs:this.sdk.getStateAge(),knowledgeRevision:'274 baseline; live modifications must be checked',state:visible});
+    return clone({world:this.world,connected:this.sdk.isConnected(),stateAgeMs:this.sdk.getStateAge(),knowledgeRevision:'274 baseline; live modifications must be checked',state:visible});
   }
   resolve(list, target, plane) {
     const candidates=(list||[]).filter(i=>matches(i,target)&&i.reachable!==false&&(plane===undefined||i.level===plane)).sort((a,b)=>(a.distance??0)-(b.distance??0));
@@ -157,8 +172,10 @@ export class WartimeController {
     let after, verificationError;
     const verified=state=>{
       const age=this.sdk.getStateAge();
+      this.assertBinding();
+      if(!state) return false;
       const fresh=(state.revision!==undefined&&before.revision!==undefined?state.revision>before.revision:state.tick>before.tick||this.sdk.getStateReceivedAt()>priorReceived);
-      return fresh && age<=this.maxStateAgeMs && state.inGame && state.player && !state.player.isDead && state.player.hp>0 && state.player.lifeId===before.player.lifeId && step.expect.every(e=>checkExpectation(e,before,state));
+      return this.sdk.isConnected() && Number.isFinite(age) && age>=0 && fresh && age<=this.maxStateAgeMs && state.inGame && state.player && !state.player.isDead && state.player.hp>0 && state.player.lifeId===before.player.lifeId && step.expect.every(e=>checkExpectation(e,before,state));
     };
     try {
       const current=this.sdk.getState();
@@ -184,7 +201,7 @@ export class WartimeController {
   }
   async runSkill(name) {
     const skill=await this.memory.skill(name);
-    if(skill.world!==WORLD||skill.player!==this.player) throw new Error('Skill belongs to another world or character.');
+    if(skill.world!==this.world||skill.player!==this.player) throw new Error('Skill belongs to another world or character.');
     return this.runPlan(skill.plan);
   }
 }

@@ -9,9 +9,9 @@ It is an original adaptation of Voyager's design, not the upstream Minecraft run
 
 ## Current status
 
-Development preview. Eleven offline controller tests passed in the original Windows workspace before the user requested further testing exclusively in Codex Cloud. Cloud verification and live integration verification are pending. No game character has been connected by this package.
+Cloud-validated development preview. Node 24 controller tests, Bun controller/agent tests, and 32 relevant upstream SDK tests pass. In an isolated Linux cloud emulator, an actual headless client observed a disposable character, verified a two-step walk, saved and replayed the learned routine, and retrieved a cited knowledge record. A separate Chromium client rendered the same disposable character for a screenshot. See `validation-report.json` for exact evidence and limits.
 
-The supplied Fly.io URL timed out through the research browser. That is not proof the server is offline. Do not silently change the user's target to another server.
+The supplied Fly.io endpoint currently returns HTTP 301 to `https://rs-sdk.maxbittker.com/`. An unauthenticated HTTP GET to its `/gateway` also timed out after 20 seconds. No remote character was created or connected. The upstream SDK at the reference commit also rewrites the legacy hostname in `deriveGatewayUrl` and its lite runner. The default Wartime guard deliberately continues to require the user's Fly.io gateway. Confirm the intended world and use an explicit `gatewayUrl` when wiring a real host; do not rely on the upstream legacy-host helpers or follow redirects to move a character silently. A real-character connection is not ready until that world decision and the model host are supplied.
 
 ## Install in a coding-agent environment
 
@@ -20,7 +20,7 @@ Run these steps on the chosen cloud or agent host. A GitHub Pages website stores
 1. Obtain https://github.com/MaxBittker/rs-sdk and follow its setup documentation. The API was checked at commit aff0406ea1cc651a0ae5f1626c6fb02043179f26. If the world requires a newer client, update the SDK and recheck compatibility.
 2. Copy this directory into that checkout as `wartime/`, next to `sdk/` and `mcp/`.
 3. With Node 24+, run `node wartime/setup-knowledge.mjs`. This downloads the public SQLite knowledge library into `wartime/.wartime/` and verifies its file fingerprint. It neither uploads local files nor connects to the game.
-4. Use the SDK's normal bot setup with the intended character name and `--server=rs-sdk-demo.fly.dev`. Keep its generated password in its private `bot.env` file. Never put credentials, character logs or API keys in this public repository.
+4. After confirming the intended remote world, configure the bot and client for that exact world. The reference SDK's legacy hostname helpers remap Fly.io, so an explicit SDK `gatewayUrl: 'wss://rs-sdk-demo.fly.dev/gateway'` is required to preserve this package's current default; client reachability there remains unverified. Keep its generated password in its private `bot.env` file. Never put credentials, character logs or API keys in this public repository.
 5. Configure the host to expose the SDK's MCP server. Follow `mcp/README.md` in that SDK. MCP automatically attaches a game client when configured to do so; standalone scripts require an already-running browser or lite client.
 6. Give the model the companion `PROMPT.txt`. A text-only chat without execution/game tools can plan, but cannot operate this controller.
 
@@ -92,9 +92,28 @@ The knowledge library targets reconstructed LostCity revision 274 (November 23, 
 
 ## Tests
 
-From this directory: `node --test test/*.test.mjs`.
+From this directory: `node --test test/*.test.mjs` (Node 24+). In the SDK checkout with this directory installed next to `sdk/` and `mcp/`, run `bun test wartime/test/controller.test.mjs wartime/test/agent.test.ts`. Agent tests require the downloaded knowledge DB and installed SDK dependencies. They exercise the real SDK and MCP execution modules with controlled state, including timeout, parent cancellation, listener cleanup, lock release, script loading, credential omission and Bun SQLite retrieval.
 
-These tests use simulated game observations. They cover false acknowledgements, mutable snapshots, stale/disconnected state, respawn, inventory stack counting, invalid actions, preconditions, target reachability, world binding, concurrency and skill storage. They do not by themselves prove that a real game session works.
+For a proxy-managed cloud environment, `NODE_USE_ENV_PROXY=1 node wartime/setup-knowledge.mjs` uses Node 24's support for the existing proxy configuration. Keep TLS verification enabled.
+
+### Disposable local cloud test
+
+Run the upstream engine, gateway and lite client entirely in the cloud. The reference engine initially fails a `.loc checksum mismatch`; the tested local build uses its supported `build.verify: false` in `server/engine/data/config/world.json` for modified content. This is an upstream local-build exception, not validation against an original cache. The tested engine is revision 289 with its default accelerated XP configuration, not the historical revision-274 knowledge baseline. Build the browser client with `bun run build:dev` in `server/webclient` if a rendered view is wanted.
+
+Create a disposable local bot privately with `SERVER=localhost:8888` and `GATEWAY_URL=ws://localhost:7780/`, attach its lite client, and complete setup with the SDK's `skipTutorial` helper. The runner's `localhost` alone selects HTTP port 80 for cache downloads; use the actual engine web port. Credentials must meet the upstream 1–20 character password limit.
+
+Then from the SDK checkout:
+
+```sh
+WARTIME_TEST_WORLD_ORIGIN=http://localhost:8888 \
+WARTIME_TEST_GATEWAY=ws://localhost:7780/ \
+bun --env-file=bots/YOUR_DISPOSABLE_BOT/bot.env wartime/test/local-gameplay.ts
+```
+
+Both test settings must be explicit. Only matching loopback HTTP/WebSocket hosts are accepted; remote test origins are rejected. These are host environment settings, not model-supplied tool arguments. The selected origin scopes observations, episodes and skills, and the actual SDK gateway must match. Leave both variables unset for the Fly.io default. The probe walks one tile east and back, so start in an open, safe area after tutorial setup. It saves private local evidence to ignored `wartime/.wartime/local-gameplay.json`.
+
+
+The controller unit tests use simulated game observations. They cover false acknowledgements, mutable snapshots, stale/disconnected state, respawn, inventory stack counting, invalid actions, preconditions, target reachability, world binding, concurrency and skill storage. They do not by themselves prove that a real game session works.
 
 ## Sources
 

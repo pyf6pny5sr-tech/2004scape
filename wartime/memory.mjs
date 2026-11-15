@@ -14,12 +14,12 @@ export class Memory {
     this.directory = path.join(directory, 'agents', key);
   }
   async initialize() {
-    for (const name of ['episodes', 'skills']) await mkdir(path.join(this.directory, name), { recursive: true });
+    for (const name of ['episodes', 'skills']) await mkdir(path.join(this.directory, name), { recursive: true, mode: 0o700 });
   }
   async exclusive(work) {
     await this.initialize();
     const lock = path.join(this.directory, 'controller.lock');
-    try { await mkdir(lock); } catch (e) {
+    try { await mkdir(lock, {mode: 0o700}); } catch (e) {
       if (e.code === 'EEXIST') throw new Error('This character already has an active Wartime operation. After a crash, remove its controller.lock directory only after stopping all controllers.');
       throw e;
     }
@@ -27,7 +27,7 @@ export class Memory {
   }
   async writeJson(filename, value) {
     const temporary = filename + '.' + randomUUID() + '.part';
-    await writeFile(temporary, JSON.stringify(value, null, 2) + '\n', { flag: 'wx' });
+    await writeFile(temporary, JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
     await rename(temporary, filename);
   }
   async record(episode) {

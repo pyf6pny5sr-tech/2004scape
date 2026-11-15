@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-11-15T06:19:52.243738+00:00",
+  "environment": {
+    "provider": "Codex Cloud",
+    "environmentId": "ccarenv_b64_Y2NhcmVudl82NTE4MDEyYmNjYTQ4MTkxOGE4MmU1ZTM3ZWRlMjUxNQ",
+    "os": "Linux",
+    "workspace": "/workspace",
+    "node": "v24.22.1",
+    "bun": "1.4.4 (38afee6c8)",
+    "windowsResourcesUsed": false,
+    "remoteAccountsUsed": false
+  },
+  "sources": {
+    "integrationRepository": "https://github.com/pyf6pny5sr-tech/2004scape",
+    "branch": "wartime-integration",
+    "startingCommit": "cd06597a7fc7e982f3b909fac635395b298382fb",
+    "sdkRepository": "https://github.com/MaxBittker/rs-sdk",
+    "sdkCommit": "aff0406ea1cc651a0ae5f1626c6fb02043179f26",
+    "voyagerDesignReferenceCommit": "55e45a880755d0c8c66ca7fb5fe7962ac8974f89",
+    "voyagerRuntimeExecuted": false,
+    "testedSourceSha256": {
+      "agent.ts": "2c31f6528d2759345c5746174d92499bc14c2c5ac525f8c1bf1b9bd0b150d07b",
+      "controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434",
+      "memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+      "knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+      "setup-knowledge.mjs": "8186beab591dcd9f8986433a63593664dff8593cdc66ea9e660b8aeb9245b2f1",
+      "test/controller.test.mjs": "200215a03988da4026a42f8afa8aca7de32f689aa47de651383b744b8c22507f",
+      "test/agent.test.ts": "4842addaa523277302fe1efd14409d1ae64ba672d7b1e0f102f1f2df2dc7bc33",
+      "test/local-gameplay.ts": "953ff9f01b192e4ce9b2d088bcc666d502d04f2ae90be2f8495e5e2af2886631"
+    }
+  },
+  "checks": [
+    {
+      "name": "Node controller tests",
+      "command": "node --test wartime/test/*.test.mjs",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "name": "Bun controller and actual agent tests",
+      "command": "bun test wartime/test/controller.test.mjs wartime/test/agent.test.ts",
+      "passed": 19,
+      "failed": 0,
+      "scope": "Real BotSDK/BotActions, execution-context and MCP execute_code modules with controlled game state; deadline, parent cancellation, listeners/pending dispatch cleanup, lock release, credential omission, JSON script arguments, real Bun SQLite retrieval."
+    },
+    {
+      "name": "upstream SDK regression tests",
+      "command": "bun test sdk/test/execution-cancellation.test.ts sdk/test/walkto-tolerance.test.ts sdk/test/mine-rock.test.ts sdk/test/attack-observation.test.ts",
+      "passed": 32,
+      "failed": 0
+    },
+    {
+      "name": "knowledge setup",
+      "command": "NODE_USE_ENV_PROXY=1 node wartime/setup-knowledge.mjs",
+      "status": "passed",
+      "compressedSha256": "fdc12d27a11b49b1aa90340ebac1a4c96b6f0a827bec7692b6c4fcab024cbfaf",
+      "records": 31207,
+      "initialFailure": "Direct Node fetch ECONNREFUSED; succeeded with configured environment proxy, preserving TLS and pinned fingerprint."
+    },
+    {
+      "name": "real local gameplay",
+      "status": "passed",
+      "world": "http://localhost:8888",
+      "engineRevision": 289,
+      "engineXpRate": 25,
+      "client": "actual RS-SDK lite client and gateway, not simulated observations",
+      "setup": "SDK skipTutorial on a disposable local character",
+      "episodeStatus": "verified",
+      "observedMoves": [
+        {
+          "before": [
+            3222,
+            3222
+          ],
+          "after": [
+            3223,
+            3222
+          ],
+          "status": "verified"
+        },
+        {
+          "before": [
+            3223,
+            3222
+          ],
+          "after": [
+            3222,
+            3222
+          ],
+          "status": "verified"
+        }
+      ],
+      "savedSkill": "cloud_roundtrip",
+      "replayStatus": "verified",
+      "retrieval": "quest-cook-brief",
+      "rawEvidence": "wartime/.wartime/local-gameplay.json (ignored cloud-local file)",
+      "repeatRunsPassed": 2
+    },
+    {
+      "name": "browser rendering",
+      "status": "passed",
+      "client": "local Chromium via Puppeteer, same disposable character after stopping lite client",
+      "observedInGame": true,
+      "screenshot": "/workspace/artifacts/wartime-cloud-game.png",
+      "credentialFreeCanvasOnly": true,
+      "liveStreamProvided": false
+    },
+    {
+      "name": "diff whitespace",
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "apiCompatibility": {
+    "reference": "sdk/API.md and implementation at the pinned SDK commit",
+    "checkedCalls": {
+      "walk": "bot.walkTo(x,z,tolerance,{timeout})",
+      "chop": "bot.chopTree(NearbyLoc)",
+      "mine": "bot.mineRock(NearbyLoc,{timeout})",
+      "talk": "bot.talkTo(NearbyNpc)",
+      "interact_object": "bot.interactLoc(NearbyLoc,opIndex)",
+      "interact_npc": "bot.interactNpc(NearbyNpc,opIndex)",
+      "pickup": "bot.pickupItem(GroundItem)",
+      "eat": "bot.eatFood(InventoryItem)",
+      "equip": "bot.equipItem(InventoryItem)",
+      "open_bank": "bot.openBank()",
+      "close_bank": "bot.closeBank()",
+      "close_interface": "bot.closeInterface()",
+      "deposit": "bot.depositItem(InventoryItem,amount)",
+      "withdraw": "bot.withdrawItem(BankItem,amount)",
+      "use_item_on_object": "bot.useItemOnLoc(InventoryItem,NearbyLoc,{timeout})",
+      "use_item_on_npc": "bot.useItemOnNpc(InventoryItem,NearbyNpc,{timeout})",
+      "burn_logs": "bot.burnLogs(InventoryItem)",
+      "attack_npc": "bot.attack(NearbyNpc)",
+      "dialog_choice": "sdk.clickDialogByText(RegExp)",
+      "dialog_continue": "sdk.sendClickDialog(0)"
+    },
+    "stateCalls": [
+      "getState",
+      "isConnected",
+      "getStateAge",
+      "getStateReceivedAt",
+      "getConnectionMode",
+      "waitForCondition"
+    ],
+    "identifierChecks": "BankItem.slot retained; NearbyNpc.id is type id, index is world slot; object target includes plane and coordinates; options use visible opIndex. No raw slot/index substitution.",
+    "xpUnits": "SDK StateCollector publishes client skillExperience. Historical source uses tenths before client conversion; modified local engine uses accelerated XP. Navigation probe did not validate live XP gains.",
+    "coverageLimit": "Every dispatch call statically checked; only walking exercised through Wartime in real gameplay. Other action tests are controlled or upstream regressions, not end-to-end gameplay coverage."
+  },
+  "fixes": [
+    "Refuse disconnected or nonfinite/negative-age postconditions instead of recording false success.",
+    "Recheck world/character binding before observation, action and verification.",
+    "Explicit matching loopback-only test world/gateway with actual origin-scoped memory and skills; preserve Fly.io default.",
+    "Create new memory directories/locks with mode 0700 and files with mode 0600."
+  ],
+  "flyEndpoint": {
+    "url": "https://rs-sdk-demo.fly.dev/",
+    "httpStatus": 301,
+    "location": "https://rs-sdk.maxbittker.com/",
+    "authenticatedConnectionAttempted": false,
+    "worldSwitched": false,
+    "upstreamCompatibilityIssue": "Reference SDK deriveGatewayUrl and lite runner remap legacy Fly.io hostname. Use explicit gateway settings and confirm the intended world before any real character connection.",
+    "gatewayProbe": {
+      "url": "https://rs-sdk-demo.fly.dev/gateway",
+      "result": "HTTP GET timed out after 20 seconds with no response bytes; no authenticated WebSocket handshake attempted"
+    }
+  },
+  "limitations": [
+    "Exact frontier-model runtime/host not supplied; no model-driven autonomous session or billing exercised.",
+    "Real Fly.io character/client connection unverified; no remote account signup or takeover.",
+    "Local upstream first build failed .loc checksum verification; supported local build.verify=false setting was needed for modified content. Upstream source files were not edited.",
+    "Local engine revision 289 and accelerated XP differ from the preserved revision-274 historical corpus.",
+    "Local real gameplay covers observation, navigation, verification, saved replay and retrieval; not quests, mining, bank interactions, combat or long-term recovery.",
+    "Locks protect cooperating controllers on one filesystem, not distributed controllers. Already-sent game actions cannot be rolled back on timeout.",
+    "Voyager curriculum/feedback/skill-library design adaptation only; no upstream Minecraft runtime or model-weight training."
+  ],
+  "readyForRealCharacterConnection": false,
+  "readinessBlockers": [
+    "Confirm intended remote world because Fly.io redirects and SDK legacy helpers remap it.",
+    "Supply the intended model runtime and execution host, then verify that exact client and gateway without changing worlds."
+  ],
+  "publication": {
+    "mainModified": false,
+    "websiteDeployed": false,
+    "permittedBranch": "wartime-integration",
+    "commitIdentity": "See the Git commit containing this report; tested source hashes avoid a self-referential commit ID."
+  }
+}

@@ -7,6 +7,10 @@ This is a portable, model-driven integration for https://rs-sdk-demo.fly.dev/:
 
 It is an original adaptation of Voyager's design, not the upstream Minecraft runtime, and does not train model weights. It does not bundle or select a particular ChatGPT model. The model must have a host that exposes the RS-SDK tools.
 
+## Current handoff request
+
+The user wants Wartime to integrate the knowledge, learning and tick-aware execution into its **existing player/controller**, then test on the **actual online server** using real model response times. Do not run this prototype as a competing controller or insert an artificial ten-second delay. Use the existing cloud/agent host and keep credentials there. See [the live-testing and maintenance requirements](TICK-AND-MAINTENANCE.md) and [the current handoff prompt](PROMPT.txt). These requirements have not yet been demonstrated by this repository's tests.
+
 ## Current status
 
 Cloud-validated development preview. Node 24 controller tests, Bun controller/agent tests, and 32 relevant upstream SDK tests pass. In an isolated Linux cloud emulator, an actual headless client observed a disposable character, verified a two-step walk, saved and replayed the learned routine, and retrieved a cited knowledge record. A separate Chromium client rendered the same disposable character for a screenshot. See `validation-report.json` for exact evidence and limits.

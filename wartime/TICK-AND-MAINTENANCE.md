@@ -63,27 +63,40 @@ PLAYING -> RELOCATING -> QUIESCING -> CHECKPOINTED -> UPDATING -> REVALIDATING -
 
 The online world continues ticking throughout maintenance. Count this as intentional downtime, separately from avoidable idleness caused by model latency. Emergency recovery must not depend on reaching a distant church first.
 
-## Performance evidence required
+## Live-server performance evidence required
 
-Measure these in the cloud test environment before describing the system as fast:
-- Observation-to-dispatch latency for an eligible next action, including p50/p95/p99.
+The user requests testing on the actual online game server using Wartime's existing player and controller. Run the controller on the existing cloud/agent host, not on the user's Windows computer. Cloud hosting describes where the code runs; it does not mean replacing the live game with a local emulator.
+
+Keep the existing authenticated character, verified world and single command owner. Apply the changes in that environment. Do not require a controller export or credential filtering before proceeding when Wartime already has access to its own code.
+
+Use normal gameplay and actual model calls. Do not insert an artificial 10-second thinking delay, sleep between actions, change the live server's tick rate, or manufacture another player's actions. Ten seconds was the user's example of a slow model response, not a required waiting period or game rule.
+
+Measure and report:
+- The observed game-tick cadence and network/state-update jitter.
+- Actual model response times and whether useful gameplay continues while those responses are pending.
+- Observation-to-dispatch latency for an eligible next action, including p50/p95/p99 where the sample size supports them.
 - Dispatch-to-observed-effect latency, separated from expected game cooldown and network delay.
 - Avoidable idle ticks while a valid approved routine and eligible action exist.
-- Productive action rate and task completion time on a reproducible workload.
-- Model calls and model wait time per completed task.
-- Failed/repeated actions, stale-plan rejection, disconnect recovery and maintenance downtime.
+- Productive action rate and task completion time over a stated observation window.
+- Failed/repeated actions, stale-plan rejection, disconnect recovery and intentional maintenance downtime.
 
-An initial performance target is to dispatch a cached eligible next action within one observed game-tick interval under a controlled test. This is a target to measure, not a current achievement or a guarantee of server execution in that interval.
+Compare comparable live activity before and after integration. State the activity, elapsed time, sample count and changing conditions; a single successful click or short walk is not a speed benchmark. Do not count mandatory cooldowns or ongoing productive animations as idle time.
 
-Compare the current controller and the integrated version on the same repeatable task. Inject planner response delays of 0, 2, 10 and 30 seconds. With a valid continuing routine, action throughput should remain near its no-delay baseline; the measured difference must be reported. Test legitimate cooldown waits separately from missed opportunities.
+Request subsequent plans while an approved routine is running, and verify from the live event log that the routine continues during real model thinking. Record what happened if a request outlasted the current routine.
 
-Add cases for multiple state publications in one tick, reconnect counter reset, target disappearance, full inventory, death/respawn, low health, another controller attempting ownership, cancelled updates, stale planner replies and rollback. Exercise the existing PvP behavior in a controlled test world with a disposable opponent before claiming PvP performance.
+Exercise the church maintenance workflow on the live player at an appropriate task boundary: verify arrival and current safety, checkpoint, perform the controlled handoff, re-observe, and resume the previous goal. Report whether rollback was actually exercised or only checked separately. Avoid fabricating a failure on the live player merely to demonstrate recovery.
 
-Run all tests in Codex Cloud, not on the user's Windows computer. Record the exact code revision, world revision, measured cadence, workload and results. Do not label simulations as live online tests.
+Preserve and observe the existing PvP behavior. Any claim about live PvP must identify real observed coverage; ordinary navigation or gathering does not establish PvP performance. If no PvP encounter occurs, say it was not tested.
 
-## Inputs still needed
+An initial target is to dispatch a cached eligible next action within one observed game-tick interval. This is a target to measure, not a current achievement or a guarantee of server execution in that interval.
 
-The existing player's repository/runtime and its command-ownership mechanism are needed to implement this design correctly. If Wartime itself has that checkout, it should apply this plan there and preserve its current connection. This repository remains the reference library and prototype source until the integrated runtime is tested.
+Simulated-delay tests are optional supplementary diagnostics in an isolated test environment. They can expose whether a routine blocks on model latency, but they do not satisfy the requested live-server test and are not a prerequisite for beginning it. The previously suggested 0/2/10/30-second delay matrix is no longer a required test.
+
+Record the exact controller version, actual world identity/revision where available, measured cadence, workload, real model timing and observed results. If the existing live connection is unavailable, report that specific blocker instead of substituting an offline demonstration and calling the task finished.
+
+## Access and handoff
+
+Wartime should use the controller/runtime it already has and inspect its existing command-ownership mechanism there. No code or credential export is required. Only if Wartime itself lacks access should it identify the missing tool or file. This repository remains the reference library and prototype source; its historical validation report is not evidence that these new requirements have been implemented or tested live.
 
 ## Evidence
 

@@ -1,3 +1,4 @@
+import { validateContinuation, continuationUnsafe, nextContinuation, inside, ordinaryResourceFailure } from "./continuity.mjs";
 import { Memory } from "../memory.mjs";
 import { Telemetry } from "./telemetry.mjs";
 import {
@@ -131,6 +132,7 @@ export class Executor {
     const state = this.adapter.state();
     if (state) this.observe(state);
     this.watchdog = setInterval(() => {
+      if(this.active?.continuation && Date.now()>=this.active.expiresAt)this.cancelActive("CONTINUATION_ACTION_EXPIRED");
       if (this.phase !== "STOPPED" && !this.fresh()) {
         if (!["PAUSED", "BLOCKED"].includes(this.phase)) {
           this.invalidate("STALE_OR_DISCONNECTED", { session: true });
@@ -147,6 +149,7 @@ export class Executor {
     if (session) this.session++;
     this.cancelActive(reason);
     this.pendingEmergency = null;
+    this.continuation = null;
     this.gatherLease = null;
     if (
       this.maintenance &&
@@ -249,6 +252,8 @@ export class Executor {
     if (this.proposalIds.has(key)) throw new Error("DUPLICATE_PROPOSAL");
     const steps = proposal.steps.map(validateCommand);
     const repeat = bounded(proposal.repeat ?? 1, 1, 20, "REPEAT");
+    const continuation = proposal.continuation ? validateContinuation(proposal.continuation, this.state, this.token()) : null;
+    if(continuation && steps.some(c=>!(['chop','burn_logs','walk'].includes(c.action))||(c.action==='chop'&&c.target.name!==continuation.target.name)||(c.action==='burn_logs'&&c.item.name!==continuation.log.name)||(c.action==='walk'&&!inside(continuation.area,{worldX:c.x,worldZ:c.z,level:c.level}))))throw Error('CONTINUATION_INCOMPATIBLE_STEP');
     const routine = {
       id: randomUUID(),
       token: copy(proposal.token),
@@ -267,6 +272,9 @@ export class Executor {
     if (this.proposalIds.size >= 1000)
       throw new Error("DEDUPLICATION_CAPACITY");
     this.proposalIds.set(key, proposal.expiresAt);
+    this.continuation = continuation;
+    if (continuation) this.metrics.count("continuationApprovals");
+    this.blockReason = null;
     this.queue.push(routine);
     this.event("plan_accepted", { id: routine.id });
     this.schedule();
@@ -435,6 +443,19 @@ export class Executor {
       return;
     }
     this.lastFreshAt = now;
+    if(this.active?.continuation){
+      const unsafe=continuationUnsafe(this.active.grant,this.state);
+      if(unsafe){this.invalidate(unsafe,{task:true});this.phase='PAUSED';this.blockReason=unsafe;if(this.state.player.hp<=(this.config.safety?.eatAtHp??0))this.emergency();return;}
+      if(Date.now()>=this.active.expiresAt)this.cancelActive('CONTINUATION_ACTION_EXPIRED');
+    }
+    if (this.continuation) {
+      const unsafe = continuationUnsafe(this.continuation, this.state);
+      if (unsafe) { this.invalidate(unsafe, {task:true}); this.phase='PAUSED'; this.blockReason=unsafe; if(this.state.player.hp<=(this.config.safety?.eatAtHp??0))this.emergency(); return; }
+      if (this.continuation.expiresAt <= Date.now()) {
+        this.continuation=null; this.metrics.count('continuationExpirations');
+        if(this.active?.continuation)this.cancelActive('CONTINUATION_EXPIRED');
+      }
+    }
     if (this.phase === "BLOCKED") return;
     if (this.state.player.hp <= (this.config.safety?.eatAtHp ?? 0)) {
       if ((this.emergencyAttempts ?? 0) < 3) this.emergency();
@@ -511,6 +532,7 @@ export class Executor {
       this.same(g.token) &&
       g.action === c.action &&
       (c.target.id === undefined || c.target.id === g.target.id) &&
+      (c.target.x === undefined || (c.target.x===g.target.x&&c.target.z===g.target.z)) &&
       (c.target.name === undefined ||
         c.target.name.toLowerCase() === g.target.name.toLowerCase())
     );
@@ -616,9 +638,11 @@ export class Executor {
     }
     if (this.maintenance) return;
     if (this.phase !== "PLAYING") return;
+    if (this.routine?.continuation && this.queue.length && !this.active) this.routine=null;
     if (!this.routine) this.routine = this.queue.shift() ?? null;
+    if (!this.routine && this.continuation) this.refillContinuation();
     const r = this.routine;
-    if (!r) return;
+    if (!r) { this.ensureRefillRequest(); return; }
     if (!this.same(r.token) || r.expiresAt < Date.now()) {
       this.metrics.count("staleRoutines");
       this.routine = null;
@@ -642,7 +666,7 @@ export class Executor {
         return;
       }
     } catch (e) {
-      this.finishFailure(r, e.message);
+      this.finishFailure(r, e.message, ordinaryResourceFailure(e.message));
       return;
     }
     if (
@@ -669,7 +693,28 @@ export class Executor {
     }
     this.launch(c, r, "routine");
   }
+  ensureRefillRequest() {
+    if(this.phase==='PLAYING'&&!this.maintenance&&!this.planning.size&&this.requests.length<2)
+      this.requestPlan({reason:'approved_runway_refill',continuation:this.continuationStatus()});
+  }
+  continuationStatus() {
+    const g=this.continuation;
+    return g?{recipe:g.recipe,remainingActions:g.remaining,expiresAt:g.expiresAt,runwayMs:Math.max(0,g.expiresAt-Date.now()),failures:g.failures,backoffTicks:Math.max(0,(g.retryAt??0)-this.tickSerial),area:copy(g.area)}:null;
+  }
+  refillContinuation() {
+    const g=this.continuation;
+    if(!g||!this.same(g.token)||g.expiresAt<=Date.now()||g.remaining<=0){this.continuation=null;return;}
+    if(!this.planning.size)this.ensureRefillRequest();
+    if(this.tickSerial<(g.retryAt??0))return;
+    const unsafe=continuationUnsafe(g,this.state);if(unsafe){this.continuation=null;this.phase='PAUSED';this.blockReason=unsafe;return;}
+    const choice=nextContinuation(g,this.state,this.tickSerial);
+    if(choice.reason){this.continuation=null;this.phase='PAUSED';this.blockReason=choice.reason;this.event('continuation_yielded',{reason:choice.reason});return;}
+    const command=validateCommand(choice.command);g.remaining--;
+    this.routine={id:randomUUID(),token:this.token(),expiresAt:g.expiresAt,steps:[command],repeat:1,index:0,cycle:0,results:[],recordIds:[],continuation:true,continuationId:g.id};
+    this.metrics.count('continuationActionsGenerated');
+  }
   launch(c, r, kind) {
+    const grantAtLaunch = r?.continuation ? this.continuation : null;
     const token = this.token(),
       before = copy(this.state),
       received = this.adapter.receivedAt(),
@@ -680,6 +725,9 @@ export class Executor {
       abort,
       kind,
       gathering: ["chop", "mine"].includes(c.action),
+      continuation: !!r?.continuation,
+      grant: grantAtLaunch,
+      expiresAt: r?.expiresAt ?? Infinity,
       done: null,
     };
     if (!active.gathering) this.gatherLease = null;
@@ -687,6 +735,7 @@ export class Executor {
     this.metrics.add("observationToDispatchMs", started - this.observedAt);
     this.metrics.add("publicationAgeAtDispatchMs", this.adapter.age());
     this.metrics.count("dispatches");
+    if(this.planning.size)this.metrics.count("dispatchesWhilePlannerPending");
     this.cooldownUntil =
       this.tickSerial +
       Math.max(c.cooldownTicks ?? 1, this.policy.minCooldownTicks);
@@ -700,6 +749,7 @@ export class Executor {
     });
     active.done = (async () => {
       let status = "failed",
+        ordinaryRecoverable = false,
         reason = null,
         after;
       try {
@@ -713,11 +763,17 @@ export class Executor {
             this.same(token) &&
             this.fresh() &&
             (!r || r.expiresAt > Date.now()) &&
-            this.phase !== "BLOCKED",
+            this.phase !== "BLOCKED" && (!r?.continuation || (grantAtLaunch && !continuationUnsafe(grantAtLaunch,this.state))),
         );
-        if (abort.signal.aborted || !this.same(token))
+        if (abort.signal.aborted || !this.same(token) || (r&&r.expiresAt<=Date.now()))
           throw new Error("OLD_GENERATION");
-        if (result?.success === false) {
+        if (result?.success === false && ['chop','mine','burn_logs','walk'].includes(c.action)) {
+          ordinaryRecoverable=ordinaryResourceFailure(result.reason,result.message);
+          const observed=this.adapter.state();
+          if(ordinaryRecoverable&&(!r||r.expiresAt>Date.now())&&(!grantAtLaunch||!continuationUnsafe(grantAtLaunch,this.state))&&this.fresh()&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&c.expect.every(e=>expected(e,before,observed))) {
+            this.event('effect_reconciled',{action:c.action});this.metrics.count('helperFailuresReconciledByFreshEffect');
+          } else throw new Error('SDK_ACTION_FAILED');
+        } else if (result?.success === false) {
           const known = [
             "not_attackable",
             "out_of_reach",
@@ -737,12 +793,13 @@ export class Executor {
             this.fresh() &&
             this.same(token) &&
             s.player?.lifeId === before.player.lifeId &&
+            (!r || r.expiresAt>Date.now()) && (!grantAtLaunch || !continuationUnsafe(grantAtLaunch,s)) &&
             this.adapter.receivedAt() > received &&
             c.expect.every((e) => expected(e, before, s)),
           c.timeoutMs ?? 15000,
           abort.signal,
         );
-        if (abort.signal.aborted || !this.same(token))
+        if (abort.signal.aborted || !this.same(token) || (r&&r.expiresAt<=Date.now()))
           throw new Error("OLD_GENERATION");
         if (
           ["attack_player", "attack_npc"].includes(c.action) &&
@@ -770,7 +827,14 @@ export class Executor {
         this.metrics.count("verifiedActions");
       } catch (e) {
         reason = abort.signal.aborted ? "CANCELLED" : String(e.message);
-        this.metrics.count("failures");
+        ordinaryRecoverable ||= ordinaryResourceFailure(reason);
+        const observed=this.adapter.state();
+        if(ordinaryRecoverable&&!abort.signal.aborted&&this.same(token)&&(!r||r.expiresAt>Date.now())&&(!grantAtLaunch||!continuationUnsafe(grantAtLaunch,this.state))&&this.fresh()&&['chop','mine','burn_logs','walk'].includes(c.action)&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&c.expect.every(x=>expected(x,before,observed))) {
+          after=copy(observed);status='verified';reason=null;
+          this.cooldownUntil=Math.max(this.cooldownUntil,this.tickSerial+Math.max(c.cooldownTicks??1,this.policy.minCooldownTicks));
+          this.metrics.count('verifiedActions');this.metrics.count('helperFailuresReconciledByFreshEffect');this.metrics.add('actionToEffectMs',performance.now()-started);
+          this.event('effect_reconciled',{action:c.action});
+        } else this.metrics.count("failures");
       }
       if (this.active !== active) return;
       this.active = null;
@@ -784,6 +848,8 @@ export class Executor {
             after: after ? copy(after) : null,
           };
           if (status === "verified") {
+            if(this.continuation&&(!r.continuation||r.continuationId===this.continuation.id)){this.continuation.consecutiveFailures=0;if(c.action==='walk')this.continuation.relocate=false;}
+            if(this.planning.size)this.metrics.count('verifiedActionsWhilePlannerPending');
             if (active.gathering) {
               const target = (before.nearbyLocs ?? [])
                 .filter(
@@ -791,6 +857,7 @@ export class Executor {
                     l.level === before.player.level &&
                     l.reachable !== false &&
                     (c.target.id === undefined || l.id === c.target.id) &&
+                    (c.target.x === undefined || (l.x===c.target.x&&l.z===c.target.z)) &&
                     (c.target.name === undefined ||
                       l.name.toLowerCase() === c.target.name.toLowerCase()),
                 )
@@ -806,7 +873,7 @@ export class Executor {
             this.advanceRoutine(r, result);
           } else {
             r.results.push(result);
-            this.finishFailure(r, reason);
+            this.finishFailure(r, reason, ordinaryRecoverable);
           }
         }
         if (kind === "emergency") {
@@ -822,11 +889,25 @@ export class Executor {
       else this.schedule();
     })();
   }
-  finishFailure(r, reason) {
+  finishFailure(r, reason, ordinaryRecoverable = false) {
+    const queued = this.queue;
     this.routine = null;
     this.queue = [];
     this.phase = "PAUSED";
     this.blockReason = reason;
+    const g=this.continuation,c=r?.steps[r.index];
+    if(ordinaryRecoverable&&g&&this.same(g.token)&&this.fresh()&&!continuationUnsafe(g,this.state)&&g.remaining>0&&g.expiresAt>Date.now()&&['chop','burn_logs','walk'].includes(c?.action)&&
+       (r.continuation||(['chop','burn_logs'].includes(c.action)))&&g.consecutiveFailures<2&&g.failures<6&&reason!=='PRECONDITION_FAILED') {
+      if(r.continuation&&r.continuationId!==g.id){this.queue=queued;this.phase='PLAYING';this.event('retired_continuation_yielded');if(r)this.recordRoutine(r).catch(()=>{});return;}
+      g.failures++;g.consecutiveFailures++;g.retryAt=this.tickSerial+2**g.consecutiveFailures;
+      if(c.action==='burn_logs')g.relocate=true;
+      if(c.action==='chop'&&c.target.x!==undefined)g.blockedTargets.push({x:c.target.x,z:c.target.z,until:this.tickSerial+12});
+      if(c.action==='walk')g.blockedTiles.push({x:c.x,z:c.z});
+      this.gatherLease=null;this.phase='PLAYING';
+      if(r.continuation&&queued.length){this.queue=queued;this.metrics.count('continuationYieldToQueuedPlan');}
+      this.metrics.count('boundedContinuationRecoveries');
+      this.event('continuation_recovery',{action:c.action,reason,backoffTicks:2**g.consecutiveFailures});this.ensureRefillRequest();
+    } else if(g) this.continuation=null;
     this.event("routine_failed", { reason });
     if (r) this.recordRoutine(r).catch(() => {});
   }
@@ -914,6 +995,7 @@ export class Executor {
         : null,
       queueLength: this.queue.length,
       active: this.active?.kind ?? null,
+      continuation: this.continuationStatus(),
       lastEpisode: this.lastEpisode ?? null,
       lastEpisodeRoutineId: this.lastEpisodeRoutineId ?? null,
       maintenance: this.maintenance
@@ -1007,6 +1089,7 @@ export class Executor {
       throw new Error("MAINTENANCE_NOT_READY");
     const saved = {
       goal: copy(this.goal),
+      continuation: copy(this.continuation),
       routine: this.routine
         ? { ...copy(this.routine), inFlight: !!this.active }
         : null,
@@ -1233,10 +1316,12 @@ export class Executor {
       }
       m.stage = "RESUMING";
       this.goal = m.saved.goal;
+      if(m.saved.continuation?.expiresAt>Date.now()&&!continuationUnsafe(m.saved.continuation,this.state))this.continuation={...copy(m.saved.continuation),token:this.token()};
       // Resume only remaining work under a new token; never replay an in-flight command.
       const routines = [m.saved.routine, ...m.saved.queue].filter(Boolean);
       const remaining = [];
       for (const r of routines) {
+        if (r.continuation) continue; // Only a still-valid restored grant may regenerate resource work.
         if (r.inFlight) continue;
         if (r.results?.length && r.results.at(-1).status !== "verified")
           continue;

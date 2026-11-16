@@ -8,7 +8,9 @@ const exec = promisify(execFile);
 export const CODE_FILES = [
   "adapter.ts",
   "client.mjs",
+  "continuity-capture.mjs",
   "executor.mjs",
+  "continuity.mjs",
   "host.ts",
   "identity.mjs",
   "knowledge-worker.mjs",

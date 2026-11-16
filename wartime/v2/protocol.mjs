@@ -64,6 +64,7 @@ export function validateCommand(c) {
     if (c.target.index === undefined && !c.target.name)
       throw new Error("TARGET_INDEX_OR_NAME_REQUIRED");
   }
+  if(c.target?.x!==undefined||c.target?.z!==undefined){bounded(c.target.x,0,16383,"TARGET_X");bounded(c.target.z,0,16383,"TARGET_Z");}
   if (c.preconditions !== undefined)
     validateStep({
       action: "walk",

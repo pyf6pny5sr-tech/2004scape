@@ -6,6 +6,36 @@ The [focused maintenance follow-up report](maintenance-followup-report.json) cov
 
 **Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. [Supplemental live maintenance](live-maintenance-report.json) also verified same-account church relocation, steady-1 → cautious-2, unchanged owner and resumed queued action. PvP remains untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
 
+## Approved continuity while the current agent plans
+
+The current agent can approve a **finite woodcutting/Firemaking reserve** alongside an ordinary short proposal. The executor chooses fresh eligible work from that exact recipe and inventory while the agent services prefetched requests. It never generates new goals or model reasoning. Do not reset the goal or call `resume` just to answer a refill request: those invalidate work. Use the current pending request and `planner_complete`/`agent.mjs complete` to append ordinary work and renew the reserve without canceling the current action.
+
+Add `continuation` to the proposal (compute the future timestamp in your current tools):
+
+```js
+{
+  steps: [/* ordinary approved typed steps, using current observations */],
+  continuation: {
+    recipe: "woodcut_firemake",
+    target: {name: "Tree"}, log: {name: "Logs"},
+    area: {x: CURRENT_AREA_X, z: CURRENT_AREA_Z, level: 0, radius: 12},
+    minHp: CURRENT_FULL_HEALTH,
+    maxActions: 40, expiresAt: Date.now() + 110000,
+    fireTiles: [/* up to 8 explicitly approved {x,z} alternatives inside area */]
+  }
+}
+```
+
+This is a contract illustration; choose actual area/tiles from the live world, not the placeholders. Only `Tree`/`Logs` and `Oak`/`Oak logs` recipes are accepted. Reserve approval lasts **at most 120 seconds and 40 generated actions**, not an entire session. Area radius is at most 16 tiles. Current status/context includes remaining actions, expiry/runway, backoff and failures. Request prefetch occurs while approved work remains; service it before runway drops below 45 seconds or action reserve is low. New explicit queued work takes priority at the next action boundary. A proposal without `continuation` retires the old reserve; a changed goal cancels/drains it. Renewal never extends an already-active action's original expiry/safety authority.
+
+Within the approved area, the reserve burns existing matching logs before gathering another reachable approved tree. Burning that fails or finds an observed fire can use only the supplied bounded alternative tiles; movement is for useful fire placement, not idle padding. It never repeats chat, combat, trade, arbitrary items or destructive actions. Each operation has fresh expected effects, target coordinates/type and SDK cancellation guards. Busy productive gathering is not re-clicked each tick.
+
+A known ordinary resource failure may recover with **two consecutive attempts, tick backoff of 2 then 4, and at most 6 recoveries per grant**. Failed dependent tails are discarded; each generated replacement is reselected from fresh inventory/targets. Unknown/auth/network/ownership/rate/protocol errors do not auto-retry. An ambiguous helper result counts as verified only if a fresh same-life/same-generation observation actually satisfies every original expected outcome. It is never successful merely because the promise resolved.
+
+Expiry, exhaustion, stale/disconnected state, damage/combat, leaving the area, unavailable targets or a full inventory with no approved burnable logs yield/stop. Stop, cancellation, emergencies and church maintenance revoke live continuation authority; maintenance may regenerate only a still-valid checkpointed grant after fresh revalidation, without reviving expired generated actions. These limits mean the agent must keep servicing real requests; finite reserves cannot wake an inactive chat or provide unlimited autonomy.
+
+For a comparable passive benchmark, use [continuity-capture.mjs](continuity-capture.mjs) `init/begin/claim/complete/watch/stop` with one private `--directory` and existing run `--home`. `begin` defaults to a fixed 20-minute deadline, `watch` is bounded to 45 seconds and refuses an open planning claim, and `claim` must bracket actual gameplay reasoning/tools only. All request/event/exact-boundary evidence is captured automatically before play; no ledger or report edits belong inside claims. [continuity-report.mjs](continuity-report.mjs) performs offline comparison using the unchanged baseline classifier and requires an explicit post-run window audit before calling a subset gameplay-only.
+
 ## Twenty-minute online idle baseline
 
 The [audit-corrected long-run report](long-run-report.md) preserves **969/1,055 idle ticks (91.8%) across all 15 claim-to-completion intervals, including mixed development/report support**. A separate conservative gameplay-planning-only subset excludes entire windows 1,5,8,10,11,12: **518/599 idle ticks (86.5%)**, with 33 ambiguous ticks, across nine retained windows. Whole-run idle and the raw trace are unchanged. Exact developer durations were not measured; tool/scheduling overhead remains in both scopes. This is this cloud agent/controller, not the separate Wartime instance or isolated inference. See the audit and [sanitized JSON](long-run-report.json); do not use `avoidableIdleTicks=0` as a real idle result.

@@ -1,4 +1,5 @@
 // Persistent owner. Never run inside execute_code. Short bridge calls update it.
+import { ContinuityEvidence } from "./continuity-capture.mjs";
 import { LiveMeasure } from "./long-run.mjs";
 import { runtimeIdentity } from "./identity.mjs";
 import { createServer } from "node:http";
@@ -54,6 +55,27 @@ export async function createBridge(executor: any, config: any) {
       canWakeInactiveChat: false,
     },
   });
+  // Optional private evidence augments capture only; baseline tick classification is unchanged.
+  const evidence = measurement ? new ContinuityEvidence(executor, config.measurementFile + ".evidence.jsonl", identity) : null;
+  if (measurement && evidence) {
+    const originalEvent = executor.event.bind(executor);
+    executor.event = (type: any, details: any = {}) => { originalEvent(type, details); evidence.event(executor.events.at(-1)); };
+    const begin = measurement.begin.bind(measurement), end = measurement.end.bind(measurement);
+    measurement.begin = async (durationMs: any) => {
+      // Create evidence before the timed window; begin() then captures the exact start.
+      await evidence.prepare();
+      const result = await begin(durationMs);
+      evidence.begin(result.started);
+      return result;
+    };
+    measurement.end = async () => {
+      // end() sets its boundary synchronously before awaiting writes; snapshot now,
+      // before another game callback can interleave, then drain both private streams.
+      const result = end();
+      await evidence.end(measurement.ended);
+      return await result;
+    };
+  }
   if (!config.socket || !config.socket.startsWith("/"))
     throw new Error("ABSOLUTE_PRIVATE_SOCKET_REQUIRED");
   await mkdir(dirname(config.socket), { recursive: true, mode: 0o700 });
@@ -93,7 +115,7 @@ export async function createBridge(executor: any, config: any) {
           result = await measurement.begin(a.durationMs); break;
         case "measurement_claim":
           if (!measurement) throw Error("MEASUREMENT_NOT_CONFIGURED");
-          result = measurement.claim(a.id); break;
+          result = measurement.claim(a.id); evidence?.mark("claim", { id:a.id }); break;
         case "measurement_end":
           if (!measurement) throw Error("MEASUREMENT_NOT_CONFIGURED");
           result = await measurement.end(); break;
@@ -125,6 +147,7 @@ export async function createBridge(executor: any, config: any) {
           result = executor.plannerRequests();
           break;
         case "planner_complete":
+          evidence?.mark("completion_submission", { id:a.id });
           measurement?.complete(a.id);
           result = executor.completePlan(
             a.id,

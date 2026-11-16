@@ -1,0 +1,54 @@
+{
+  "scope": "Continuity implementation preflight before new fixed live measurement",
+  "baseCommit": "58cafd92376d8f719e881976f4727c7fab42dea2",
+  "sourcePin": "Containing implementation commit; actual tested source also hashed below",
+  "runtimeChanges": [
+    "Explicit max120s/max40-action ordinary resource continuation approval with proactive refill requests",
+    "Fresh outcome reconciliation; no success solely from SDK helper",
+    "Bounded classified resource recovery/backoff and approved fire-tile relocation",
+    "Original active grant identity/expiry retained across renewal; exact coordinate gather lease",
+    "Existing safety/ownership/generations/cancellation and maintenance authority preserved"
+  ],
+  "tests": {
+    "initialNodeSuite": {
+      "command": "node --test wartime/v2/test/*.test.mjs",
+      "total": 86,
+      "passed": 85,
+      "failed": 1
+    },
+    "initialBunSuite": {
+      "command": "bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts wartime/v2/test/agent-bridge.test.ts wartime/v2/test/continuity-capture-bridge.test.ts",
+      "total": 92,
+      "passed": 91,
+      "failed": 1
+    },
+    "initialFailure": "New maintenance-expiry test did not await asynchronous checkpoint I/O long enough; production source unchanged by its correction. It now waits boundedly for the actual handoff.",
+    "finalFocusedNode": {
+      "command": "node --test wartime/v2/test/continuity.test.mjs",
+      "passed": 16,
+      "failed": 0
+    },
+    "finalFocusedBun": {
+      "command": "bun test wartime/v2/test/continuity.test.mjs",
+      "passed": 16,
+      "failed": 0
+    },
+    "finalCaptureCLIAssertions": {
+      "command": "node --test wartime/v2/test/continuity-capture.test.mjs",
+      "passed": 3,
+      "failed": 0
+    },
+    "coverageNote": "Initial existing required regressions passed; the one failed new fixture was fixed and rerun in its whole focused file. One extra retry-limit test passed in final focused reruns. Across unchanged tests plus focused reruns,87 distinct Node and93 Bun cases validated; not claiming a single full green87/93 run. Node/Bun overlap."
+  },
+  "measurement": "Original long-run.mjs classifier and analyzeTrace overlap accounting unchanged; capture/report tools prepared before timed run; no new live gameplay yet",
+  "sourceFileSha256": {
+    "executor.mjs": "00b4a9d73b5a6b0a7585f13d9aeb418f40308eca9e2798c89d82b61eb4861b54",
+    "continuity.mjs": "eac0e10cbd48190e187af8893e08e5fda321d285c543f3f036b9093745b55cb3",
+    "adapter.ts": "53ee5fc42cc3dda182581fccd4f2a6fcb0af65046ec58bb1038c5deda548bf48",
+    "protocol.mjs": "e4d829b02c871ac869fc7d3e9137a76c35f0e9363989cdc5fa7ea71dd729626a",
+    "host.ts": "6cbff93341643fdad9e29d139528c5fe6f7989c94ad2df409c94fcc556595695",
+    "identity.mjs": "4a13b9e87bcbbc04b0cdf29a2bdf8ccda8d50412e6e10878318efe21157a3447",
+    "continuity-capture.mjs": "18c63250f7494fd8467b2d4cf7bf1dcedf7fd3831444293753696ecf3be6eeff",
+    "continuity-report.mjs": "eb233dea9e7122f93c49fe5db7de0dc6ec70f094342907fb0d9ea79bca2e4e6c"
+  }
+}

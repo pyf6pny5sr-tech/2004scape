@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "scope": "Focused maintenance correctness follow-up to 553f312; controlled-state cloud regressions only. No new online or emulator gameplay claim.",
+  "baseCommit": "553f312b1186b2e86902ba23680286eebc87a91d",
+  "validatedAt": "2026-11-16T03:08:13.708088+00:00",
+  "environment": {
+    "provider": "Codex Cloud",
+    "os": "Linux",
+    "node": "24.22.1",
+    "bun": "1.4.4 (38afee6c8)",
+    "windowsExecution": false
+  },
+  "changes": [
+    "Once a staged policy has activated, postponement/unsafe/stale/deadline/cancellation/ownership invalidation restores the prior policy, advances the controller generation, cancels owned work and clears queued/prefetched work.",
+    "The stale-state observation and watchdog invalidation paths use the same rollback behavior.",
+    "Quiescence counts two consecutive fresh idle public game ticks after arrival/drain; busy publications reset the streak, duplicate revisions in one tick cannot advance it, and skipped public ticks break it.",
+    "Pending checkpoint writes cannot reactivate a canceled/postponed or expired update. Terminal cancellation/postponement is preserved."
+  ],
+  "checks": [
+    {
+      "command": "node --test wartime/v2/test/*.test.mjs",
+      "passed": 32,
+      "failed": 0
+    },
+    {
+      "command": "bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts",
+      "passed": 36,
+      "failed": 0
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "newRegressionCases": [
+    "Combat during REVALIDATING",
+    "Stale state through advanceMaintenance",
+    "Stale observed publication during REVALIDATING",
+    "Expired maintenance deadline after activation",
+    "Explicit cancellation after activation",
+    "Ownership/connection loss after activation",
+    "Actual watchdog timer while no fresh publications arrive",
+    "Busy animation and same-tick busy/idle publications during QUIESCING",
+    "Skipped public game ticks during QUIESCING",
+    "Cancellation while checkpoint persistence is pending"
+  ],
+  "invariantsChecked": [
+    "SDK owner identifier unchanged",
+    "Prior trusted policy restored",
+    "Old controller token rejected",
+    "No routine/action dispatch after failure or cancellation",
+    "No late version activation from checkpoint callback",
+    "No maintenance completion recorded for failed/canceled updates"
+  ],
+  "sourceSha256": {
+    "executor.mjs": "6401ebd084296e2680eb5592b0c28f359c176a06a9b80fd6f13254bef485f0dc",
+    "test/executor.test.mjs": "038e368d363d1fd4997f3d4c8434be1a59e46bc3cb04669e80985c96ecdc1faa"
+  },
+  "historicalValidationReport": "validation-report.json is preserved unchanged as evidence for the original build. This report does not recast its timing/gameplay traces as tests of the follow-up.",
+  "liveLimitations": "Unchanged: live WebSocket transport failed in the original build environment; authorized existing-player runtime/credentials and the real model/provider were unavailable here. No real player or frontier-model online validation was performed. Gateway atomic-ownership and policy-only update limits remain unchanged.",
+  "commitIdentity": "The commit containing this report."
+}

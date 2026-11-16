@@ -150,7 +150,8 @@ export class Executor {
     this.gatherLease = null;
     if (
       this.maintenance &&
-      ["PUBLICATION_CLOCK_RESET", "LIFE_CHANGED"].includes(reason)
+      (this.maintenance.activated ||
+        ["PUBLICATION_CLOCK_RESET", "LIFE_CHANGED"].includes(reason))
     )
       this.postpone(reason);
     this.queue = [];
@@ -419,6 +420,7 @@ export class Executor {
     }
     if (!this.fresh()) {
       this.cancelActive("UNSAFE_STATE");
+      if (this.maintenance) this.postpone("UNSAFE_OR_STALE");
       return;
     }
     this.lastFreshAt = now;
@@ -1014,7 +1016,15 @@ export class Executor {
     return this.status();
   }
   postpone(reason) {
-    if (!this.maintenance) return;
+    if (
+      !this.maintenance ||
+      ["POSTPONED", "CANCELLED"].includes(this.maintenance.stage)
+    )
+      return;
+    if (this.maintenance.activated) {
+      this.rollbackMaintenance(reason);
+      return;
+    }
     this.maintenance.reason = reason;
     this.maintenance.stage = "POSTPONED";
     this.phase = "PAUSED";
@@ -1023,9 +1033,13 @@ export class Executor {
   }
   cancelMaintenance() {
     if (!this.maintenance) throw new Error("NO_MAINTENANCE");
-    this.cancelActive("MAINTENANCE_CANCELLED");
-    this.policy = this.policies.get(this.maintenance.previous);
-    this.controller++;
+    if (this.maintenance.activated)
+      this.rollbackMaintenance("MAINTENANCE_CANCELLED_REPLAN");
+    else {
+      this.policy = this.policies.get(this.maintenance.previous);
+      this.controller++;
+    }
+    this.invalidate("MAINTENANCE_CANCELLED");
     this.maintenance.stage = "CANCELLED";
     this.phase = "PAUSED";
     this.blockReason = "MAINTENANCE_CANCELLED_REPLAN";
@@ -1044,7 +1058,7 @@ export class Executor {
   }
   advanceMaintenance() {
     const m = this.maintenance;
-    if (!m || m.busy || ["POSTPONED", "CANCELLED"].includes(m.stage)) return;
+    if (!m || ["POSTPONED", "CANCELLED"].includes(m.stage)) return;
     if (performance.now() > m.deadline) {
       this.postpone("MAINTENANCE_DEADLINE");
       return;
@@ -1054,7 +1068,7 @@ export class Executor {
       this.postpone("UNSAFE_OR_STALE");
       return;
     }
-    if (this.active) return;
+    if (m.busy || this.active) return;
     const c = this.config.church;
     if (m.stage === "REQUESTED") {
       m.stage = "RELOCATING";
@@ -1094,6 +1108,9 @@ export class Executor {
         return;
       }
       m.stage = "QUIESCING";
+      m.quiet = 0;
+      m.lastQuietTick = this.tickSerial;
+      m.lastQuietPublicTick = this.lastTick;
       m.received = this.adapter.receivedAt();
       this.event("church_verified");
       return;
@@ -1103,18 +1120,26 @@ export class Executor {
         this.postpone(this.churchFailure());
         return;
       }
-      // At least two fresh ticks, idle animation and no combat after any sent action.
-      m.quiet =
-        m.lastQuietTick !== this.tickSerial
-          ? (m.quiet ?? 0) + 1
-          : (m.quiet ?? 0);
-      m.lastQuietTick = this.tickSerial;
+      // Count only consecutive fresh idle game ticks after arrival/drain.
+      // A busy publication resets the streak, even within an already-seen tick.
       if (
         this.state.player.animId !== -1 ||
-        this.adapter.receivedAt() <= m.received ||
-        m.quiet < 2
-      )
+        this.adapter.receivedAt() <= m.received
+      ) {
+        m.quiet = 0;
+        m.lastQuietTick = this.tickSerial;
+        m.lastQuietPublicTick = this.lastTick;
         return;
+      }
+      if (m.lastQuietTick === this.tickSerial) return;
+      m.quiet =
+        m.lastQuietTick === this.tickSerial - 1 &&
+        m.lastQuietPublicTick === this.lastTick - 1
+          ? (m.quiet ?? 0) + 1
+          : 1;
+      m.lastQuietTick = this.tickSerial;
+      m.lastQuietPublicTick = this.lastTick;
+      if (m.quiet < 2) return;
       m.busy = true;
       m.work = (async () => {
         try {
@@ -1156,7 +1181,8 @@ export class Executor {
             this.maintenance !== m ||
             !this.same(token) ||
             !this.churchSafe() ||
-            m.stage === "CANCELLED"
+            m.stage !== "QUIESCING" ||
+            performance.now() > m.deadline
           )
             throw new Error("CHECKPOINT_INVALIDATED");
           m.stage = "CHECKPOINTED";
@@ -1167,6 +1193,7 @@ export class Executor {
             throw new Error("UNSTAGED_VERSION");
           // Swap actual trusted policy behavior under the stable executor/SDK owner.
           this.policy = next;
+          m.activated = true;
           this.controller++;
           m.received = this.adapter.receivedAt();
           m.stage = "REVALIDATING";
@@ -1175,7 +1202,11 @@ export class Executor {
             cooldown: next.minCooldownTicks,
           });
         } catch {
-          if (!this.stopRequested)
+          if (
+            !this.stopRequested &&
+            this.maintenance === m &&
+            !["CANCELLED", "POSTPONED"].includes(m.stage)
+          )
             this.rollbackMaintenance("ACTIVATION_FAILED");
         } finally {
           m.busy = false;
@@ -1231,8 +1262,10 @@ export class Executor {
   rollbackMaintenance(reason) {
     const m = this.maintenance;
     if (!m) return;
+    m.activated = false;
     this.policy = this.policies.get(m.previous);
     this.controller++;
+    this.invalidate("MAINTENANCE_ROLLBACK");
     m.stage = "POSTPONED";
     m.reason = reason;
     this.phase = "PAUSED";

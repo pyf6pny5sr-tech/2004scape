@@ -651,3 +651,159 @@ test("client combat target alone cannot become a verified server attack or learn
   );
   assert.equal(f.executor.metrics.counts.verifiedActions, undefined);
 });
+
+async function reachRevalidation(f) {
+  f.executor.stage("cautious-2");
+  f.executor.requestMaintenance("cautious-2");
+  for (
+    let i = 0;
+    i < 30 && f.executor.maintenance.stage !== "REVALIDATING";
+    i++
+  ) {
+    f.emit();
+    await new Promise((r) => setTimeout(r, 2));
+  }
+  assert.equal(f.executor.maintenance.stage, "REVALIDATING");
+  assert.equal(f.executor.policy.id, "cautious-2");
+}
+
+for (const failure of [
+  "combat",
+  "stale advance",
+  "stale observation",
+  "deadline",
+  "cancel",
+  "disconnect",
+]) {
+  test(
+    "activated maintenance restores prior policy on " + failure,
+    async (t) => {
+      const f = await fixture(t);
+      await reachRevalidation(f);
+      const token = f.executor.token();
+      const owner = f.executor.owner;
+      if (failure === "combat") {
+        f.state.player.combat.inCombat = true;
+        f.emit();
+      }
+      if (failure === "stale advance") {
+        f.setAge(5000);
+        f.executor.advanceMaintenance();
+      }
+      if (failure === "stale observation") {
+        f.setAge(5000);
+        f.emit();
+      }
+      if (failure === "deadline") {
+        f.executor.maintenance.deadline = performance.now() - 1;
+        f.executor.advanceMaintenance();
+      }
+      if (failure === "cancel") f.executor.cancelMaintenance();
+      if (failure === "disconnect") f.disconnect();
+      assert.equal(f.executor.policy.id, "steady-1");
+      assert.equal(f.executor.owner, owner);
+      assert.ok(!f.executor.same(token));
+      assert.equal(f.executor.metrics.counts.rollbacks, 1);
+      assert.equal(
+        f.executor.maintenance.stage,
+        failure === "cancel" ? "CANCELLED" : "POSTPONED",
+      );
+      f.setAge(0);
+      f.state.player.combat.inCombat = false;
+      for (let i = 0; i < 3; i++) {
+        f.emit();
+        await flush();
+      }
+      assert.equal(f.calls.length, 0);
+      assert.equal(f.executor.policy.id, "steady-1");
+      assert.equal(f.executor.metrics.counts.maintenanceCompleted, undefined);
+    },
+  );
+}
+
+test("watchdog restores an activated policy when no fresh publications arrive", async (t) => {
+  const f = await fixture(t);
+  await reachRevalidation(f);
+  const owner = f.executor.owner;
+  f.setAge(5000);
+  await new Promise((r) => setTimeout(r, 300));
+  assert.equal(f.executor.policy.id, "steady-1");
+  assert.equal(f.executor.owner, owner);
+  assert.equal(f.executor.maintenance.stage, "POSTPONED");
+  assert.equal(f.executor.phase, "PAUSED");
+  assert.equal(f.executor.metrics.counts.rollbacks, 1);
+  assert.equal(f.calls.length, 0);
+});
+
+test("quiescence requires two consecutive fresh idle ticks after busy animations", async (t) => {
+  const f = await fixture(t);
+  f.executor.stage("cautious-2");
+  f.executor.requestMaintenance("cautious-2");
+  f.state.player.animId = 879;
+  for (let i = 0; i < 4; i++) f.emit();
+  assert.equal(f.executor.maintenance.quiet, 0);
+  f.state.player.animId = -1;
+  f.emit();
+  assert.equal(f.executor.maintenance.quiet, 1);
+  assert.equal(f.executor.maintenance.stage, "QUIESCING");
+  f.emit(false);
+  assert.equal(f.executor.maintenance.quiet, 1);
+  assert.equal(f.executor.maintenance.stage, "QUIESCING");
+  // A busy revision followed by idle in the same tick cannot preserve the streak.
+  f.state.player.animId = 879;
+  f.emit(false);
+  f.state.player.animId = -1;
+  f.emit(false);
+  assert.equal(f.executor.maintenance.quiet, 0);
+  f.emit();
+  assert.equal(f.executor.maintenance.quiet, 1);
+  assert.equal(f.executor.maintenance.stage, "QUIESCING");
+  f.emit();
+  await f.executor.maintenance.work;
+  assert.equal(f.executor.maintenance.stage, "REVALIDATING");
+});
+
+test("missing public ticks break the quiescence streak", async (t) => {
+  const f = await fixture(t);
+  f.executor.stage("cautious-2");
+  f.executor.requestMaintenance("cautious-2");
+  f.emit();
+  assert.equal(f.executor.maintenance.quiet, 1);
+  f.state.tick += 2;
+  f.emit();
+  assert.equal(f.executor.maintenance.quiet, 1);
+  assert.equal(f.executor.maintenance.stage, "QUIESCING");
+  f.emit();
+  await f.executor.maintenance.work;
+  assert.equal(f.executor.maintenance.stage, "REVALIDATING");
+});
+
+test("cancel during checkpoint prevents late activation and preserves cancellation state", async (t) => {
+  const f = await fixture(t);
+  let release;
+  const gate = new Promise((r) => (release = r));
+  const checkpoint = f.executor.memory.checkpoint.bind(f.executor.memory);
+  f.executor.memory.checkpoint = async (goal) => {
+    await gate;
+    return checkpoint(goal);
+  };
+  f.executor.stage("cautious-2");
+  f.executor.requestMaintenance("cautious-2");
+  f.emit();
+  f.emit();
+  const m = f.executor.maintenance;
+  assert.equal(m.busy, true);
+  f.executor.cancelMaintenance();
+  release();
+  await m.work;
+  f.setAge(5000);
+  f.emit();
+  f.setAge(0);
+  f.emit();
+  assert.equal(m.stage, "CANCELLED");
+  assert.equal(f.executor.policy.id, "steady-1");
+  assert.equal(f.executor.phase, "PAUSED");
+  assert.equal(f.executor.metrics.counts.maintenanceCompleted, undefined);
+  assert.equal(f.calls.length, 0);
+  assert.ok(!f.executor.events.some((e) => e.type === "version_activated"));
+});

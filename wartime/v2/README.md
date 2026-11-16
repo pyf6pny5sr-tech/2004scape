@@ -2,6 +2,8 @@
 
 Start here for the new implementation. v1 and its historical report remain unchanged. V2 runs ordinary approved routines in one long-lived Bun process while the frontier model thinks through short private bridge calls. It does not select a model, call a paid provider automatically, train weights, or run upstream Minecraft Voyager. No separate sanitized controller ZIP was supplied or inspected; compatibility with Wartime's existing controller must be checked in its own runtime.
 
+The [focused maintenance follow-up report](maintenance-followup-report.json) covers rollback on unsafe/stale/deadline/canceled revalidation and two consecutive fresh idle ticks before checkpointing. Historical gameplay/timing evidence and live limitations below remain unchanged.
+
 **Online validation is still required.** See `validation-report.json` for local gameplay and exact limits. Never infer SDK ownership or live gameplay from a browser image or a failed status request.
 
 ## Adopt it with one player

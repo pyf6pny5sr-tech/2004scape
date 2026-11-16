@@ -1,3 +1,4 @@
+import { installManagedWebSocketProxy } from "./managed-websocket.mjs";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 import { readFile, rmdir, unlink, lstat, realpath } from "node:fs/promises";
@@ -18,6 +19,7 @@ function aborted(signal: AbortSignal) {
   if (signal.aborted) throw signal.reason ?? new RunError("RUN_CANCELLED");
 }
 export async function probeWorld(config: any, signal: AbortSignal) {
+  installManagedWebSocketProxy();
   aborted(signal);
   let r;
   try {
@@ -261,6 +263,7 @@ export async function recoverRun(store: any, signal: AbortSignal) {
   }
 }
 export async function connectOwner(store: any, { signal, onStop }: any) {
+  installManagedWebSocketProxy();
   aborted(signal);
   const a = store.account;
   const sdk = new BotSDK({
@@ -325,6 +328,7 @@ export async function connectOwner(store: any, { signal, onStop }: any) {
     const config = {
       ...store.config,
       character: a.character,
+      runId: store.id,
       directory: path.join(
         store.dir,
         "accounts",

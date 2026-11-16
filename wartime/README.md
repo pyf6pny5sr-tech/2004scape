@@ -9,11 +9,13 @@ This project combines cited 2004Scape knowledge with a model-driven RS-SDK contr
 
 It is an original adaptation of Voyager's design, not the upstream Minecraft runtime, and does not train model weights. It does not bundle or select a particular ChatGPT model. The model must have a host that exposes the RS-SDK tools.
 
-## Current startup and handoff request
+## Current agent-first online workflow
 
-The current default is **a fresh account for each explicitly new top-level run**, without a supplied character name/password. Use [the v2 new-run launcher and instructions](v2/README.md), [the current handoff](v2/HANDOFF.txt), and [the live-test prompt](v2/NEW-RUN-PROMPT.txt). Normal tool/planner/tick/church turns keep the run's identity. A stuck old-character reconnect has a persisted bounded budget and at most one automatic fresh replacement after safe retirement and health checks; network failures do not trigger account storms.
+**Wartime is already the planner.** From this repository it can run `node wartime/v2/agent.mjs ensure --world https://rs-sdk.maxbittker.com --gateway wss://rs-sdk.maxbittker.com/gateway` using its existing tools. The helper prepares its private pinned SDK/client workspace and knowledge, discovers/verifies an active run or starts/resumes the correct one. No second provider, API key, Codex login, billing or human SDK-directory assembly is required. Status is read-only and reports computed source/build identity.
 
-This user requirement supersedes the older existing-player-only startup constraint. Existing-player attachment remains an explicit optional mode with its handoff protections. Run on the chosen cloud/agent host, not Windows, and keep all account records private. The earlier [tick/maintenance requirements](TICK-AND-MAINTENANCE.md) remain relevant except for their superseded account-selection restriction. Historical v1 status below is preserved.
+Use [the online agent instructions](v2/README.md), [handoff](v2/HANDOFF.txt) and [prompt](v2/NEW-RUN-PROMPT.txt). A deliberately new top-level run gets fresh private account credentials; normal tools/ticks/planning/maintenance retain the run, and bounded old-character replacement remains available. Approved routines run while the current agent thinks, but the host cannot wake an inactive chat or invent new reasoning. An unattended provider is optional, not a readiness dependency.
+
+Run only on the chosen cloud/agent host, not Windows. Connect to the explicit online service through its configured approved route; do not substitute a local server or bypass proxy/TLS policy. Earlier local tests and prior provider-oriented handoffs are historical, not the current default.
 
 ## Historical v1 status
 
@@ -131,3 +133,5 @@ The controller unit tests use simulated game observations. They cover false ackn
 - [Knowledge handoff](https://pyf6pny5sr-tech.github.io/2004scape/AI-HANDOFF.txt).
 
 Original integration code is MIT licensed. Upstream projects and reference records retain their own included licenses.
+
+Current online evidence: [agent-first validation](v2/agent-first-validation-report.json) records one fresh live account, current-agent plan acceptance, four verified actions and learned replay using the approved configured proxy. Church policy update/resume and PvP remain untested online.

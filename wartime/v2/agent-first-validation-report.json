@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "scope": "Focused online current-agent setup, source identity, configured managed WebSocket route and handoff; prior reports unchanged",
+  "date": "2026-11-16",
+  "baseCommit": "4c69eda662fdbbb71eb1c47db18002d83069a45a",
+  "testedCommit": "See containing Git commit; report recorded before commit",
+  "environment": {
+    "location": "Managed Codex Cloud Linux; no Windows execution",
+    "node": "v24.22.1",
+    "bun": "1.4.4",
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3"
+  },
+  "checks": {
+    "node": {
+      "command": "node --test wartime/v2/test/*.test.mjs",
+      "passed": 61,
+      "failed": 0
+    },
+    "bun": {
+      "command": "bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts wartime/v2/test/agent-bridge.test.ts",
+      "passed": 66,
+      "failed": 0
+    },
+    "coverage": [
+      "online-only pinned bootstrap and idempotence",
+      "no provider/name/password prerequisite",
+      "read-only missing status",
+      "active verified owner preserved, no duplicate account on setup/ensure",
+      "computed identity rejects supplied controller label",
+      "unrelated runtime not overwritten",
+      "managed proxy, NO_PROXY and binary subprotocol preservation",
+      "long private socket path regression",
+      "private recovery options preserved on repeat setup",
+      "real short-call entry point with controlled SDK publications, stale planner generations, knowledge lookup and plan completion",
+      "existing executor, maintenance rollback and run/recovery suites"
+    ],
+    "testCountNote": "Node and Bun suites overlap; do not sum as distinct tests."
+  },
+  "bootstrap": {
+    "actualEntryPoint": "node wartime/v2/agent.mjs setup/ensure",
+    "result": "Pinned private SDK/client dependencies and knowledge prepared successfully",
+    "installedEngineOrLocalServer": false,
+    "existingBunRequired": true,
+    "systemSoftwareInstalled": false,
+    "providerRequired": false,
+    "modelCredentialsReadOrCopied": false,
+    "knowledgeResultCount": 6,
+    "knowledgeCitationFields": [
+      "source_id",
+      "revision",
+      "path",
+      "line_start",
+      "line_end",
+      "source_url",
+      "source_file_sha256",
+      "content_sha256"
+    ],
+    "initialSetupFailure": "Private home nested under source exposed fs.cp parent/descendant restriction; fixed public-entry copy and rerun successfully before account startup"
+  },
+  "online": {
+    "world": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "route": "Only inherited configured approved HTTPS proxy; TLS and NO_PROXY preserved; no credentials reported",
+    "unauthenticatedGatewayOpened": true,
+    "freshRunAttempts": 1,
+    "automaticReplacementsForSmoke": 0,
+    "clientLoggedIn": true,
+    "freshAccountStateConfirmed": true,
+    "onboardingCompleted": true,
+    "controllerAuthenticatedAndReady": true,
+    "currentAgentSuppliedPlan": true,
+    "separateProviderCalls": 0,
+    "planAccepted": true,
+    "verifiedActions": 4,
+    "verifiedEpisodes": 2,
+    "observedLogs": 2,
+    "initialGatherWoodcuttingXpGain": 625,
+    "verifiedSkillSavedAndReplayed": true,
+    "activeRunReusedByEnsure": true,
+    "ownedClientStopped": true,
+    "runRecordFinalStatus": "STOPPED",
+    "ownerProcessState": "Exited (unreaped zombie observed); owned client absent",
+    "publicChatSent": false,
+    "localGameUsed": false,
+    "readinessEvidence": {
+      "privateConfigCreated": true,
+      "loginAttempted": true,
+      "clientLoggedIn": true,
+      "freshStateConfirmed": true,
+      "clientAttached": true,
+      "controllerAuthenticated": true,
+      "onboardingComplete": true,
+      "controllerReady": true
+    }
+  },
+  "liveSourceIdentity": {
+    "implementation": "wartime-v2",
+    "identityProtocol": 1,
+    "buildSha256": "50e3795cccbb7312eadce1f496b92ae12d3494246b6e68a7d788e6cc52e8710d",
+    "moduleSha256": {
+      "adapter.ts": "92efb80b124680bffda8cece463cd260ce659f70b2546f064b00775151042f50",
+      "client.mjs": "6121c98dab9c190418e0edb5c552b8b0444be1269918217de158e824e694c265",
+      "executor.mjs": "bfa99f6478830de3f920fa153668aafe664b976c13c6225cf24346dfe17b1260",
+      "host.ts": "7324fc128297c398c2827febf125c49344eeffb6314afa72aeba6c60cd3bcc71",
+      "identity.mjs": "17d517f6cd6c6f7f0cd09d046f5dfa6bdcd7a4cba083feb76fdd891bb3a85f7f",
+      "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+      "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+      "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+      "protocol.mjs": "dbfdb4f4a77b5c5b54a772a0cbec1db1737c34bfa98f769306ed245194ae4b2e",
+      "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+      "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+      "run-store.mjs": "582f9b50d765280febcdf186aead75c69a7f67bfae07ec652f022c1a4b60a0a2",
+      "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+      "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+      "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+      "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+      "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+      "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+      "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+      "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+    },
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "sdkModuleSha256": {
+      "sdk/index.ts": "ae769e45bdb56e27b075f7b50d71d1b796ae55927406a675a0f59deae9726fe8",
+      "sdk/actions.ts": "4b1ea5b2ba2237ce4bf40c9f4df2175f6e8ff6ed6648f8a1ad26ccfb1b030e97",
+      "sdk/execution-context.ts": "aedaea42e299445ad5f1622338a583168529e9792019b57289d3d5db76cb902b",
+      "server/webclient/src/lite/session.ts": "d68c811f6498b97792a1b2eb85704dad417bb0ac61be6f353097e0b2fcedfc49",
+      "server/webclient/src/lite/net/GameConnection.ts": "fc82aa5a1589f47d128c13e085ffce07a213ca6220c78f7e959a6400bc8f9f77"
+    },
+    "capturedAt": "2026-11-16T18:31:46.181Z",
+    "meaning": "Computed from runtime module files at startup, not a configurable label. Local file/build identity, not remote cryptographic attestation."
+  },
+  "telemetry": {
+    "windowMs": 290043.73202,
+    "counts": {
+      "avoidableIdleTicks": 0,
+      "noApprovedRoutineTicks": 485,
+      "plannerStarvedTicks": 186,
+      "dispatches": 4,
+      "currentAgentToolPlansAccepted": 1,
+      "packetDispatches:walkTo": 5,
+      "helperPendingTicks": 53,
+      "helperPendingWithoutObservedProgressTicks": 30,
+      "ongoingActionTicks": 53,
+      "observedProgressPublications": 24,
+      "verifiedActions": 4,
+      "cooldownDecisions": 2,
+      "eligibleTicks": 2,
+      "packetDispatches:interactLoc": 2,
+      "animationObservedTicks": 5,
+      "observedGatherProgressPublications": 2,
+      "routineCycles": 2,
+      "episodes": 2,
+      "packetDispatches:clickDialogOption": 4
+    },
+    "distributions": {
+      "tickCadenceMs": {
+        "n": 725,
+        "p50": 399.4163830000034,
+        "p95": 460.70424200000707,
+        "p99": 493.9874530000088,
+        "min": 0.5565420000057202,
+        "max": 1513.4907179999864
+      },
+      "tickJitterMs": {
+        "n": 724,
+        "p50": 37.41654400003608,
+        "p95": 134.8234850000008,
+        "p99": 194.91420800001652,
+        "min": 0.04978899999696296,
+        "max": 1512.8077929999854
+      },
+      "plannerRequestMs": {
+        "n": 1,
+        "p50": 17769.377011999983,
+        "p95": 17769.377011999983,
+        "p99": 17769.377011999983,
+        "min": 17769.377011999983,
+        "max": 17769.377011999983
+      },
+      "plannerTurnaroundMs": {
+        "n": 1,
+        "p50": 17769.377011999983,
+        "p95": 17769.377011999983,
+        "p99": 17769.377011999983,
+        "min": 17769.377011999983,
+        "max": 17769.377011999983
+      },
+      "observationToDispatchMs": {
+        "n": 4,
+        "p50": 0.7430750000057742,
+        "p95": 117.57656299998052,
+        "p99": 117.57656299998052,
+        "min": 0.28886299999430776,
+        "max": 117.57656299998052
+      },
+      "publicationAgeAtDispatchMs": {
+        "n": 4,
+        "p50": 22,
+        "p95": 140,
+        "p99": 140,
+        "min": 22,
+        "max": 140
+      },
+      "dispatchAckMs": {
+        "n": 11,
+        "p50": 107.72326800000155,
+        "p95": 295.975821,
+        "p99": 295.975821,
+        "min": 87.85525799996685,
+        "max": 295.975821
+      },
+      "actionToEffectMs": {
+        "n": 4,
+        "p50": 3272.246470999962,
+        "p95": 8500.351643000002,
+        "p99": 8500.351643000002,
+        "min": 2733.3431620000047,
+        "max": 8500.351643000002
+      }
+    },
+    "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+  },
+  "planningEvidence": {
+    "source": "This cloud agent used knowledge/context and agent.mjs complete through its existing tools",
+    "acceptedCurrentAgentPlans": 1,
+    "turnaroundMs": {
+      "n": 1,
+      "p50": 17769.377011999983,
+      "p95": 17769.377011999983,
+      "p99": 17769.377011999983,
+      "min": 17769.377011999983,
+      "max": 17769.377011999983
+    },
+    "isolatedModelInferenceMeasured": false,
+    "actionsWhileNextPlannerRequestPending": true,
+    "syntheticThinkingSleep": false
+  },
+  "limits": [
+    "No real church destination/safety and trusted staged update configured for this live session; church policy update/resume NOT tested online. Existing deterministic maintenance coverage remains historical/regression evidence.",
+    "No PvP or separate Wartime runtime/character tested; no claim about its credentials or model identity.",
+    "Dispatch latency is helper entry relative to eligible observation, not synchronized server execution. API acknowledgements are separate from fresh observed effects.",
+    "Pending helper and animation counters do not prove useful activity. Observed inventory/XP changes establish gathering progress. Avoidable-idle classification only sees approved eligible scheduler opportunities outside active helpers; zero does not prove no hidden server idle.",
+    "Agent/tool turnaround includes reasoning, retrieval and tooling, not isolated model inference. One accepted live planner sample is not a broad performance benchmark.",
+    "Host can execute finite approved routines while agent is active; cannot wake an inactive chat or create new reasoning.",
+    "Local computed source hashes are not remote cryptographic attestation. Live host used captured build below; final follow-up changes client.mjs long-path helper and bootstrap option preservation, covered by final tests; active runtime was preserved rather than hot-replaced.",
+    "Prior raw WebSocket failure is superseded in this managed environment by successful explicitly configured supported proxy route. No current online transport, account credential, or second-provider blocker for this tested session. Other environments must independently verify their supported access."
+  ],
+  "finalSourceFileSha256": {
+    "wartime/v2/agent.mjs": "fd6a8ee3a3a1ec977b5f6a655543e0b4aedb2b173d61f1a2d43e4654f350c775",
+    "wartime/v2/bootstrap.mjs": "57f5426192a820d7b51a0cf0d120ad9d6b2191bc618868490e36ab3faf7ca8bb",
+    "wartime/v2/client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+    "wartime/v2/identity.mjs": "17d517f6cd6c6f7f0cd09d046f5dfa6bdcd7a4cba083feb76fdd891bb3a85f7f",
+    "wartime/v2/managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+    "wartime/v2/host.ts": "7324fc128297c398c2827febf125c49344eeffb6314afa72aeba6c60cd3bcc71",
+    "wartime/v2/run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+    "wartime/v2/run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+    "wartime/v2/executor.mjs": "bfa99f6478830de3f920fa153668aafe664b976c13c6225cf24346dfe17b1260"
+  }
+}

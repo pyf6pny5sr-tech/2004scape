@@ -39,7 +39,12 @@ if (import.meta.main) {
     runtime.onStatus = output;
     manager = new RunManager(
       config,
-      { mode, runId: id, signal: abort.signal },
+      {
+        mode,
+        runId:
+          id ?? (mode === "new" ? process.env.WARTIME_NEW_RUN_ID : undefined),
+        signal: abort.signal,
+      },
       runtime,
     );
     await manager.start();

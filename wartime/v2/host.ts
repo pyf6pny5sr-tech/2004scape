@@ -1,4 +1,5 @@
 // Persistent owner. Never run inside execute_code. Short bridge calls update it.
+import { runtimeIdentity } from "./identity.mjs";
 import { createServer } from "node:http";
 import { readFile, chmod, stat, mkdir, rmdir } from "node:fs/promises";
 import { dirname } from "node:path";
@@ -33,6 +34,23 @@ export async function startInjected({ sdk, config }: any) {
   }
 }
 export async function createBridge(executor: any, config: any) {
+  const implementation = await runtimeIdentity();
+  const identity = () => ({
+    implementation,
+    runId: config.runId ?? null,
+    character: executor.identity.character,
+    world: executor.identity.world,
+    gateway: executor.identity.gateway,
+    controllerVersion: executor.policy.id,
+    owner: executor.owner,
+    planner: {
+      mode: "current_agent",
+      providerRequired: false,
+      turnaroundMeaning:
+        "Agent and tool request/response turnaround; not isolated model inference time",
+      canWakeInactiveChat: false,
+    },
+  });
   if (!config.socket || !config.socket.startsWith("/"))
     throw new Error("ABSOLUTE_PRIVATE_SOCKET_REQUIRED");
   await mkdir(dirname(config.socket), { recursive: true, mode: 0o700 });
@@ -67,8 +85,18 @@ export async function createBridge(executor: any, config: any) {
       const { operation, ...a } = JSON.parse(body);
       let result;
       switch (operation) {
+        case "identity":
+          result = identity();
+          break;
+        case "agent_context":
+          result = {
+            runtime: identity(),
+            status: executor.status(),
+            pendingPlannerRequests: executor.plannerRequests(),
+          };
+          break;
         case "status":
-          result = executor.status();
+          result = { ...executor.status(), runtime: identity() };
           break;
         case "goal":
           result = executor.setGoal(a.goal);
@@ -83,7 +111,11 @@ export async function createBridge(executor: any, config: any) {
           result = executor.plannerRequests();
           break;
         case "planner_complete":
-          result = executor.completePlan(a.id, a.proposal);
+          result = executor.completePlan(
+            a.id,
+            a.proposal,
+            "current_agent_tools",
+          );
           break;
         case "search":
         case "record":
@@ -110,7 +142,10 @@ export async function createBridge(executor: any, config: any) {
         case "stop":
           await executor.stop();
           result = { stopped: true };
-          if(config.onStop)setImmediate(()=>{void config.onStop();});
+          if (config.onStop)
+            setImmediate(() => {
+              void config.onStop();
+            });
           break;
         // Staging is operator-only via trusted local config at process startup.
         default:

@@ -1,5 +1,6 @@
 // Minimal owned lite bridge. Uses pinned upstream client/session/queue APIs;
 // intentionally has no host remapping, direct-port probing, fleet file or reconnect loop.
+import { installManagedWebSocketProxy } from "./managed-websocket.mjs";
 import { readFile, stat } from "node:fs/promises";
 import { startSession } from "../../server/webclient/src/lite/session";
 import { BotActionQueue } from "../../server/webclient/src/bot/ActionQueue";
@@ -7,6 +8,7 @@ import { strictStatus } from "./ownership.mjs";
 const emit = (value: any) => process.stdout.write(JSON.stringify(value) + "\n");
 for (const name of ["log", "info", "warn", "error", "debug"] as const)
   console[name] = () => {};
+installManagedWebSocketProxy();
 let session: any,
   ws: WebSocket,
   timer: any,

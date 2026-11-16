@@ -289,22 +289,33 @@ export class Executor {
   plannerRequests() {
     return copy(this.requests);
   }
-  completePlan(id, proposal) {
+  completePlan(id, proposal, source = "unspecified_caller") {
     const p = this.planning.get(id);
     if (!p) throw new Error("STALE_PLANNER_REQUEST");
-    this.metrics.add("plannerRequestMs", performance.now() - p.started);
+    const turnaroundMs = performance.now() - p.started;
+    this.metrics.add("plannerRequestMs", turnaroundMs);
+    this.metrics.add("plannerTurnaroundMs", turnaroundMs);
+    this.event("planner_response", {
+      id,
+      source,
+      turnaroundMs,
+      isolatedInferenceTime: false,
+    });
     this.planning.delete(id);
     this.requests = this.requests.filter((r) => r.id !== id);
     if (!this.same(p.token)) throw new Error("STALE_PLANNER_REQUEST");
-    return proposal
+    const result = proposal
       ? this.submit({ ...proposal, token: p.token })
       : { accepted: false };
+    if (proposal && source === "current_agent_tools")
+      this.metrics.count("currentAgentToolPlansAccepted");
+    return result;
   }
   async planWith(provider, context) {
     const r = this.requestPlan(context);
     try {
       const proposal = await provider(r);
-      return this.completePlan(r.id, proposal);
+      return this.completePlan(r.id, proposal, "optional_provider");
     } catch (e) {
       this.planning.delete(r.id);
       this.requests = this.requests.filter((x) => x.id !== r.id);

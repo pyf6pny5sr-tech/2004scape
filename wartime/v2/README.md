@@ -4,11 +4,58 @@ Start here for the new implementation. v1 and its historical report remain uncha
 
 The [focused maintenance follow-up report](maintenance-followup-report.json) covers rollback on unsafe/stale/deadline/canceled revalidation and two consecutive fresh idle ticks before checkpointing. Historical gameplay/timing evidence and live limitations below remain unchanged.
 
-**Online validation is still required.** See `validation-report.json` for local gameplay and exact limits. Never infer SDK ownership or live gameplay from a browser image or a failed status request.
+**Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. Church policy update/resume and PvP remain untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
+
+## Default agent-first online setup
+
+**You are Wartime. You are already the planner.** Use your current execution/tools to prepare and control this runtime. Do not look for `OPENAI_API_KEY`, launch nested Codex inference, sign into another model, copy model credentials, migrate auth, or configure billing. The reported read-only Codex sign-in is irrelevant to this default mode; do not try to repair or bypass it.
+
+From this repository on your authorized cloud/agent host:
+
+```sh
+node wartime/v2/agent.mjs ensure \
+  --world https://rs-sdk.maxbittker.com \
+  --gateway wss://rs-sdk.maxbittker.com/gateway
+```
+
+Use an already-available Bun 1.4+ and Node 24+. If Bun is not on PATH, set `BUN_EXECUTABLE` to its existing executable path. Missing runtimes are reported; this command does not install system software or configure paid services.
+
+The command prepares a private pinned RS-SDK checkout, installs its SDK/client project dependencies, obtains the pinned historical knowledge library, writes private online world configuration with no character/password, and starts or resumes one persistent run. The checkout is sparse: SDK, MCP bridge support, lite/webclient and pathfinding vendor code; **no game engine/content setup, engine dependencies, emulator build or local-world product setup**. Explicit HTTPS/WSS endpoints are required by this helper.
+
+It first discovers and verifies an active run belonging to this private workspace. Re-running `setup`/`ensure` keeps its character, owner and queued work. A detected active run in this project's original default run directory is reported for explicit inspection rather than silently replaced. Unverified/unreachable active runtimes are not a reason to launch another account. An update available in the checkout is reported; setup does not overwrite loaded runtime code while it is active. Stop deliberately before upgrading core code. A deliberately new run uses `agent.mjs new` after the prior run has stopped; the lower-level `run.ts new/resume` remains available.
+
+`setup` prepares only. `status` is read-only: it never creates directories, installs packages, provisions an account, requests a plan or changes a task. An incomplete setup/launch guard fails closed instead of overwriting another runtime. All generated credentials/run records stay private and ignored. The existing two-attempt/one-replacement old-character recovery is reused unchanged.
+
+### Current-agent tool loop
+
+The default private home is `wartime/.wartime/agent-runtime`; `--home /private/path` chooses another private workspace. Use the same home in each command:
+
+```sh
+node wartime/v2/agent.mjs status
+node wartime/v2/agent.mjs context
+node wartime/v2/agent.mjs tool '{"operation":"search","query":"Cook\u0027s Assistant"}'
+node wartime/v2/agent.mjs tool '{"operation":"goal","goal":{"description":"Your current approved goal"}}'
+node wartime/v2/agent.mjs request '{"reason":"Plan the next bounded routine"}'
+node wartime/v2/agent.mjs complete RETURNED_REQUEST_ID '{"steps":[APPROVED_TYPED_STEPS],"repeat":1}'
+```
+
+The final line is a contract illustration: supply valid typed steps from current observations, not the placeholder. `context` returns status/current generation and pending prefetched planner requests; normally service one of those instead of creating redundant requests. You inspect status and cited knowledge, reason in **this already-running agent**, then return the approved proposal through `complete`. It supplies a unique proposal ID and a 60-second expiry if omitted; the stored request token is checked again. A changed life/task/world/session/controller makes old work stale. There is no model connection hidden behind this CLI.
+
+While you reason or retrieve, the executor keeps running already-approved valid bounded work. Do not insert fixed thinking sleeps. Use `skills`, `remember` with the matching durable episode/routine ID, and `replay` for verified learning; historical revision-274 text is not proof of modified live mechanics. The short-call HTTP/Unix bridge remains the transport; SDK stdout cannot become a tool response.
+
+`identity`/`status` report the actual runtime module SHA-256/build digest, the inspected SDK commit/core hashes, current run/character/world, owner and policy version. These values are computed from runtime files at startup, not from a caller-supplied controller label. Discovery compares them with its privately prepared build and known process identity. This is credible local source/build identification inside the trusted workspace, **not remote cryptographic attestation against a malicious same-user process**. Do not assume a separate Wartime environment or character is accessible merely because it says it uses “a controller.”
+
+Planner telemetry records **agent/tool request-to-response turnaround**, including execution, retrieval and scheduling overhead. It is not isolated model inference time. `current_agent_tools` describes the submission route, not proof of a frontier model identity; fixtures are labeled controlled observations. Optional provider-backed unattended planning remains available only when deliberately supplied via an authorized provider callback.
+
+The autonomy boundary is finite: the host executes approved routines while your agent is active or thinking. It cannot wake an inactive chat, invent new model reasoning, or turn a finite routine into unlimited autonomy. Genuinely unattended reasoning requires an already-supported persistent agent runtime or an explicitly configured optional provider. Neither is a readiness prerequisite for ordinary agent-driven gameplay.
+
+### Approved online networking
+
+Bun's SDK/client sockets use only the existing `HTTPS_PROXY`/`HTTP_PROXY` (and lowercase forms) plus `NO_PROXY` configuration through the documented WebSocket `proxy` option. Binary game subprotocols are preserved. No proxy address or credential is printed; TLS verification and environment variables are left intact. No alternate endpoint/port, invented proxy or fallback bypass is tried. If the approved route refuses/denies an upgrade, report that concrete blocker and stop. A successful unauthenticated socket alone is not account/client readiness.
 
 ## Default: a fresh account for each explicitly new run
 
-Install `wartime/` into the pinned RS-SDK checkout, alongside `sdk/`, `mcp/` and `server/` (Bun and the SDK/webclient dependencies are required). The new executable entry point is `wartime/v2/run.ts`. **No character name, account password, or previous-owner-stopped flag belongs in its configuration.** The existing-player path below remains an explicit optional mode.
+For an already-prepared SDK workspace or explicit lower-level operation, the executable entry point is `wartime/v2/run.ts`. **No character name, account password, or previous-owner-stopped flag belongs in its configuration.** The existing-player path below remains an explicit optional mode.
 
 On the chosen cloud/agent host:
 
@@ -26,7 +73,7 @@ GATEWAY_DIRECT=false WARTIME_RUN_CONFIG=wartime/.wartime/run-config.json \
 bun wartime/v2/run.ts new
 ```
 
-Use the actual explicitly chosen world/gateway; the addresses above are the known canonical service, not a redirect rule. Plain HTTP/WS is supported for a local emulator. The launcher probes the selected revision and WebSocket transport without a character handshake before attempting login. It never rotates endpoints, weakens TLS or changes proxy protections to fix a denial.
+Use the actual explicitly chosen online world/gateway; the addresses above are the known canonical service, not a redirect rule. Older local validation modes are historical, not the online agent setup path. The launcher probes the selected revision and WebSocket transport without a character handshake before attempting login. It never rotates endpoints, weakens TLS or changes proxy protections to fix a denial.
 
 `new` means one explicitly started top-level session. It generates a CSPRNG 12-character lowercase alphanumeric name and a 20-character CSPRNG password within upstream limits, writes an atomic private run record **before login side effects**, starts a supervised lite client, verifies login and a fresh character-design/tutorial state, attaches the gateway, then connects one SDK owner. Default onboarding uses the pinned SDK's character-design/tutorial helper and verifies a fresh post-onboarding state before declaring readiness. `onboarding: "observe"` leaves setup untouched and reports tutorial-pending readiness honestly.
 
@@ -131,10 +178,10 @@ await tool(socket, {operation:'submit', proposal:{
 
 The coordinates above are illustrative; use current observations. Publication revisions and observed tick transitions are separate. Duplicate proposal IDs/publications cannot duplicate work; clock resets, life changes, task changes and ownership changes invalidate delayed plans. A model round trip is never required between steps/repeats. Freshness, animation, cooldown, inventory capacity and explicit preconditions gate dispatch. Active helpers are not restarted each tick. Already-satisfied state criteria send nothing and cannot teach a successful skill. Failures pause ordinary work for re-planning.
 
-The model/provider remains configurable outside the host:
+The already-running agent is the default planner; an external provider is optional:
 
 - `planner_requests`: inspect automatically prefetched pending requests. `planner_request` can request one explicitly with bounded contextual data.
-- Call your actual authorized model **asynchronously** outside the executor; optional attached providers can use `executor.planWith(provider, context)`. The provider receives a request/token and returns a bounded proposal, never SDK access. No provider is bundled or billed.
+- Reason through your existing agent/tools outside the executor; deliberately configured optional providers can use `executor.planWith(provider, context)`. The provider receives a request/token and returns a bounded proposal, never SDK access. No provider is bundled or billed.
 - `planner_complete: {id, proposal}` supplies the reply (`proposal` can be omitted to decline). The saved token is checked again. Request duration is measured; a local pending bridge request is not reported as a real model duration.
 - `search: {query,limit?,category?}` and `record: {id}` run the real SQLite library in bounded separate worker processes, outside the scheduler. Preserve citations and distinguish historical revision 274 from modified live state.
 - `skills`, `remember: {name,episodeId,description}`, `replay: {name}` use world/character-scoped private memory. Only complete episodes with observed verified steps become skills. Replay rechecks fresh targets and prerequisites.
@@ -182,7 +229,7 @@ It requires the local engine on 8888 and gateway on 7780. It refuses a non-local
 
 Telemetry reports bounded sample distributions (n, p50/p95/p99, min/max): observed tick cadence and interval-to-interval jitter; observer-callback-to-helper dispatch; SDK publication age at dispatch; raw SDK packet acknowledgement; helper-start-to-observed-postcondition; planner request duration; and maintenance duration. Counts distinguish cooldown, ongoing helper/animation, approved eligible work, no approved work, planner starvation, intentional maintenance, verified throughput, failures, cancellations and pre-emption/disconnects. Small-sample percentiles are descriptive, not stable performance estimates. Client tick counters are session-relative; network batching can compress observed intervals. These metrics cannot identify exact server phase or separate all server/network latency. Packet acknowledgement does not prove game execution.
 
-For **live validation**, use Wartime's already-authorized runtime with the default fresh-account run (or explicitly choose existing-player mode). Record the configured world, actual model/provider timings, workload and comparable before/after observation windows. Keep approved routines running during real model calls, measure counts/latency and perform a planned church update when safe. If no real PvP encounter occurs, report it as untested. A local probe or synthetic pending promise never substitutes for these online requirements. Fresh-account establishment through the supported client is now authorized; unrelated account takeover is never part of startup. Prior reports describing no account signup remain historical.
+For **live validation**, use Wartime's already-authorized runtime with the default fresh-account run (or explicitly choose existing-player mode). Record the configured world, actual agent/tool turnaround (separate any explicitly measured inference time), workload and comparable before/after observation windows. Keep approved routines running during real model calls, measure counts/latency and perform a planned church update when safe. If no real PvP encounter occurs, report it as untested. A local probe or synthetic pending promise never substitutes for these online requirements. Fresh-account establishment through the supported client is now authorized; unrelated account takeover is never part of startup. Prior reports describing no account signup remain historical.
 
 ### Focused transport and gathering checks
 

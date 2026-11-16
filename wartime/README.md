@@ -134,4 +134,4 @@ The controller unit tests use simulated game observations. They cover false ackn
 
 Original integration code is MIT licensed. Upstream projects and reference records retain their own included licenses.
 
-Current online evidence: [agent-first validation](v2/agent-first-validation-report.json) records one fresh live account, current-agent plan acceptance, four verified actions and learned replay using the approved configured proxy. Church policy update/resume and PvP remain untested online.
+Current online evidence: [agent-first validation](v2/agent-first-validation-report.json) records one fresh live account, current-agent plan acceptance, four verified actions and learned replay using the approved configured proxy. [Supplemental live maintenance](v2/live-maintenance-report.json) verifies church policy activation and resumed action under the same owner/account. PvP remains untested online.

@@ -4,7 +4,7 @@ Start here for the new implementation. v1 and its historical report remain uncha
 
 The [focused maintenance follow-up report](maintenance-followup-report.json) covers rollback on unsafe/stale/deadline/canceled revalidation and two consecutive fresh idle ticks before checkpointing. Historical gameplay/timing evidence and live limitations below remain unchanged.
 
-**Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. Church policy update/resume and PvP remain untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
+**Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. [Supplemental live maintenance](live-maintenance-report.json) also verified same-account church relocation, steady-1 → cautious-2, unchanged owner and resumed queued action. PvP remains untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
 
 ## Default agent-first online setup
 
@@ -199,13 +199,13 @@ A stable safety monitor can abort only this host's action, waits for it to unwin
 
 ## Church maintenance and trusted deployment boundary
 
-Configure an actual church privately after verifying the chosen world, routes and rules. Example **local tested church** configuration, not a universal safe zone:
+Configure an actual church privately after verifying the chosen world, routes and rules. The arrival/anchor below were also verified in the [same-account live maintenance check](live-maintenance-report.json); they are not a universal safe zone. Recheck current world rules, reachability and safety before use:
 
 ```json
 {"church":{"operatorVerifiedWorldRules":true,"x":3243,"z":3209,"level":0,"radius":0,"anchorId":409,"anchorRadius":6,"minHp":8,"playerClearance":5}}
 ```
 
-The local anchor is an observed Altar at `(3243,3205,0)`; the blocked altar tile is not a walk destination. Arrival requires the configured region/plane, an actual nearby configured anchor, enough HP, no current combat, no nearby fighting NPCs and no nearby players within the clearance. These checks cannot prove absence of an unseen threat or confer PvP immunity. Missing anchors, unsafe arrival or stale state postpone maintenance with a reason.
+The anchor is an observed Altar at `(3243,3205,0)`; the blocked altar tile is not a walk destination. Arrival requires the configured region/plane, an actual nearby configured anchor, enough HP, no current combat, no nearby fighting NPCs and no nearby players within the clearance. These checks cannot prove absence of an unseen threat or confer PvP immunity. Missing anchors, unsafe arrival or stale state postpone maintenance with a reason.
 
 `maintenance: {version:'cautious-2'}` follows REQUESTED → RELOCATING → QUIESCING → CHECKPOINTED → UPDATING → REVALIDATING → RESUMING. It uses the same SDK owner, cancels/drains old work, waits for fresh idle observations, writes a full atomic private checkpoint, swaps a trusted policy module, requires another fresh safe observation, then resumes the saved goal and remaining queued approved work with new generations. An interrupted in-flight command is **not blindly replayed**; its routine requires re-planning after reconciliation. `cancel_maintenance` restores the prior policy and pauses for explicit re-planning. Activation/revalidation failure rolls back the policy and stays paused. Time in maintenance is intentional downtime, not planner idle time.
 

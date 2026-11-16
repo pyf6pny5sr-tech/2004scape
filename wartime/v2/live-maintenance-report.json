@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "scope": "Supplemental live church maintenance completion; no production code changes, no local game, no new account",
+  "dateUtc": "2026-11-16",
+  "sourceCommit": "8bbd5265e4fea43803da5b269f98edb9f36c480c",
+  "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+  "runtimeIdentity": {
+    "implementation": "wartime-v2",
+    "identityProtocol": 1,
+    "buildSha256": "087b18064c6f801dc85a138525fd3fc793b356b161916a5cae43e0105c667164",
+    "moduleSha256": {
+      "adapter.ts": "92efb80b124680bffda8cece463cd260ce659f70b2546f064b00775151042f50",
+      "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+      "executor.mjs": "bfa99f6478830de3f920fa153668aafe664b976c13c6225cf24346dfe17b1260",
+      "host.ts": "7324fc128297c398c2827febf125c49344eeffb6314afa72aeba6c60cd3bcc71",
+      "identity.mjs": "17d517f6cd6c6f7f0cd09d046f5dfa6bdcd7a4cba083feb76fdd891bb3a85f7f",
+      "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+      "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+      "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+      "protocol.mjs": "dbfdb4f4a77b5c5b54a772a0cbec1db1737c34bfa98f769306ed245194ae4b2e",
+      "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+      "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+      "run-store.mjs": "582f9b50d765280febcdf186aead75c69a7f67bfae07ec652f022c1a4b60a0a2",
+      "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+      "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+      "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+      "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+      "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+      "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+      "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+      "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+    },
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "sdkModuleSha256": {
+      "sdk/index.ts": "ae769e45bdb56e27b075f7b50d71d1b796ae55927406a675a0f59deae9726fe8",
+      "sdk/actions.ts": "4b1ea5b2ba2237ce4bf40c9f4df2175f6e8ff6ed6648f8a1ad26ccfb1b030e97",
+      "sdk/execution-context.ts": "aedaea42e299445ad5f1622338a583168529e9792019b57289d3d5db76cb902b",
+      "server/webclient/src/lite/session.ts": "d68c811f6498b97792a1b2eb85704dad417bb0ac61be6f353097e0b2fcedfc49",
+      "server/webclient/src/lite/net/GameConnection.ts": "fc82aa5a1589f47d128c13e085ffce07a213ca6220c78f7e959a6400bc8f9f77"
+    },
+    "capturedAt": "2026-11-16T18:44:37.031Z",
+    "meaning": "Computed from runtime module files at startup, not a configurable label. Local file/build identity, not remote cryptographic attestation."
+  },
+  "environment": {
+    "location": "Same authorized managed Codex Cloud workspace",
+    "node": "24.22.1",
+    "bun": "1.4.4",
+    "world": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "route": "Inherited approved configured proxy; TLS/NO_PROXY unchanged"
+  },
+  "run": {
+    "runId": "r1b5df6a2aa91658548e866fd80ec4d68",
+    "samePrivateRecordAs": "agent-first-validation-report.json",
+    "accountGeneration": 0,
+    "newAccounts": 0,
+    "automaticReplacements": 0,
+    "replacementBudget": 0,
+    "controllerOwnerUnchangedDuringMaintenance": true,
+    "sdkSessionUnchanged": true,
+    "policyGenerationBefore": 1,
+    "policyGenerationAfter": 2,
+    "finalStatus": "STOPPED",
+    "ownedClientAbsent": true,
+    "publicChatOrPvpActions": false,
+    "ownerSha256": "ec7ccf9852415e1fbab9c26ccae28260834eb71fb1dcc6b2e6358cbc0d7fe5b6",
+    "sourceIdentityVerifiedBeforeControl": true
+  },
+  "church": {
+    "name": "Observed Lumbridge church altar",
+    "anchor": {
+      "id": 409,
+      "name": "Altar",
+      "x": 3243,
+      "z": 3205,
+      "level": 0
+    },
+    "arrival": {
+      "x": 3243,
+      "z": 3209,
+      "level": 0,
+      "radius": 0
+    },
+    "minHp": 8,
+    "playerClearance": 5,
+    "observedHp": 10,
+    "rulesReview": "Pinned SDK API documents wilderness/level-gap PvP refusals. This was not tested by attacking. Church treated as ordinary terrain with no tick pause or assumed PvP immunity. Modified live world may differ from historical mechanics; safety relied on fresh anchor, health/combat and clearance checks.",
+    "idleTickEvidence": [
+      {
+        "tick": 195,
+        "revision": 404,
+        "stage": "QUIESCING",
+        "x": 3243,
+        "z": 3209,
+        "animId": -1,
+        "hp": 10,
+        "inCombat": false,
+        "playersWithin5": 0,
+        "fightingNpcsWithin5": 0
+      },
+      {
+        "tick": 196,
+        "revision": 406,
+        "stage": "QUIESCING",
+        "x": 3243,
+        "z": 3209,
+        "animId": -1,
+        "hp": 10,
+        "inCombat": false,
+        "playersWithin5": 0,
+        "fightingNpcsWithin5": 0
+      },
+      {
+        "tick": 197,
+        "revision": 408,
+        "stage": "REVALIDATING",
+        "x": 3243,
+        "z": 3209,
+        "animId": -1,
+        "hp": 10,
+        "inCombat": false,
+        "playersWithin5": 0,
+        "fightingNpcsWithin5": 0
+      }
+    ],
+    "checkpointTick": 197,
+    "checkpointSha256": "2054f963a3963b9025b46f31d5721584e37a556b8b339d88f52af3a9c1a39419",
+    "checkpointContentsPublished": false
+  },
+  "maintenance": {
+    "policyBefore": "steady-1",
+    "policyAfter": "cautious-2",
+    "behaviorChange": "Trusted existing scheduling policy minimum cooldown changes from one to two observed ticks; no binary/supervisor hot-swap",
+    "events": [
+      {
+        "at": 1794854751528,
+        "type": "maintenance_requested",
+        "version": "cautious-2"
+      },
+      {
+        "at": 1794854753798,
+        "type": "church_verified"
+      },
+      {
+        "at": 1794854754598,
+        "type": "checkpointed"
+      },
+      {
+        "at": 1794854754598,
+        "type": "version_activated",
+        "version": "cautious-2",
+        "cooldown": 2
+      },
+      {
+        "at": 1794854754960,
+        "type": "maintenance_resumed",
+        "version": "cautious-2"
+      }
+    ],
+    "durationMs": {
+      "n": 1,
+      "p50": 3431.159243000002,
+      "p95": 3431.159243000002,
+      "p99": 3431.159243000002,
+      "min": 3431.159243000002,
+      "max": 3431.159243000002
+    },
+    "resumedAction": "Saved queued approved walk to (3241,3214,0), dispatched under cautious-2 and verified by fresh position/episode",
+    "inFlightAction": "Own in-flight pre-maintenance walk canceled/drained and excluded from replay; its cancellation counted as one failure, not a successful action",
+    "savedGoalResumed": true
+  },
+  "checks": {
+    "passed": 12,
+    "failed": 0,
+    "assertions": {
+      "sameRecordedRunGenerationAndNoReplacement": true,
+      "exactPublishedRuntimeSource": true,
+      "oneOwnerAcrossMaintenance": true,
+      "sameWorldCharacterSessionLife": true,
+      "controllerPolicyGenerationIncrementedOnce": true,
+      "checkpointSavedRemainingQueue": true,
+      "relocationAndAnchorVerified": true,
+      "orderedCheckpointActivationResume": true,
+      "resumedRoutineUsesNewPolicy": true,
+      "resumedActionObservedAndEpisodeVerified": true,
+      "stoppedOwnedClientAbsent": true,
+      "twoConsecutiveFreshIdleTicks": true
+    },
+    "broadSuitesRerun": false,
+    "reason": "Evidence/documentation-only supplement; exact published production source unchanged. Relevant live assertions passed; prior 61 Node/66 Bun results remain historical."
+  },
+  "telemetry": {
+    "windowMs": 80094.911547,
+    "counts": {
+      "avoidableIdleTicks": 0,
+      "noApprovedRoutineTicks": 60,
+      "dispatches": 4,
+      "currentAgentToolPlansAccepted": 3,
+      "packetDispatches:walkTo": 17,
+      "helperPendingTicks": 37,
+      "helperPendingWithoutObservedProgressTicks": 20,
+      "ongoingActionTicks": 31,
+      "observedProgressPublications": 24,
+      "packetDispatches:interactLoc": 1,
+      "verifiedActions": 3,
+      "routineCycles": 2,
+      "episodes": 2,
+      "plannerStarvedTicks": 101,
+      "cancellations": 1,
+      "failures": 1,
+      "intentionalMaintenanceTicks": 9,
+      "maintenanceCompleted": 1
+    },
+    "distributions": {
+      "tickCadenceMs": {
+        "n": 200,
+        "p50": 398.5031999999992,
+        "p95": 482.44893999999476,
+        "p99": 511.55209399999876,
+        "min": 0.953324000001885,
+        "max": 1353.6567729999988
+      },
+      "tickJitterMs": {
+        "n": 199,
+        "p50": 44.207948000001124,
+        "p95": 176.57078700000238,
+        "p99": 994.6543669999992,
+        "min": 0.1154659999992873,
+        "max": 1352.5879829999976
+      },
+      "plannerRequestMs": {
+        "n": 3,
+        "p50": 24.74159299999883,
+        "p95": 327.6324679999998,
+        "p99": 327.6324679999998,
+        "min": 19.4035259999946,
+        "max": 327.6324679999998
+      },
+      "plannerTurnaroundMs": {
+        "n": 3,
+        "p50": 24.74159299999883,
+        "p95": 327.6324679999998,
+        "p99": 327.6324679999998,
+        "min": 19.4035259999946,
+        "max": 327.6324679999998
+      },
+      "observationToDispatchMs": {
+        "n": 4,
+        "p50": 108.58849399999599,
+        "p95": 341.1072060000006,
+        "p99": 341.1072060000006,
+        "min": 0.5407290000002831,
+        "max": 341.1072060000006
+      },
+      "publicationAgeAtDispatchMs": {
+        "n": 4,
+        "p50": 136,
+        "p95": 369,
+        "p99": 369,
+        "min": 27,
+        "max": 369
+      },
+      "dispatchAckMs": {
+        "n": 17,
+        "p50": 110.04307600000175,
+        "p95": 281.77203899999586,
+        "p99": 281.77203899999586,
+        "min": 98.27829499999643,
+        "max": 281.77203899999586
+      },
+      "actionToEffectMs": {
+        "n": 3,
+        "p50": 2268.434982000006,
+        "p95": 10088.065338999997,
+        "p99": 10088.065338999997,
+        "min": 2121.5367210000113,
+        "max": 10088.065338999997
+      },
+      "maintenanceMs": {
+        "n": 1,
+        "p50": 3431.159243000002,
+        "p95": 3431.159243000002,
+        "p99": 3431.159243000002,
+        "min": 3431.159243000002,
+        "max": 3431.159243000002
+      }
+    },
+    "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+  },
+  "observationSamples": 48,
+  "limits": [
+    "Single maintenance cycle and resumed movement; no PvP test or guarantee of safety from unseen threats.",
+    "Two fresh idle tick evidence is observed animation -1, freshness and clearance, not proof the whole server is idle. Arrival/checkpoint and successful revalidation establish this specific handoff.",
+    "100ms status polling was observation sampling, not artificial thinking latency; no live tick-rate modification.",
+    "Planner response samples in this narrow scripted orchestration measure agent/tool completion after already-decided proposals, not new isolated inference. Earlier agent-first report retains its separate 17.77-second reasoning/tool sample.",
+    "Dispatch is helper entry, acknowledgement is packet response, effect is fresh observed postcondition. Counters do not show hidden server scheduling; zero avoidableIdleTicks does not prove no idle.",
+    "Controller policy generation intentionally changes; owner identity and SDK session remain unchanged. Resume after a prior process stop necessarily creates a new process owner compared with the earlier report.",
+    "No claim that arbitrary program code was hot-swapped or that policy cooldown differences were benchmarked across comparable workloads."
+  ]
+}

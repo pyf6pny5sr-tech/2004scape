@@ -1815,7 +1815,7 @@
   "planningAudit": {
     "reviewedAllWindows": true,
     "excludedWindowIndices": [],
-    "notes": "Reviewed all19 claim-to-completion intervals against this session command sequence. All were gameplay selection, finite-scope renewal or explicit recovery/decline. No source/report/ledger authoring during the fixed window. Window1 includes one malformed local proposal invocation followed by correct resubmission (no source edits or developer diagnosis); retained as real gameplay-tool overhead. Windows2,4,6 decline after area/no-target guards, followed by owned-state resume outside claims. Progress updates/waits occurred after completions. Tool and scheduling overhead remain; no isolated inference claim."
+    "notes": "Reviewed all19 claim-to-completion intervals against this session command sequence. All were gameplay selection, finite-scope renewal or explicit recovery/decline. No source/report/ledger authoring during the fixed window. Window1 includes one malformed local proposal invocation followed by correct resubmission (no source edits or developer diagnosis); retained as real gameplay-tool overhead. Windows2,4,6 decline after area/no-target guards, followed by owned-state resume outside claims. Progress/status commentary occurred inside some claim-to-completion intervals and remains included as gameplay-service/status overhead, along with reasoning, retrieval, tools and scheduling. Prepared observation waits occurred after claims completed; the watch tool refuses to wait while a claim is open. All19 claims remain included, with no isolated inference claim."
   },
   "planningLatency": {
     "actualClaimToCompletionMs": {
@@ -1835,7 +1835,7 @@
       "max": 87849
     },
     "unservedPrefetchIsThinking": false,
-    "meaning": "Actual current-agent reasoning/retrieval/tools/scheduling turnaround, not isolated model inference",
+    "meaning": "Current-agent claim-to-completion reasoning/retrieval/tools/scheduling and any intervening progress/status commentary; retained gameplay-service overhead, not isolated model inference",
     "baselineAuditedClaimToCompletionMs": 24583
   },
   "throughput": {

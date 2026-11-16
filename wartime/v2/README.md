@@ -6,7 +6,61 @@ The [focused maintenance follow-up report](maintenance-followup-report.json) cov
 
 **Online validation is still required.** See `validation-report.json` for local gameplay and exact limits. Never infer SDK ownership or live gameplay from a browser image or a failed status request.
 
-## Adopt it with one player
+## Default: a fresh account for each explicitly new run
+
+Install `wartime/` into the pinned RS-SDK checkout, alongside `sdk/`, `mcp/` and `server/` (Bun and the SDK/webclient dependencies are required). The new executable entry point is `wartime/v2/run.ts`. **No character name, account password, or previous-owner-stopped flag belongs in its configuration.** The existing-player path below remains an explicit optional mode.
+
+On the chosen cloud/agent host:
+
+```sh
+umask 077
+mkdir -p wartime/.wartime
+cat > wartime/.wartime/run-config.json <<'JSON'
+{
+  "world": "https://rs-sdk.maxbittker.com",
+  "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+  "onboarding": "skip_tutorial"
+}
+JSON
+GATEWAY_DIRECT=false WARTIME_RUN_CONFIG=wartime/.wartime/run-config.json \
+bun wartime/v2/run.ts new
+```
+
+Use the actual explicitly chosen world/gateway; the addresses above are the known canonical service, not a redirect rule. Plain HTTP/WS is supported for a local emulator. The launcher probes the selected revision and WebSocket transport without a character handshake before attempting login. It never rotates endpoints, weakens TLS or changes proxy protections to fix a denial.
+
+`new` means one explicitly started top-level session. It generates a CSPRNG 12-character lowercase alphanumeric name and a 20-character CSPRNG password within upstream limits, writes an atomic private run record **before login side effects**, starts a supervised lite client, verifies login and a fresh character-design/tutorial state, attaches the gateway, then connects one SDK owner. Default onboarding uses the pinned SDK's character-design/tutorial helper and verifies a fresh post-onboarding state before declaring readiness. `onboarding: "observe"` leaves setup untouched and reports tutorial-pending readiness honestly.
+
+Output is sanitized JSON with a run ID, generated name, status, world and private bridge socket path. Credentials are kept only in the ignored private run directory (directories 0700, records 0600); they never enter command arguments, printed login URLs, bridge results or public reports. The original library remains shared reference data, while each generated character gets its own learning memory. No `bots/<hardcoded-name>/bot.env` or global fleet-runtime policy is used. The supported upstream session/client APIs are used directly by a minimal supervised bridge with no legacy-host remapping or hidden action policy.
+
+A local config file is **not** registration proof. Milestones distinguish private config created, login attempted, client logged in, fresh state confirmed, client attached, onboarding complete and controller ready. The pinned login server auto-registers unknown users through game login; the local no-login-server engine establishes a new game profile instead of a SQL account. The fresh-state checks are observed game evidence, not a direct database existence query. Unknown/auth/transport outcomes do not get labeled as account creation.
+
+Keep this process running and expose its returned socket through the existing short-call bridge. Tool calls, planner turns, ticks and church policy updates reuse this identity. Do **not** invoke `new` for each tool call. For the same run after a clean stop or crash, use its returned run ID:
+
+```sh
+GATEWAY_DIRECT=false WARTIME_RUN_CONFIG=wartime/.wartime/run-config.json \
+bun wartime/v2/run.ts resume RETURNED_RUN_ID
+```
+
+An active same-run lease causes repeated/concurrent startup to stop without launching another client or controller. Explicit resume preserves the account and progress when readiness succeeds. A verified successful resume resets its failed-attempt streak; cumulative attempt counters and replacement use remain in the private record. Old planner tokens never resume automatically.
+
+### Stuck old-character reconnect: one automatic fresh fallback
+
+If resuming/reconnecting the run's own old character stalls, the default budget is **two attempts, eight seconds each**, followed by **at most one automatic fresh-account replacement for that run**. Before replacement the supervisor cancels/drains its SDK owner, stops only its owned client, rechecks the selected service transport and strict ownership status, marks the old identity replaced, preserves its credentials/progress, and persists the new identity before starting it. The replacement is onboarded and gets a fresh memory scope. No supplied name or extra confirmation is needed.
+
+The failure budget is persisted before each attempt, so crashes/repeated resume invocations cannot reset it. The replacement allowance never resets on recovery of the same run. A later successful ordinary resume keeps its character. Settings are bounded: `reconnectAttempts` 1–3 (default 2), `reconnectTimeoutMs` 1000–30000 (default 8000), `maxAutomaticReplacements` 0–1 (default 1), and `startupTimeoutMs` 1000–120000 (default 45000). The run retains its initial budget limits. A deliberately new top-level `new` command creates a separate run/account.
+
+Only ambiguous **old-character** login/readiness failures qualify for fallback after supported health checks. Known network/policy/transport failures, unavailable servers/clients, outdated clients, rate limits, blocked authentication and unrelated owners stop with their actual reason. They are not repaired by new names. A fresh run's ambiguous login failure does not start an account retry storm. Only positively observed pre-login name collisions may select another name, at most twice; an invalid-password response is not treated as positive collision evidence.
+
+The manager monitors its owned client/SDK after startup. Ownership pre-emption stops recovery rather than starting a takeover fight. Other resumable losses re-enter the same persisted budget. The gateway still lacks atomic distributed ownership claims; local run locks and strict status checks do not manufacture a compare-and-swap guarantee.
+
+`SIGINT`/`SIGTERM` or bridge `stop` cancels/drains owned work and closes the run's owner/client. Parent-pipe closure also stops the lite child after a crash. Explicit recovery checks PID/start identity before stopping a recorded leftover child, then reconciles strict gateway status and only this run's stale locks/socket. It never deletes old account records or uses a global process kill. An ambiguous lock identity or a stranded `startup.guard` fails closed; reconcile the recorded processes before removing that exact guard manually.
+
+See [new-run validation](new-run-validation-report.json) and the [ready-to-copy live-test prompt](NEW-RUN-PROMPT.txt). Its real cloud test uses the actual CLI, fresh characters, onboarding and actions; the account-specific reconnect timeout is explicitly injected in an isolated local gateway proxy. It is not a model delay or an online benchmark.
+
+## Explicit existing-player mode (optional)
+
+The following original mode is retained for deliberately attaching an existing player. It does not implement the default new-run flow and keeps its original handoff protections.
+
 
 1. In a cloud/agent host, obtain RS-SDK at **`3aa493c3d26680df5bae2b475cc1805e3db05ae3`**, install its dependencies, and place this repository's `wartime/` next to its `sdk/` and `mcp/`. Changes since the older `aff0406…` reference concern server logging; the SDK action/execution API is unchanged. Use Bun 1.4.4 (tested) and Node 24+ for Node tests. Download the original library with `node wartime/setup-knowledge.mjs` (use `NODE_USE_ENV_PROXY=1` where the cloud environment supplies a proxy).
 2. Inspect the existing player's source, actual world/gateway, dispatcher and ownership. Keep its client attached. Preserve any existing strategy and PvP behavior through an adapter review: this new controller supplies typed primitives, not proof of equivalent tactical behavior.
@@ -126,7 +180,7 @@ It requires the local engine on 8888 and gateway on 7780. It refuses a non-local
 
 Telemetry reports bounded sample distributions (n, p50/p95/p99, min/max): observed tick cadence and interval-to-interval jitter; observer-callback-to-helper dispatch; SDK publication age at dispatch; raw SDK packet acknowledgement; helper-start-to-observed-postcondition; planner request duration; and maintenance duration. Counts distinguish cooldown, ongoing helper/animation, approved eligible work, no approved work, planner starvation, intentional maintenance, verified throughput, failures, cancellations and pre-emption/disconnects. Small-sample percentiles are descriptive, not stable performance estimates. Client tick counters are session-relative; network batching can compress observed intervals. These metrics cannot identify exact server phase or separate all server/network latency. Packet acknowledgement does not prove game execution.
 
-For **live validation**, use Wartime's already-authorized runtime and existing player. Record the configured world, actual model/provider timings, workload and comparable before/after observation windows. Keep approved routines running during real model calls, measure counts/latency and perform a planned church update when safe. If no real PvP encounter occurs, report it as untested. A local probe or synthetic pending promise never substitutes for these online requirements. No live credentials, account signup or automatic takeover are part of this build.
+For **live validation**, use Wartime's already-authorized runtime with the default fresh-account run (or explicitly choose existing-player mode). Record the configured world, actual model/provider timings, workload and comparable before/after observation windows. Keep approved routines running during real model calls, measure counts/latency and perform a planned church update when safe. If no real PvP encounter occurs, report it as untested. A local probe or synthetic pending promise never substitutes for these online requirements. Fresh-account establishment through the supported client is now authorized; unrelated account takeover is never part of startup. Prior reports describing no account signup remain historical.
 
 ### Focused transport and gathering checks
 

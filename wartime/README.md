@@ -2,24 +2,26 @@
 
 **New implementation:** [Wartime v2: persistent host, model bridge and church maintenance](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [separate validation report](v2/validation-report.json) distinguishes disposable cloud gameplay from outstanding online/model validation. The v1 implementation and historical report below remain intact.
 
-This is a portable, model-driven integration for https://rs-sdk-demo.fly.dev/:
+This project combines cited 2004Scape knowledge with a model-driven RS-SDK controller. Current v2 runs use an explicitly configured world/gateway; the legacy target was https://rs-sdk-demo.fly.dev/. It provides:
 - the model supplies Voyager-style curriculum, planning and critique;
 - the 31,207-record knowledge library supplies cited historical reference material;
 - this controller runs bounded RS-SDK actions, checks observed results and stores reusable routines.
 
 It is an original adaptation of Voyager's design, not the upstream Minecraft runtime, and does not train model weights. It does not bundle or select a particular ChatGPT model. The model must have a host that exposes the RS-SDK tools.
 
-## Current handoff request
+## Current startup and handoff request
 
-The user wants Wartime to integrate the knowledge, learning and tick-aware execution into its **existing player/controller**, then test on the **actual online server** using real model response times. Do not run this prototype as a competing controller or insert an artificial ten-second delay. Use the existing cloud/agent host and keep credentials there. See [the live-testing and maintenance requirements](TICK-AND-MAINTENANCE.md) and [the current handoff prompt](PROMPT.txt). These requirements have not yet been demonstrated by this repository's tests.
+The current default is **a fresh account for each explicitly new top-level run**, without a supplied character name/password. Use [the v2 new-run launcher and instructions](v2/README.md), [the current handoff](v2/HANDOFF.txt), and [the live-test prompt](v2/NEW-RUN-PROMPT.txt). Normal tool/planner/tick/church turns keep the run's identity. A stuck old-character reconnect has a persisted bounded budget and at most one automatic fresh replacement after safe retirement and health checks; network failures do not trigger account storms.
 
-## Current status
+This user requirement supersedes the older existing-player-only startup constraint. Existing-player attachment remains an explicit optional mode with its handoff protections. Run on the chosen cloud/agent host, not Windows, and keep all account records private. The earlier [tick/maintenance requirements](TICK-AND-MAINTENANCE.md) remain relevant except for their superseded account-selection restriction. Historical v1 status below is preserved.
+
+## Historical v1 status
 
 Cloud-validated development preview. Node 24 controller tests, Bun controller/agent tests, and 32 relevant upstream SDK tests pass. In an isolated Linux cloud emulator, an actual headless client observed a disposable character, verified a two-step walk, saved and replayed the learned routine, and retrieved a cited knowledge record. A separate Chromium client rendered the same disposable character for a screenshot. See `validation-report.json` for exact evidence and limits.
 
 The supplied Fly.io endpoint currently returns HTTP 301 to `https://rs-sdk.maxbittker.com/`. An unauthenticated HTTP GET to its `/gateway` also timed out after 20 seconds. No remote character was created or connected. The upstream SDK at the reference commit also rewrites the legacy hostname in `deriveGatewayUrl` and its lite runner. The default Wartime guard deliberately continues to require the user's Fly.io gateway. Confirm the intended world and use an explicit `gatewayUrl` when wiring a real host; do not rely on the upstream legacy-host helpers or follow redirects to move a character silently. A real-character connection is not ready until that world decision and the model host are supplied.
 
-## Install in a coding-agent environment
+## Historical v1 setup
 
 Run these steps on the chosen cloud or agent host. A GitHub Pages website stores reference files; it does not run this controller.
 

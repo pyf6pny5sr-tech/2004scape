@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-11-16T16:02:21.301505+00:00",
+  "scope": "Focused default new-run provisioning and bounded old-character recovery; no executor/maintenance behavior expansion.",
+  "sources": {
+    "baseCommit": "85ebfc3acda4880f6ce8f7b62a96f4cb5b360b64",
+    "repository": "https://github.com/pyf6pny5sr-tech/2004scape",
+    "branch": "wartime-integration",
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "sdkInspected": [
+      "bots/create-bot.ts",
+      "server/webclient/src/lite/runner.ts",
+      "server/webclient/src/lite/session.ts",
+      "server/webclient/src/lite/net/GameConnection.ts",
+      "server/webclient/src/bot/ActionQueue.ts",
+      "server/engine/src/server/login/LoginThread.ts",
+      "server/engine/src/server/login/LoginServer.ts",
+      "sdk/actions.ts",
+      "server/gateway/gateway.ts"
+    ],
+    "sourceSha256": {
+      "run.ts": "cf66d35c97adbfe05607fe963bd4bdab1e5f0ce1b05abcd2d95e388f1e52e193",
+      "run-store.mjs": "582f9b50d765280febcdf186aead75c69a7f67bfae07ec652f022c1a4b60a0a2",
+      "run-manager.mjs": "3e23533a88ba074d82fe0e9f74ee0544499638564e4271178425d1480450bcef",
+      "run-runtime.ts": "d617150a9db8670840f1cd7c99c232b8140e0da4ce29fa5a189e3726e21e30d1",
+      "run-client.ts": "4ff7e8e17715880ced57e943e72e15d988d3be90d91441b213f5152de76db92a",
+      "host.ts": "86b706ce20cb5e87bf7893a931037b6f5f9b4de24549b475d16162cb2ad1f304",
+      "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+      "test/run.test.mjs": "23ef226bc17606b87394efc92c53c21e948f77762c9026cde0b34d7e806db9e0",
+      "test/new-run-cloud.ts": "d5c2625e517e9d4979196e458a94ae23615a49ed87d1973116d3954817a98678",
+      "test/new-run-live.ts": "54977baeb1760b8832b6da0bfe90363024d74c7604781543735a69fa6a74f43b"
+    },
+    "commitIdentity": "The commit containing this report; hashes identify the tested source without a self-referential commit ID."
+  },
+  "environment": {
+    "provider": "Codex Cloud",
+    "os": "Linux",
+    "node": "24.22.1",
+    "bun": "1.4.4 (38afee6c8)",
+    "windowsExecution": false,
+    "gameEngineRevision": 289,
+    "gameTickRateChanged": false
+  },
+  "newBehavior": {
+    "defaultEntry": "bun wartime/v2/run.ts new",
+    "resumeEntry": "bun wartime/v2/run.ts resume RETURNED_RUN_ID",
+    "nameOrPasswordRequired": false,
+    "generatedName": "12 lowercase alphanumeric CSPRNG characters, unbiased rejection sampling",
+    "generatedPassword": "20 alphanumeric CSPRNG characters (within upstream 20-character limit)",
+    "runRecordBeforeSideEffects": true,
+    "sameRunToolsAndMaintenanceReuseIdentity": true,
+    "existingPlayerMode": "Explicit optional host.ts/startInjected path; original handoff checks retained",
+    "registrationDistinction": "create-bot.ts local files are not registration proof. Supported game login auto-registers unknown usernames when login-server authentication is enabled; this disposable local engine establishes profiles without the SQL login server. Observed character-design modal, starter levels, empty initial inventory and later onboarding/readiness confirm fresh game state, not a direct account-database existence check."
+  },
+  "recoveryPolicy": {
+    "defaultAttempts": 2,
+    "defaultTimeoutPerAttemptMs": 8000,
+    "defaultFreshStartupDeadlineMs": 45000,
+    "maxAutomaticReplacementsPerRun": 1,
+    "configurableAttemptBounds": [
+      1,
+      3
+    ],
+    "configurableTimeoutBoundsMs": [
+      1000,
+      30000
+    ],
+    "configurableReplacementBounds": [
+      0,
+      1
+    ],
+    "budgetPersistedBeforeAttempt": true,
+    "healthyResume": "Keeps identity and resets only the failed/incomplete-attempt streak after confirmed controller readiness; total attempts retained",
+    "replacementAllowanceNeverResetOnSameRunResume": true,
+    "oldCredentialsAndProgressPreserved": true,
+    "retirementOrder": "Cancel/drain owned SDK owner, close owned child, recheck infrastructure and strict ownership, persist replaced identity/new credentials, then start fresh client",
+    "ambiguousOldCharacterFailureMayFallback": true,
+    "noFallbackFor": [
+      "known policy/transport/network denial",
+      "unavailable server/client",
+      "outdated client",
+      "rate limit",
+      "blocked authentication",
+      "unrelated active owner"
+    ],
+    "positivePreLoginCollisionRetryLimit": 2,
+    "gatewayLimit": "Last-controller-wins gateway has no atomic distributed lease; strict checks and per-run local ownership do not eliminate that cross-machine race."
+  },
+  "checks": [
+    {
+      "name": "focused new-run regressions under Node",
+      "command": "node --test wartime/v2/test/run.test.mjs",
+      "passed": 17,
+      "failed": 0
+    },
+    {
+      "name": "complete v2 Node regressions",
+      "command": "node --test wartime/v2/test/*.test.mjs",
+      "passed": 49,
+      "failed": 0
+    },
+    {
+      "name": "complete v2 Bun regressions including real SDK adapter",
+      "command": "bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts",
+      "passed": 53,
+      "failed": 0
+    },
+    {
+      "name": "new executable compile",
+      "command": "bun build wartime/v2/run.ts --target=bun --outfile=/workspace/scratch/new-run-check.js",
+      "status": "passed"
+    },
+    {
+      "name": "actual cloud CLI/client/game integration",
+      "command": "bun wartime/v2/test/new-run-cloud.ts",
+      "status": "passed",
+      "freshTopLevelRuns": 2,
+      "automaticReplacements": 1,
+      "independentGeneratedIdentities": 3,
+      "normalFreshRun": {
+        "privateConfigCreated": true,
+        "clientLoggedIn": true,
+        "freshStateConfirmed": true,
+        "clientAttached": true,
+        "onboardingComplete": true,
+        "controllerReady": true,
+        "actionVerified": true
+      },
+      "oldCharacterFault": {
+        "label": "Controlled account-specific gateway-registration drop, not model delay or production behavior",
+        "blockedRegistrations": 2,
+        "reconnectAttempts": 2,
+        "replacementsUsed": 1,
+        "oldCredentialsPreserved": true,
+        "newIdentityDifferent": true,
+        "actionVerified": true
+      },
+      "secondNewRun": {
+        "newIdentityDifferent": true,
+        "freshStateConfirmed": true,
+        "actionVerified": true
+      },
+      "allCleanStops": true,
+      "privateFileMode": "0600",
+      "runtimeDirectoryMode": "0700",
+      "credentialsInCapturedStdout": false,
+      "credentialsInProcessArguments": "Not passed: parent argv is fixed entrypoint plus new/resume/run ID; lite child argv is only fixed worker path. Generated credentials are read from private run.json.",
+      "world": "http://localhost:8888",
+      "gateway": "ws://localhost:7782/",
+      "faultProxyUpstream": "ws://localhost:7780/",
+      "faultLimit": "Test-only local proxy deliberately drops two old-character registration frames, while health/socket probes and replacement/new identities pass. This is account-specific fault injection, not normal operation, model thinking delay or an online benchmark.",
+      "observedActionMetrics": {
+        "first": {
+          "windowMs": 1231.6953520000006,
+          "counts": {
+            "avoidableIdleTicks": 0,
+            "noApprovedRoutineTicks": 1,
+            "dispatches": 1,
+            "packetDispatches:walkTo": 1,
+            "helperPendingTicks": 3,
+            "helperPendingWithoutObservedProgressTicks": 2,
+            "ongoingActionTicks": 3,
+            "observedProgressPublications": 1,
+            "verifiedActions": 1,
+            "routineCycles": 1,
+            "episodes": 1
+          },
+          "distributions": {
+            "observationToDispatchMs": {
+              "n": 1,
+              "p50": 81.34892899999977,
+              "p95": 81.34892899999977,
+              "p99": 81.34892899999977,
+              "min": 81.34892899999977,
+              "max": 81.34892899999977
+            },
+            "publicationAgeAtDispatchMs": {
+              "n": 1,
+              "p50": 86,
+              "p95": 86,
+              "p99": 86,
+              "min": 86,
+              "max": 86
+            },
+            "tickCadenceMs": {
+              "n": 3,
+              "p50": 391.05778999999893,
+              "p95": 589.167152,
+              "p99": 589.167152,
+              "min": 219.6367769999997,
+              "max": 589.167152
+            },
+            "dispatchAckMs": {
+              "n": 1,
+              "p50": 16.361124999999447,
+              "p95": 16.361124999999447,
+              "p99": 16.361124999999447,
+              "min": 16.361124999999447,
+              "max": 16.361124999999447
+            },
+            "tickJitterMs": {
+              "n": 2,
+              "p50": 171.42101299999922,
+              "p95": 369.5303750000003,
+              "p99": 369.5303750000003,
+              "min": 171.42101299999922,
+              "max": 369.5303750000003
+            },
+            "actionToEffectMs": {
+              "n": 1,
+              "p50": 1120.0285989999993,
+              "p95": 1120.0285989999993,
+              "p99": 1120.0285989999993,
+              "min": 1120.0285989999993,
+              "max": 1120.0285989999993
+            }
+          },
+          "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+        },
+        "replacement": {
+          "windowMs": 1634.391712999999,
+          "counts": {
+            "avoidableIdleTicks": 0,
+            "noApprovedRoutineTicks": 1,
+            "dispatches": 1,
+            "packetDispatches:walkTo": 1,
+            "helperPendingTicks": 4,
+            "helperPendingWithoutObservedProgressTicks": 3,
+            "ongoingActionTicks": 4,
+            "observedProgressPublications": 1,
+            "verifiedActions": 1,
+            "routineCycles": 1,
+            "episodes": 1
+          },
+          "distributions": {
+            "observationToDispatchMs": {
+              "n": 1,
+              "p50": 77.39121300000079,
+              "p95": 77.39121300000079,
+              "p99": 77.39121300000079,
+              "min": 77.39121300000079,
+              "max": 77.39121300000079
+            },
+            "publicationAgeAtDispatchMs": {
+              "n": 1,
+              "p50": 83,
+              "p95": 83,
+              "p99": 83,
+              "min": 83,
+              "max": 83
+            },
+            "tickCadenceMs": {
+              "n": 4,
+              "p50": 299.2310660000003,
+              "p95": 915.981756000001,
+              "p99": 915.981756000001,
+              "min": 0.9386560000002646,
+              "max": 915.981756000001
+            },
+            "tickJitterMs": {
+              "n": 3,
+              "p50": 298.29241,
+              "p95": 915.0431000000008,
+              "p99": 915.0431000000008,
+              "min": 94.67262299999857,
+              "max": 915.0431000000008
+            },
+            "dispatchAckMs": {
+              "n": 1,
+              "p50": 18.77362400000129,
+              "p95": 18.77362400000129,
+              "p99": 18.77362400000129,
+              "min": 18.77362400000129,
+              "max": 18.77362400000129
+            },
+            "actionToEffectMs": {
+              "n": 1,
+              "p50": 1534.077394,
+              "p95": 1534.077394,
+              "p99": 1534.077394,
+              "min": 1534.077394,
+              "max": 1534.077394
+            }
+          },
+          "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+        },
+        "second": {
+          "windowMs": 1205.771048999999,
+          "counts": {
+            "avoidableIdleTicks": 0,
+            "noApprovedRoutineTicks": 1,
+            "dispatches": 1,
+            "packetDispatches:walkTo": 1,
+            "helperPendingTicks": 3,
+            "helperPendingWithoutObservedProgressTicks": 2,
+            "ongoingActionTicks": 3,
+            "observedProgressPublications": 1,
+            "verifiedActions": 1,
+            "routineCycles": 1,
+            "episodes": 1
+          },
+          "distributions": {
+            "observationToDispatchMs": {
+              "n": 1,
+              "p50": 108.84955300000001,
+              "p95": 108.84955300000001,
+              "p99": 108.84955300000001,
+              "min": 108.84955300000001,
+              "max": 108.84955300000001
+            },
+            "publicationAgeAtDispatchMs": {
+              "n": 1,
+              "p50": 116,
+              "p95": 116,
+              "p99": 116,
+              "min": 116,
+              "max": 116
+            },
+            "tickCadenceMs": {
+              "n": 3,
+              "p50": 388.01066100000025,
+              "p95": 688.533218999999,
+              "p99": 688.533218999999,
+              "min": 110.896299,
+              "max": 688.533218999999
+            },
+            "dispatchAckMs": {
+              "n": 1,
+              "p50": 20.768298999999388,
+              "p95": 20.768298999999388,
+              "p99": 20.768298999999388,
+              "min": 20.768298999999388,
+              "max": 20.768298999999388
+            },
+            "tickJitterMs": {
+              "n": 2,
+              "p50": 277.11436200000026,
+              "p95": 577.636919999999,
+              "p99": 577.636919999999,
+              "min": 277.11436200000026,
+              "max": 577.636919999999
+            },
+            "actionToEffectMs": {
+              "n": 1,
+              "p50": 1080.3179249999994,
+              "p95": 1080.3179249999994,
+              "p99": 1080.3179249999994,
+              "min": 1080.3179249999994,
+              "max": 1080.3179249999994
+            }
+          },
+          "limits": "Observed client publication timing, not synchronized server phase. Dispatch is helper entry; effect is fresh observed postcondition. Cooldown/ongoing-action ticks are classified separately. Samples bounded to latest 10000 per metric."
+        }
+      }
+    },
+    {
+      "name": "owned local children after clean test stops",
+      "recordedChildrenChecked": 6,
+      "allExited": true,
+      "status": "passed"
+    },
+    {
+      "name": "diff whitespace",
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "coveredRegressions": [
+    "valid generated identities with no supplied character",
+    "independent new runs and successful exact-identity resume",
+    "private storage and sanitized summary",
+    "concurrent/repeated startup for same run",
+    "bounded positive collisions",
+    "unknown ownership/network/policy/version/rate failures do not mint replacements",
+    "old reconnect timeout and teardown before one fresh replacement",
+    "persistent budget exhaustion across resume invocations",
+    "no retry storm after ambiguous fresh login",
+    "unrelated ownership blocks recovery",
+    "cancellation and owned-only cleanup",
+    "world binding and existing file protection",
+    "healthy ordinary resumes do not consume failure budget",
+    "close while startup is pending waits before releasing lease",
+    "unavailable client terminal",
+    "explicit dead-owner recovery",
+    "corrupt persisted budgets fail closed"
+  ],
+  "liveSmoke": {
+    "status": "BLOCKED",
+    "reason": "GATEWAY_WEBSOCKET_TRANSPORT",
+    "controllerReady": false,
+    "actionVerified": false,
+    "privateConfigCreated": true,
+    "loginAttempted": false,
+    "clientLoggedIn": false,
+    "freshStateConfirmed": false,
+    "accountsInPrivateRecord": 1,
+    "replacementsUsed": 0,
+    "world": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "accountNamesOrCredentialsPublished": false,
+    "entry": "Actual run.ts new CLI with generated private identity and maxAutomaticReplacements=0 for this single bounded smoke",
+    "httpVersionProbe": "Reached pinned revision-289 check before gateway WebSocket stage",
+    "accountOrClientHandshakeSent": false,
+    "actualOnlineAccountCreationConfirmed": false,
+    "freshCharacterConfirmedOnline": false,
+    "transportMeaning": "Raw supported Bun WebSocket could not open at the explicit selected gateway. New names do not repair this blocker. No endpoint rotation, proxy/TLS bypass or account batch attempted.",
+    "missingExistingPlayerPasswordIsNoLongerAStartupBlocker": true,
+    "realModelProviderCalls": false
+  },
+  "privacyAndLimits": {
+    "privateRecordsAndCredentialsCommitted": false,
+    "rawAccountLogsPublished": false,
+    "generatedAccountNamesPublishedInReport": false,
+    "runtimeDefault": "Ignored wartime/.wartime/runs, restrictive permissions; custom runtimeRoot must remain private and outside version control",
+    "oldRunProgressDeleted": false,
+    "startupGuardCrashLimit": "An ambiguous or stranded startup.guard fails closed; operator must reconcile exact owned processes before removing that guard. No global lock/process cleanup.",
+    "normalPlanningNoAccountCreation": true,
+    "noSyntheticThinkingSleeps": true,
+    "noClientFleetOrLegacyRemapping": true,
+    "onboarding": "Actual default SDK appearance/tutorial helper executed and post-onboarding state checked. Observe mode intentionally reports tutorial pending.",
+    "freshStateLimit": "Observed fresh profile is not proof from an account database. Generation is probabilistically unique; the supported authenticated login flow protects existing passwords, positive active-name collisions are bounded, and ambiguous responses fail closed.",
+    "fullAutonomousLiveModelOrChurchUpdateTestedByThisFollowup": false
+  },
+  "preservedEvidence": [
+    "wartime/validation-report.json",
+    "wartime/v2/validation-report.json",
+    "wartime/v2/maintenance-followup-report.json"
+  ],
+  "executorAndMaintenanceSourceUnchanged": true,
+  "publication": {
+    "onlyBranch": "wartime-integration",
+    "mainMerged": false,
+    "websiteDeployed": false
+  },
+  "deliveryStatus": "New-run launcher and one-fresh-replacement recovery implemented and exercised against actual isolated game clients; online login remains blocked before account creation by gateway WebSocket transport."
+}

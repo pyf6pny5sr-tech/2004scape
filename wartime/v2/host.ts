@@ -110,6 +110,7 @@ export async function createBridge(executor: any, config: any) {
         case "stop":
           await executor.stop();
           result = { stopped: true };
+          if(config.onStop)setImmediate(()=>{void config.onStop();});
           break;
         // Staging is operator-only via trusted local config at process startup.
         default:

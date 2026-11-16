@@ -1,5 +1,7 @@
 # Tick-aware execution and maintenance for Wartime
 
+Current startup override: account selection in this historical requirements document is superseded by [v2 new-run startup](v2/README.md). Default new runs provision a fresh account; stuck old-character reconnects may use one bounded automatic fresh replacement. Existing-player mode remains optional. Tick/maintenance, privacy and live-evidence requirements still apply.
+
 Status: implementation requirements, not a completed runtime feature. Added after reviewing the controller at commit 945d842460c4329e19d94a8b7d4ad61fa2b3c877 and the user's feedback from Wartime's existing player.
 
 ## Integrate into the existing player

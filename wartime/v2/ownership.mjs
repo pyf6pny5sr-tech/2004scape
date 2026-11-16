@@ -37,6 +37,7 @@ export async function strictStatus(url, fetcher = fetch) {
       state: data.controllers.length ? "OCCUPIED" : "ZERO",
       inGame: data.inGame,
       controllers: data.controllers.length,
+      clientStatus:data.status,
     };
   } catch {
     return {

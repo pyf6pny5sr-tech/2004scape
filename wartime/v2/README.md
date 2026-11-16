@@ -6,6 +6,10 @@ The [focused maintenance follow-up report](maintenance-followup-report.json) cov
 
 **Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. [Supplemental live maintenance](live-maintenance-report.json) also verified same-account church relocation, steady-1 → cautious-2, unchanged owner and resumed queued action. PvP remains untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
 
+## Twenty-minute online idle baseline
+
+The [long-run report](long-run-report.md) records 15 current-agent planning intervals over 20 minutes: 969/1,055 planning-overlap ticks were visibly idle (91.8%), with helper ambiguity separate. Whole-run idle includes failure/recovery and unclaimed operational/developer periods. This is this cloud agent/controller, not the separate Wartime instance or isolated inference. See its measurement protocol and [sanitized JSON](long-run-report.json); do not use `avoidableIdleTicks=0` as a real idle result.
+
 ## Default agent-first online setup
 
 **You are Wartime. You are already the planner.** Use your current execution/tools to prepare and control this runtime. Do not look for `OPENAI_API_KEY`, launch nested Codex inference, sign into another model, copy model credentials, migrate auth, or configure billing. The reported read-only Codex sign-in is irrelevant to this default mode; do not try to repair or bypass it.

@@ -1,0 +1,1308 @@
+{
+  "schemaVersion": 1,
+  "scope": "20-minute ONLINE run of Wartime v2 with THIS cloud agent as planner; separate inaccessible Wartime runtime was not tested",
+  "sourceCommit": "6220c0326beb90844e0b3e697c1fbc6a9b7db33d",
+  "baseCommit": "b9a5e268624672ed368205d38f30b9c6f78eaf4f",
+  "sourceIdentity": {
+    "implementation": "wartime-v2",
+    "identityProtocol": 1,
+    "buildSha256": "555c02ae362063d409f7bba56cf0d63a540967afb84b2c75d697089b327efa80",
+    "moduleSha256": {
+      "adapter.ts": "92efb80b124680bffda8cece463cd260ce659f70b2546f064b00775151042f50",
+      "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+      "executor.mjs": "bfa99f6478830de3f920fa153668aafe664b976c13c6225cf24346dfe17b1260",
+      "host.ts": "766c12a65f0a6bb483badad6c390d3e1cd80a24b989e9e41e9ce5477ab944b09",
+      "identity.mjs": "d934360e6bbcd75c36eb70be426cb4c679e3dfdbf82b1ed56cbec435a77d7ac3",
+      "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+      "long-run.mjs": "e485c01e0031cf672173d72b72d415ba7dc9807d7f9900d6cf906e1d3107150d",
+      "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+      "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+      "protocol.mjs": "dbfdb4f4a77b5c5b54a772a0cbec1db1737c34bfa98f769306ed245194ae4b2e",
+      "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+      "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+      "run-store.mjs": "582f9b50d765280febcdf186aead75c69a7f67bfae07ec652f022c1a4b60a0a2",
+      "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+      "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+      "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+      "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+      "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+      "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+      "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+      "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+    },
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "sdkModuleSha256": {
+      "sdk/index.ts": "ae769e45bdb56e27b075f7b50d71d1b796ae55927406a675a0f59deae9726fe8",
+      "sdk/actions.ts": "4b1ea5b2ba2237ce4bf40c9f4df2175f6e8ff6ed6648f8a1ad26ccfb1b030e97",
+      "sdk/execution-context.ts": "aedaea42e299445ad5f1622338a583168529e9792019b57289d3d5db76cb902b",
+      "server/webclient/src/lite/session.ts": "d68c811f6498b97792a1b2eb85704dad417bb0ac61be6f353097e0b2fcedfc49",
+      "server/webclient/src/lite/net/GameConnection.ts": "fc82aa5a1589f47d128c13e085ffce07a213ca6220c78f7e959a6400bc8f9f77"
+    },
+    "capturedAt": "2026-11-16T19:20:18.600Z",
+    "meaning": "Computed from runtime module files at startup, not a configurable label. Local file/build identity, not remote cryptographic attestation."
+  },
+  "environment": {
+    "location": "Managed Codex Cloud Linux, no Windows/local emulator use",
+    "node": "24.22.1",
+    "bun": "1.4.4",
+    "world": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "network": "Inherited configured approved WebSocket proxy; TLS and NO_PROXY preserved",
+    "modelMode": "Existing cloud agent/tools; zero second-provider calls or model auth migration"
+  },
+  "window": {
+    "startUtc": "2026-11-16T19:20:51.980000+00:00",
+    "endUtc": "2026-11-16T19:40:51.981000+00:00",
+    "durationMs": 1200001,
+    "preparationIncluded": false,
+    "initialAndRecoveryIdleRetained": true,
+    "deadlineAutomatic": true
+  },
+  "run": {
+    "runId": "r1b5df6a2aa91658548e866fd80ec4d68",
+    "sameAccountAsEarlierReports": true,
+    "newAccounts": 0,
+    "replacements": 0,
+    "ownerUnchangedDuringWindow": true,
+    "finalStatus": "STOPPED",
+    "ownedClientStopped": true
+  },
+  "definitions": {
+    "observedTick": "One unique SDK observation tick transition; revisions within a tick are merged, duplicate revisions ignored. Evidence flags OR across publications. Tick is finalized at next transition or exact deadline.",
+    "knownDenominator": "3000 observed buckets including one first-boundary unknown; 2999 classify as known. No missing tick numbers, resets, invalid ticks or dropped writes. A real same-millisecond burst tick remains in count with zero elapsed weight.",
+    "confirmedVisibleIdle": "Fresh, physically stationary, no observed item/XP effect, no animation/combat evidence, no owned active helper/gather lease and no cooldown. Includes no-approved-work starvation and stationary controller failure/recovery pauses, shown separately. This is a controller-observable lower-bound estimate, not proof about hidden server work.",
+    "possibleIdle": "Stationary no-progress/animation periods with a pending helper/gather lease or unresolved queued eligibility; a promise is never evidence of productivity.",
+    "busyUnproven": "Animation/combat evidence with no observed progress in that bucket; no claim every such tick was productive.",
+    "progress": "Any observed movement or inventory/XP delta in a tick. A no-XP tick is not automatically idle; random gathering attempts may fail.",
+    "eligibleQueuedIdle": "Only a conservative side-effect-free walk subset has full known eligibility checked; other queued no-dispatch work is unresolved. No such tick occurred here.",
+    "planning": "Only explicit measurement_claim request through planner_complete submission; includes current agent reasoning, retrieval/tool/scheduling time, never isolated inference. Automatic request lifetime and prefetch wait are separate.",
+    "planningOverlap": "Tick counted once in union if any part overlaps claimed interval; individual window counts may touch boundary ticks. Seconds use actual overlap of observed timestamp intervals, not whole-tick multiplication.",
+    "seconds": "Estimated from observed publication interval duration; no synchronized server phase. Unobserved initial 160ms is not idle.",
+    "pauses": "Live collector originally combines paused/cooldown flags. Offline analyzer explicitly splits cooldown from stationary controller pauses; no maintenance/safety pause was requested in this run. All failed/recovery periods remain.",
+    "outsidePlanning": "All unclaimed time contains live monitoring, progress updates, scheduling and developer/report-support work; it is not labeled model thinking and all its ticks remain in whole-run totals."
+  },
+  "analysis": {
+    "durationMs": 1200001,
+    "whole": {
+      "observedTicks": 3000,
+      "buckets": {
+        "unknown": 1,
+        "no_approved_work_idle": 1098,
+        "pending_helper_possible_idle": 450,
+        "observed_progress": 336,
+        "cooldown": 66,
+        "busy_without_proven_progress": 180,
+        "stationary_controller_pause": 869
+      },
+      "estimatedObservationIntervalSeconds": {
+        "unknown": 0.448,
+        "no_approved_work_idle": 440.0459999999992,
+        "pending_helper_possible_idle": 178.0599999999999,
+        "observed_progress": 133.911,
+        "cooldown": 27.523999999999994,
+        "busy_without_proven_progress": 72.34799999999997,
+        "stationary_controller_pause": 347.5040000000001
+      },
+      "physicallyStationaryTicks": 2766,
+      "visibleIdleLowerBoundTicks": 1967,
+      "visibleIdleLowerBoundPercent": 65.56666666666666,
+      "possibleAdditionalIdleTicks": 450,
+      "busyOrProgressTicks": 516,
+      "longestVisibleIdleStreakTicks": 221,
+      "longestVisibleIdleStreakEstimatedSeconds": 88.36,
+      "coveredObservationSeconds": 1199.841
+    },
+    "claimedAgentToolIntervals": {
+      "observedTicks": 1055,
+      "buckets": {
+        "unknown": 1,
+        "no_approved_work_idle": 962,
+        "cooldown": 11,
+        "observed_progress": 29,
+        "busy_without_proven_progress": 12,
+        "pending_helper_possible_idle": 33,
+        "stationary_controller_pause": 7
+      },
+      "estimatedObservationIntervalSeconds": {
+        "unknown": 0.379,
+        "no_approved_work_idle": 383.3699999999997,
+        "cooldown": 2.265,
+        "observed_progress": 11.272,
+        "busy_without_proven_progress": 4.803,
+        "pending_helper_possible_idle": 12.596,
+        "stationary_controller_pause": 1.4280000000000002
+      },
+      "physicallyStationaryTicks": 1032,
+      "visibleIdleLowerBoundTicks": 969,
+      "visibleIdleLowerBoundPercent": 91.84834123222748,
+      "possibleAdditionalIdleTicks": 33,
+      "busyOrProgressTicks": 41,
+      "longestVisibleIdleStreakTicks": 95,
+      "longestVisibleIdleStreakEstimatedSeconds": 37.684,
+      "coveredObservationSeconds": 416.113
+    },
+    "planningWindows": [
+      {
+        "index": 1,
+        "startSeconds": 0.229,
+        "endSeconds": 25.031,
+        "turnaroundMs": 24802,
+        "incomplete": false,
+        "observedTicks": 62,
+        "buckets": {
+          "unknown": 1,
+          "no_approved_work_idle": 61
+        },
+        "estimatedObservationIntervalSeconds": {
+          "unknown": 0.379,
+          "no_approved_work_idle": 24.423000000000002
+        },
+        "physicallyStationaryTicks": 62,
+        "visibleIdleLowerBoundTicks": 61,
+        "visibleIdleLowerBoundPercent": 98.38709677419355,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 61,
+        "longestVisibleIdleStreakEstimatedSeconds": 24.423,
+        "coveredObservationSeconds": 24.802,
+        "automaticRequestLifetimeMs": 24827,
+        "unclaimedBeforeActualPlanningMs": 25,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Initial move to tree area and consume two existing logs"
+      },
+      {
+        "index": 2,
+        "startSeconds": 47.817,
+        "endSeconds": 63.43,
+        "turnaroundMs": 15613,
+        "incomplete": false,
+        "observedTicks": 40,
+        "buckets": {
+          "no_approved_work_idle": 39,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 15.549,
+          "cooldown": 0.064
+        },
+        "physicallyStationaryTicks": 40,
+        "visibleIdleLowerBoundTicks": 39,
+        "visibleIdleLowerBoundPercent": 97.5,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 39,
+        "longestVisibleIdleStreakEstimatedSeconds": 15.549,
+        "coveredObservationSeconds": 15.613,
+        "automaticRequestLifetimeMs": 27538,
+        "unclaimedBeforeActualPlanningMs": 11925,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Bounded normal-tree gather/burn continuation"
+      },
+      {
+        "index": 3,
+        "startSeconds": 86.427,
+        "endSeconds": 116.808,
+        "turnaroundMs": 30381,
+        "incomplete": false,
+        "observedTicks": 77,
+        "buckets": {
+          "observed_progress": 17,
+          "busy_without_proven_progress": 2,
+          "no_approved_work_idle": 57,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 6.582999999999999,
+          "busy_without_proven_progress": 0.775,
+          "no_approved_work_idle": 22.811999999999998,
+          "cooldown": 0.211
+        },
+        "physicallyStationaryTicks": 61,
+        "visibleIdleLowerBoundTicks": 57,
+        "visibleIdleLowerBoundPercent": 74.02597402597402,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 19,
+        "longestVisibleIdleStreakTicks": 52,
+        "longestVisibleIdleStreakEstimatedSeconds": 20.794,
+        "coveredObservationSeconds": 30.381,
+        "automaticRequestLifetimeMs": 30394,
+        "unclaimedBeforeActualPlanningMs": 13,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Recovery using current targets and cited knowledge/SDK semantics"
+      },
+      {
+        "index": 4,
+        "startSeconds": 148.47,
+        "endSeconds": 171.033,
+        "turnaroundMs": 22563,
+        "incomplete": false,
+        "observedTicks": 58,
+        "buckets": {
+          "pending_helper_possible_idle": 33,
+          "observed_progress": 12,
+          "busy_without_proven_progress": 10,
+          "cooldown": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 12.596,
+          "observed_progress": 4.689,
+          "busy_without_proven_progress": 4.028,
+          "cooldown": 1.25
+        },
+        "physicallyStationaryTicks": 51,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 33,
+        "busyOrProgressTicks": 22,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 22.563,
+        "automaticRequestLifetimeMs": 54225,
+        "unclaimedBeforeActualPlanningMs": 31662,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Prefetch continuation while existing approved work ran"
+      },
+      {
+        "index": 5,
+        "startSeconds": 233.606,
+        "endSeconds": 271.29,
+        "turnaroundMs": 37684,
+        "incomplete": false,
+        "observedTicks": 95,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 94
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.172,
+          "no_approved_work_idle": 37.51199999999999
+        },
+        "physicallyStationaryTicks": 95,
+        "visibleIdleLowerBoundTicks": 95,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 95,
+        "longestVisibleIdleStreakEstimatedSeconds": 37.684,
+        "coveredObservationSeconds": 37.684,
+        "automaticRequestLifetimeMs": 37695,
+        "unclaimedBeforeActualPlanningMs": 11,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Consume surplus logs and resume gathering"
+      },
+      {
+        "index": 6,
+        "startSeconds": 305.122,
+        "endSeconds": 338.224,
+        "turnaroundMs": 33102,
+        "incomplete": false,
+        "observedTicks": 84,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 83
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.237,
+          "no_approved_work_idle": 32.865
+        },
+        "physicallyStationaryTicks": 84,
+        "visibleIdleLowerBoundTicks": 84,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 84,
+        "longestVisibleIdleStreakEstimatedSeconds": 33.102,
+        "coveredObservationSeconds": 33.102,
+        "automaticRequestLifetimeMs": 33118,
+        "unclaimedBeforeActualPlanningMs": 16,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Move toward fresh burning/gathering area"
+      },
+      {
+        "index": 7,
+        "startSeconds": 398.146,
+        "endSeconds": 420.056,
+        "turnaroundMs": 21910,
+        "incomplete": false,
+        "observedTicks": 56,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 55
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.027,
+          "no_approved_work_idle": 21.883000000000003
+        },
+        "physicallyStationaryTicks": 56,
+        "visibleIdleLowerBoundTicks": 56,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 56,
+        "longestVisibleIdleStreakEstimatedSeconds": 21.91,
+        "coveredObservationSeconds": 21.91,
+        "automaticRequestLifetimeMs": 21920,
+        "unclaimedBeforeActualPlanningMs": 10,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Replan after route stopped adjacent; observed tree-type selection"
+      },
+      {
+        "index": 8,
+        "startSeconds": 469.054,
+        "endSeconds": 498.741,
+        "turnaroundMs": 29687,
+        "incomplete": false,
+        "observedTicks": 75,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 73,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.49,
+          "no_approved_work_idle": 29.047999999999995,
+          "cooldown": 0.149
+        },
+        "physicallyStationaryTicks": 75,
+        "visibleIdleLowerBoundTicks": 74,
+        "visibleIdleLowerBoundPercent": 98.66666666666667,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 74,
+        "longestVisibleIdleStreakEstimatedSeconds": 29.538,
+        "coveredObservationSeconds": 29.687,
+        "automaticRequestLifetimeMs": 29700,
+        "unclaimedBeforeActualPlanningMs": 13,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Replan after type-specific target disappeared"
+      },
+      {
+        "index": 9,
+        "startSeconds": 572.061,
+        "endSeconds": 592.634,
+        "turnaroundMs": 20573,
+        "incomplete": false,
+        "observedTicks": 53,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 51,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.13,
+          "no_approved_work_idle": 20.418999999999997,
+          "cooldown": 0.024
+        },
+        "physicallyStationaryTicks": 53,
+        "visibleIdleLowerBoundTicks": 52,
+        "visibleIdleLowerBoundPercent": 98.11320754716981,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 52,
+        "longestVisibleIdleStreakEstimatedSeconds": 20.549,
+        "coveredObservationSeconds": 20.573,
+        "automaticRequestLifetimeMs": 20589,
+        "unclaimedBeforeActualPlanningMs": 16,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Try observed skill-appropriate oak as ordinary progression"
+      },
+      {
+        "index": 10,
+        "startSeconds": 679.531,
+        "endSeconds": 715.039,
+        "turnaroundMs": 35508,
+        "incomplete": false,
+        "observedTicks": 90,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 88,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.261,
+          "no_approved_work_idle": 35.182,
+          "cooldown": 0.065
+        },
+        "physicallyStationaryTicks": 90,
+        "visibleIdleLowerBoundTicks": 89,
+        "visibleIdleLowerBoundPercent": 98.88888888888889,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 89,
+        "longestVisibleIdleStreakEstimatedSeconds": 35.443,
+        "coveredObservationSeconds": 35.508,
+        "automaticRequestLifetimeMs": 35524,
+        "unclaimedBeforeActualPlanningMs": 16,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Use observed oak/normal logs for Firemaking"
+      },
+      {
+        "index": 11,
+        "startSeconds": 777.652,
+        "endSeconds": 804.793,
+        "turnaroundMs": 27141,
+        "incomplete": false,
+        "observedTicks": 69,
+        "buckets": {
+          "stationary_controller_pause": 1,
+          "no_approved_work_idle": 67,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 0.111,
+          "no_approved_work_idle": 26.809999999999995,
+          "cooldown": 0.22
+        },
+        "physicallyStationaryTicks": 69,
+        "visibleIdleLowerBoundTicks": 68,
+        "visibleIdleLowerBoundPercent": 98.55072463768116,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 68,
+        "longestVisibleIdleStreakEstimatedSeconds": 26.921,
+        "coveredObservationSeconds": 27.141,
+        "automaticRequestLifetimeMs": 27166,
+        "unclaimedBeforeActualPlanningMs": 25,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Resume normal-tree gather/burn after deadline"
+      },
+      {
+        "index": 12,
+        "startSeconds": 861.141,
+        "endSeconds": 886.846,
+        "turnaroundMs": 25705,
+        "incomplete": false,
+        "observedTicks": 65,
+        "buckets": {
+          "no_approved_work_idle": 64,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 25.454000000000004,
+          "cooldown": 0.251
+        },
+        "physicallyStationaryTicks": 65,
+        "visibleIdleLowerBoundTicks": 64,
+        "visibleIdleLowerBoundPercent": 98.46153846153847,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 64,
+        "longestVisibleIdleStreakEstimatedSeconds": 25.454,
+        "coveredObservationSeconds": 25.705,
+        "automaticRequestLifetimeMs": 82053,
+        "unclaimedBeforeActualPlanningMs": 56348,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Continue observed successful routine with free inventory"
+      },
+      {
+        "index": 13,
+        "startSeconds": 959.966,
+        "endSeconds": 984.549,
+        "turnaroundMs": 24583,
+        "incomplete": false,
+        "observedTicks": 62,
+        "buckets": {
+          "no_approved_work_idle": 62
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 24.583000000000013
+        },
+        "physicallyStationaryTicks": 62,
+        "visibleIdleLowerBoundTicks": 62,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 62,
+        "longestVisibleIdleStreakEstimatedSeconds": 24.583,
+        "coveredObservationSeconds": 24.583,
+        "automaticRequestLifetimeMs": 97702,
+        "unclaimedBeforeActualPlanningMs": 73119,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Continue same progression workload"
+      },
+      {
+        "index": 14,
+        "startSeconds": 1041.419,
+        "endSeconds": 1074.213,
+        "turnaroundMs": 32794,
+        "incomplete": false,
+        "observedTicks": 83,
+        "buckets": {
+          "no_approved_work_idle": 82,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 32.763000000000005,
+          "cooldown": 0.031
+        },
+        "physicallyStationaryTicks": 83,
+        "visibleIdleLowerBoundTicks": 82,
+        "visibleIdleLowerBoundPercent": 98.79518072289157,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 82,
+        "longestVisibleIdleStreakEstimatedSeconds": 32.763,
+        "coveredObservationSeconds": 32.794,
+        "automaticRequestLifetimeMs": 32806,
+        "unclaimedBeforeActualPlanningMs": 12,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Consume actual leftover log and replan after failure"
+      },
+      {
+        "index": 15,
+        "startSeconds": 1136.404,
+        "endSeconds": 1170.471,
+        "turnaroundMs": 34067,
+        "incomplete": false,
+        "observedTicks": 86,
+        "buckets": {
+          "no_approved_work_idle": 86
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 34.067
+        },
+        "physicallyStationaryTicks": 86,
+        "visibleIdleLowerBoundTicks": 86,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 86,
+        "longestVisibleIdleStreakEstimatedSeconds": 34.067,
+        "coveredObservationSeconds": 34.067,
+        "automaticRequestLifetimeMs": 34074,
+        "unclaimedBeforeActualPlanningMs": 7,
+        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
+        "purpose": "Short route to previously reached area, inventory management and final gathering"
+      }
+    ],
+    "perMinute": [
+      {
+        "minute": 1,
+        "observedTicks": 150,
+        "buckets": {
+          "unknown": 1,
+          "no_approved_work_idle": 104,
+          "pending_helper_possible_idle": 20,
+          "observed_progress": 21,
+          "cooldown": 2,
+          "busy_without_proven_progress": 2
+        },
+        "estimatedObservationIntervalSeconds": {
+          "unknown": 0.448,
+          "no_approved_work_idle": 42.73500000000002,
+          "pending_helper_possible_idle": 6.42,
+          "observed_progress": 8.473,
+          "cooldown": 0.988,
+          "busy_without_proven_progress": 0.776
+        },
+        "physicallyStationaryTicks": 133,
+        "visibleIdleLowerBoundTicks": 104,
+        "visibleIdleLowerBoundPercent": 69.33333333333333,
+        "possibleAdditionalIdleTicks": 20,
+        "busyOrProgressTicks": 23,
+        "longestVisibleIdleStreakTicks": 61,
+        "longestVisibleIdleStreakEstimatedSeconds": 25.745,
+        "coveredObservationSeconds": 59.84
+      },
+      {
+        "minute": 2,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 66,
+          "cooldown": 6,
+          "pending_helper_possible_idle": 33,
+          "busy_without_proven_progress": 10,
+          "observed_progress": 36
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 26.178000000000004,
+          "cooldown": 2.464,
+          "pending_helper_possible_idle": 12.905,
+          "busy_without_proven_progress": 4.048,
+          "observed_progress": 14.405000000000001
+        },
+        "physicallyStationaryTicks": 122,
+        "visibleIdleLowerBoundTicks": 66,
+        "visibleIdleLowerBoundPercent": 43.70860927152318,
+        "possibleAdditionalIdleTicks": 33,
+        "busyOrProgressTicks": 46,
+        "longestVisibleIdleStreakTicks": 52,
+        "longestVisibleIdleStreakEstimatedSeconds": 20.794,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 3,
+        "observedTicks": 151,
+        "buckets": {
+          "busy_without_proven_progress": 25,
+          "pending_helper_possible_idle": 88,
+          "observed_progress": 29,
+          "cooldown": 9
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 10.118000000000002,
+          "pending_helper_possible_idle": 34.708000000000006,
+          "observed_progress": 11.361000000000002,
+          "cooldown": 3.8129999999999997
+        },
+        "physicallyStationaryTicks": 136,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 88,
+        "busyOrProgressTicks": 54,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 4,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 48,
+          "observed_progress": 43,
+          "cooldown": 5,
+          "busy_without_proven_progress": 15,
+          "stationary_controller_pause": 24,
+          "no_approved_work_idle": 16
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 18.935999999999996,
+          "observed_progress": 17.012999999999998,
+          "cooldown": 2.212,
+          "busy_without_proven_progress": 6.084000000000001,
+          "stationary_controller_pause": 9.533000000000001,
+          "no_approved_work_idle": 6.2219999999999995
+        },
+        "physicallyStationaryTicks": 116,
+        "visibleIdleLowerBoundTicks": 40,
+        "visibleIdleLowerBoundPercent": 26.490066225165563,
+        "possibleAdditionalIdleTicks": 48,
+        "busyOrProgressTicks": 58,
+        "longestVisibleIdleStreakTicks": 35,
+        "longestVisibleIdleStreakEstimatedSeconds": 13.825,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 5,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 79,
+          "pending_helper_possible_idle": 17,
+          "busy_without_proven_progress": 3,
+          "observed_progress": 7,
+          "cooldown": 3,
+          "stationary_controller_pause": 42
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 31.357999999999997,
+          "pending_helper_possible_idle": 6.866,
+          "busy_without_proven_progress": 1.2149999999999999,
+          "observed_progress": 2.7129999999999996,
+          "cooldown": 1.244,
+          "stationary_controller_pause": 16.604
+        },
+        "physicallyStationaryTicks": 149,
+        "visibleIdleLowerBoundTicks": 121,
+        "visibleIdleLowerBoundPercent": 80.13245033112582,
+        "possibleAdditionalIdleTicks": 17,
+        "busyOrProgressTicks": 10,
+        "longestVisibleIdleStreakTicks": 79,
+        "longestVisibleIdleStreakEstimatedSeconds": 31.358,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 6,
+        "observedTicks": 151,
+        "buckets": {
+          "stationary_controller_pause": 37,
+          "no_approved_work_idle": 83,
+          "pending_helper_possible_idle": 10,
+          "observed_progress": 21
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 14.349000000000002,
+          "no_approved_work_idle": 33.221,
+          "pending_helper_possible_idle": 3.9610000000000003,
+          "observed_progress": 8.469000000000001
+        },
+        "physicallyStationaryTicks": 130,
+        "visibleIdleLowerBoundTicks": 120,
+        "visibleIdleLowerBoundPercent": 79.47019867549669,
+        "possibleAdditionalIdleTicks": 10,
+        "busyOrProgressTicks": 21,
+        "longestVisibleIdleStreakTicks": 97,
+        "longestVisibleIdleStreakEstimatedSeconds": 38.58,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 7,
+        "observedTicks": 151,
+        "buckets": {
+          "stationary_controller_pause": 96,
+          "no_approved_work_idle": 55
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 38.173,
+          "no_approved_work_idle": 21.827
+        },
+        "physicallyStationaryTicks": 151,
+        "visibleIdleLowerBoundTicks": 151,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 151,
+        "longestVisibleIdleStreakEstimatedSeconds": 60,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 8,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 28,
+          "pending_helper_possible_idle": 13,
+          "busy_without_proven_progress": 3,
+          "observed_progress": 10,
+          "cooldown": 3,
+          "stationary_controller_pause": 94
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 10.633,
+          "pending_helper_possible_idle": 5.356,
+          "busy_without_proven_progress": 1.068,
+          "observed_progress": 4.028,
+          "cooldown": 1.1280000000000001,
+          "stationary_controller_pause": 37.787
+        },
+        "physicallyStationaryTicks": 146,
+        "visibleIdleLowerBoundTicks": 122,
+        "visibleIdleLowerBoundPercent": 80.79470198675497,
+        "possibleAdditionalIdleTicks": 13,
+        "busyOrProgressTicks": 13,
+        "longestVisibleIdleStreakTicks": 121,
+        "longestVisibleIdleStreakEstimatedSeconds": 48.243,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 9,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 47,
+          "cooldown": 5,
+          "pending_helper_possible_idle": 27,
+          "observed_progress": 37,
+          "busy_without_proven_progress": 12,
+          "stationary_controller_pause": 23
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 18.592000000000002,
+          "cooldown": 2.206,
+          "pending_helper_possible_idle": 10.514999999999999,
+          "observed_progress": 14.704999999999998,
+          "busy_without_proven_progress": 5.135000000000001,
+          "stationary_controller_pause": 8.846999999999998
+        },
+        "physicallyStationaryTicks": 121,
+        "visibleIdleLowerBoundTicks": 70,
+        "visibleIdleLowerBoundPercent": 46.35761589403973,
+        "possibleAdditionalIdleTicks": 27,
+        "busyOrProgressTicks": 49,
+        "longestVisibleIdleStreakTicks": 47,
+        "longestVisibleIdleStreakEstimatedSeconds": 18.592,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 10,
+        "observedTicks": 151,
+        "buckets": {
+          "stationary_controller_pause": 81,
+          "no_approved_work_idle": 51,
+          "cooldown": 1,
+          "pending_helper_possible_idle": 3,
+          "observed_progress": 15
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 32.191,
+          "no_approved_work_idle": 20.418999999999997,
+          "cooldown": 0.394,
+          "pending_helper_possible_idle": 1.199,
+          "observed_progress": 5.796999999999999
+        },
+        "physicallyStationaryTicks": 136,
+        "visibleIdleLowerBoundTicks": 132,
+        "visibleIdleLowerBoundPercent": 87.41721854304636,
+        "possibleAdditionalIdleTicks": 3,
+        "busyOrProgressTicks": 15,
+        "longestVisibleIdleStreakTicks": 132,
+        "longestVisibleIdleStreakEstimatedSeconds": 52.61,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 11,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 20,
+          "busy_without_proven_progress": 66,
+          "stationary_controller_pause": 65
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 7.840999999999999,
+          "busy_without_proven_progress": 26.379,
+          "stationary_controller_pause": 25.780000000000005
+        },
+        "physicallyStationaryTicks": 137,
+        "visibleIdleLowerBoundTicks": 65,
+        "visibleIdleLowerBoundPercent": 43.04635761589404,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 86,
+        "longestVisibleIdleStreakTicks": 52,
+        "longestVisibleIdleStreakEstimatedSeconds": 20.836,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 12,
+        "observedTicks": 151,
+        "buckets": {
+          "stationary_controller_pause": 50,
+          "no_approved_work_idle": 88,
+          "cooldown": 2,
+          "pending_helper_possible_idle": 5,
+          "observed_progress": 4,
+          "busy_without_proven_progress": 2
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 19.791999999999998,
+          "no_approved_work_idle": 35.182,
+          "cooldown": 0.842,
+          "pending_helper_possible_idle": 1.885,
+          "observed_progress": 1.664,
+          "busy_without_proven_progress": 0.635
+        },
+        "physicallyStationaryTicks": 149,
+        "visibleIdleLowerBoundTicks": 138,
+        "visibleIdleLowerBoundPercent": 91.3907284768212,
+        "possibleAdditionalIdleTicks": 5,
+        "busyOrProgressTicks": 6,
+        "longestVisibleIdleStreakTicks": 138,
+        "longestVisibleIdleStreakEstimatedSeconds": 54.974,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 13,
+        "observedTicks": 151,
+        "buckets": {
+          "busy_without_proven_progress": 1,
+          "observed_progress": 5,
+          "pending_helper_possible_idle": 37,
+          "cooldown": 1,
+          "stationary_controller_pause": 101,
+          "no_approved_work_idle": 6
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 0.193,
+          "observed_progress": 1.934,
+          "pending_helper_possible_idle": 14.842000000000002,
+          "cooldown": 0.395,
+          "stationary_controller_pause": 40.399,
+          "no_approved_work_idle": 2.237
+        },
+        "physicallyStationaryTicks": 148,
+        "visibleIdleLowerBoundTicks": 107,
+        "visibleIdleLowerBoundPercent": 70.86092715231788,
+        "possibleAdditionalIdleTicks": 37,
+        "busyOrProgressTicks": 6,
+        "longestVisibleIdleStreakTicks": 107,
+        "longestVisibleIdleStreakEstimatedSeconds": 42.636,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 14,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 63,
+          "cooldown": 8,
+          "pending_helper_possible_idle": 46,
+          "busy_without_proven_progress": 13,
+          "observed_progress": 21
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 24.749999999999996,
+          "cooldown": 3.3099999999999996,
+          "pending_helper_possible_idle": 18.097,
+          "busy_without_proven_progress": 5.452,
+          "observed_progress": 8.391
+        },
+        "physicallyStationaryTicks": 142,
+        "visibleIdleLowerBoundTicks": 63,
+        "visibleIdleLowerBoundPercent": 41.72185430463576,
+        "possibleAdditionalIdleTicks": 46,
+        "busyOrProgressTicks": 34,
+        "longestVisibleIdleStreakTicks": 62,
+        "longestVisibleIdleStreakEstimatedSeconds": 24.573,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 15,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 117,
+          "cooldown": 3,
+          "pending_helper_possible_idle": 20,
+          "busy_without_proven_progress": 6,
+          "observed_progress": 5
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 46.595000000000006,
+          "cooldown": 1.202,
+          "pending_helper_possible_idle": 7.909,
+          "busy_without_proven_progress": 2.3130000000000006,
+          "observed_progress": 1.9810000000000003
+        },
+        "physicallyStationaryTicks": 149,
+        "visibleIdleLowerBoundTicks": 117,
+        "visibleIdleLowerBoundPercent": 77.48344370860927,
+        "possibleAdditionalIdleTicks": 20,
+        "busyOrProgressTicks": 11,
+        "longestVisibleIdleStreakTicks": 117,
+        "longestVisibleIdleStreakEstimatedSeconds": 46.595,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 16,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 42,
+          "observed_progress": 26,
+          "cooldown": 9,
+          "busy_without_proven_progress": 13,
+          "no_approved_work_idle": 61
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 16.835,
+          "observed_progress": 10.329999999999998,
+          "cooldown": 3.7129999999999996,
+          "busy_without_proven_progress": 4.890000000000001,
+          "no_approved_work_idle": 24.232000000000003
+        },
+        "physicallyStationaryTicks": 140,
+        "visibleIdleLowerBoundTicks": 61,
+        "visibleIdleLowerBoundPercent": 40.397350993377486,
+        "possibleAdditionalIdleTicks": 42,
+        "busyOrProgressTicks": 39,
+        "longestVisibleIdleStreakTicks": 61,
+        "longestVisibleIdleStreakEstimatedSeconds": 24.232,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 17,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 62,
+          "pending_helper_possible_idle": 11,
+          "observed_progress": 2,
+          "busy_without_proven_progress": 3,
+          "cooldown": 1,
+          "stationary_controller_pause": 72
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 24.61000000000001,
+          "pending_helper_possible_idle": 4.594,
+          "observed_progress": 0.833,
+          "busy_without_proven_progress": 0.9560000000000001,
+          "cooldown": 0.484,
+          "stationary_controller_pause": 28.523
+        },
+        "physicallyStationaryTicks": 150,
+        "visibleIdleLowerBoundTicks": 134,
+        "visibleIdleLowerBoundPercent": 88.74172185430463,
+        "possibleAdditionalIdleTicks": 11,
+        "busyOrProgressTicks": 5,
+        "longestVisibleIdleStreakTicks": 72,
+        "longestVisibleIdleStreakEstimatedSeconds": 28.523,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 18,
+        "observedTicks": 151,
+        "buckets": {
+          "stationary_controller_pause": 54,
+          "no_approved_work_idle": 82,
+          "cooldown": 2,
+          "busy_without_proven_progress": 2,
+          "observed_progress": 4,
+          "pending_helper_possible_idle": 7
+        },
+        "estimatedObservationIntervalSeconds": {
+          "stationary_controller_pause": 21.397999999999993,
+          "no_approved_work_idle": 32.78400000000001,
+          "cooldown": 0.781,
+          "busy_without_proven_progress": 0.853,
+          "observed_progress": 1.58,
+          "pending_helper_possible_idle": 2.604
+        },
+        "physicallyStationaryTicks": 149,
+        "visibleIdleLowerBoundTicks": 136,
+        "visibleIdleLowerBoundPercent": 90.06622516556291,
+        "possibleAdditionalIdleTicks": 7,
+        "busyOrProgressTicks": 6,
+        "longestVisibleIdleStreakTicks": 136,
+        "longestVisibleIdleStreakEstimatedSeconds": 54.182,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 19,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 4,
+          "observed_progress": 1,
+          "cooldown": 1,
+          "stationary_controller_pause": 135,
+          "no_approved_work_idle": 10
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 1.4569999999999999,
+          "observed_progress": 0.365,
+          "cooldown": 0.416,
+          "stationary_controller_pause": 54.12799999999999,
+          "no_approved_work_idle": 3.634000000000001
+        },
+        "physicallyStationaryTicks": 151,
+        "visibleIdleLowerBoundTicks": 145,
+        "visibleIdleLowerBoundPercent": 96.02649006622516,
+        "possibleAdditionalIdleTicks": 4,
+        "busyOrProgressTicks": 1,
+        "longestVisibleIdleStreakTicks": 145,
+        "longestVisibleIdleStreakEstimatedSeconds": 57.762,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 20,
+        "observedTicks": 151,
+        "buckets": {
+          "no_approved_work_idle": 88,
+          "pending_helper_possible_idle": 22,
+          "observed_progress": 30,
+          "cooldown": 5,
+          "busy_without_proven_progress": 6
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 34.83600000000001,
+          "pending_helper_possible_idle": 8.971,
+          "observed_progress": 12.027999999999999,
+          "cooldown": 1.9320000000000002,
+          "busy_without_proven_progress": 2.233
+        },
+        "physicallyStationaryTicks": 129,
+        "visibleIdleLowerBoundTicks": 88,
+        "visibleIdleLowerBoundPercent": 58.27814569536424,
+        "possibleAdditionalIdleTicks": 22,
+        "busyOrProgressTicks": 36,
+        "longestVisibleIdleStreakTicks": 77,
+        "longestVisibleIdleStreakEstimatedSeconds": 30.598,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 21,
+        "observedTicks": 1,
+        "buckets": {
+          "no_approved_work_idle": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 0.001
+        },
+        "physicallyStationaryTicks": 1,
+        "visibleIdleLowerBoundTicks": 1,
+        "visibleIdleLowerBoundPercent": 100,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 1,
+        "longestVisibleIdleStreakEstimatedSeconds": 0.001,
+        "coveredObservationSeconds": 0.001
+      }
+    ],
+    "cadenceMs": {
+      "n": 2999,
+      "p50": 401,
+      "p95": 473,
+      "p99": 549,
+      "min": 0,
+      "max": 1684
+    },
+    "jitterMs": {
+      "n": 2998,
+      "p50": 41,
+      "p95": 173,
+      "p99": 349,
+      "min": 0,
+      "max": 1683
+    },
+    "consistency": {
+      "exclusiveBucketSum": 3000,
+      "equalsObservedTicks": true,
+      "planningUnionDoesNotDoubleCount": true
+    },
+    "requestLifecycle": {
+      "requestsObserved": 22,
+      "completedRequests": 15,
+      "claimedActualPlanningIntervals": 15,
+      "birthTimesAvailableForAllClaims": true,
+      "unservedPrefetchIsThinking": false
+    }
+  },
+  "coverage": {
+    "duplicates": 0,
+    "resets": 0,
+    "gappedTicks": 0,
+    "invalid": 0,
+    "droppedRows": 0
+  },
+  "collectorOverhead": {
+    "callbacks": 3257,
+    "totalMs": 419.09668100419185,
+    "maxMs": 7.163780000060797,
+    "meaning": "Synchronous subscriber CPU wall-time; callbacks include inactive pre/post boundary no-op callbacks. File writes are private asynchronous batches of 64 with bounded pending-write backlog; no high-frequency full-state polling. One source subscription, plus low-rate tool/status observation.",
+    "averageMsPerCallback": 0.12867567731169538
+  },
+  "throughput": {
+    "episodes": 15,
+    "episodeOutcomes": {
+      "needs_replan": 10,
+      "verified": 5
+    },
+    "verifiedActionsByType": {
+      "chop": 27,
+      "burn_logs": 33,
+      "walk": 2
+    },
+    "verifiedActions": 62,
+    "failedResults": 10,
+    "verifiedActionsPerMinute": 3.1,
+    "progress": {
+      "Woodcutting": {
+        "startLevel": 11,
+        "endLevel": 43,
+        "startXp": 1250,
+        "endXp": 20937,
+        "xpGain": 19687
+      },
+      "Firemaking": {
+        "startLevel": 1,
+        "endLevel": 50,
+        "startXp": 0,
+        "endXp": 33500,
+        "xpGain": 33500
+      }
+    },
+    "dispatchesWithinWindow": 72,
+    "fullRoutineSuccesses": 5,
+    "routinesNeedingReplan": 10,
+    "lastDurableEpisodeSeconds": 1195.401,
+    "postDeadlineTaskActivityIncluded": false,
+    "routineFailureReasons": {
+      "SDK_ACTION_FAILED": 8,
+      "TARGET_NOT_CURRENTLY_OBSERVED_OR_REACHABLE": 1,
+      "ACTION_DEADLINE": 1
+    }
+  },
+  "actionTiming": {
+    "observationToEligibleHelperDispatchMs": {
+      "n": 72,
+      "p50": 0.44377500005066395,
+      "p95": 288.61937800003216,
+      "p99": 376.0008160000434,
+      "min": 0.21361600002273917,
+      "max": 376.0008160000434
+    },
+    "packetAcknowledgementMs": {
+      "n": 264,
+      "p50": 98.5662020000018,
+      "p95": 165.00625099998433,
+      "p99": 212.02123299997766,
+      "min": 81.18287600000622,
+      "max": 237.6075290000299
+    },
+    "helperStartToObservedEffectMs": {
+      "n": 62,
+      "p50": 3280.384178999986,
+      "p95": 10461.108705999999,
+      "p99": 17236.021280000015,
+      "min": 2198.695713000023,
+      "max": 17236.021280000015
+    },
+    "automaticPlannerRequestLifetimeMs": {
+      "n": 15,
+      "p50": 32806.42383500002,
+      "p95": 97701.85245900007,
+      "p99": 97701.85245900007,
+      "min": 20589.209384000045,
+      "max": 97701.85245900007
+    },
+    "note": "No preflight game actions; all 72 dispatches and 62 verified episode results are inside fixed window. Executor cadence metrics cover preparation too, so cadence above comes exclusively from passive measured trace."
+  },
+  "developerWorkDisclosure": {
+    "runtimeBehaviorModifiedDuringWindow": false,
+    "collectorPinnedBeforeStart": true,
+    "allOutsideClaimTimeRetainedInWholeTotals": true,
+    "outsideClaimedDurationSeconds": 783.888,
+    "offlineAnalyzerAuthoringContainedInUnclaimedInterval": {
+      "startSeconds": 592.634,
+      "endSeconds": 679.531,
+      "note": "Broad enclosing unclaimed interval includes observation/report updates as well as offline analyzer/test authoring; exact keystroke duration was not instrumented. It is excluded from claimed thinking, retained in whole totals."
+    },
+    "otherEvidenceSupportWork": "Private ledger/event-retention helpers and status formatting were adjusted outside claims; these operational intervals remain in the unclaimed category, not model thinking. Report assembly completed after fixed end."
+  },
+  "checks": {
+    "passed": 12,
+    "failed": 0,
+    "assertions": {
+      "exclusiveBucketsSumTo3000": true,
+      "fixed20MinuteWindow": true,
+      "noGapsResetsOrDroppedWrites": true,
+      "fifteenDistinctClaimCompleteIntervals": true,
+      "sameSourceBuildBeforeAndAfter": true,
+      "sameOwnerAndCharacter": true,
+      "sameAccountNoReplacement": true,
+      "durable62VerifiedActions": true,
+      "durable10FailureResults": true,
+      "allLastTaskEffectsInsideWindow": true,
+      "stoppedAndOwnedClientGone": true,
+      "requestBirthsSeparateFromClaims": true
+    },
+    "tests": [
+      {
+        "command": "node --test wartime/v2/test/*.test.mjs (before live start)",
+        "pass": 63,
+        "fail": 0
+      },
+      {
+        "command": "bun test wartime/v2/test/long-run.test.mjs wartime/v2/test/agent-bridge.test.ts (before live start)",
+        "pass": 3,
+        "fail": 0
+      },
+      {
+        "command": "node --test wartime/v2/test/long-analysis.test.mjs (final offline accounting)",
+        "pass": 2,
+        "fail": 0
+      }
+    ],
+    "suiteOverlap": "Runtime suites overlap; these are not summed as distinct tests."
+  },
+  "legacyNarrowMetric": {
+    "avoidableIdleTicks": 0,
+    "warning": "Zero does not represent real idle: passive measured idle and failure pauses are substantial. Do not use it as the answer."
+  },
+  "privateEvidence": {
+    "tickTraceSha256": "4f4f096b1a8e1831ef335d3c863656e3d4fcc350f7df35309bb05a9bc7380453",
+    "rawTracePublished": false,
+    "accountStateChatCredentialsPublished": false
+  },
+  "limitations": [
+    "This cloud agent and its tool scheduling were tested, not the separate Wartime environment/model or isolated inference.",
+    "Single character/session/workload, 20 minutes, not proof of unlimited autonomy or PvP ability. No public chat/PvP action.",
+    "Many full routines failed or required replanning; this is not a successful low-idle benchmark. Observed skill XP may increase even when an SDK helper reports failure; verified actions and actual XP are kept separate.",
+    "Whole-run idle includes unclaimed operational/developer/report periods. Use claimed interval intersection as primary answer to thinking-time question.",
+    "Standing still alone is not idle. Busy animation may still hide ineffective work; helper ambiguity could contain useful attempts or wasted time. Missing ticks are not invented as idle.",
+    "Idle is a conservative observation-based estimate; no server execution trace or authoritative hidden-action state. Small boundary uncertainty at tick/window edges and millisecond clock quantization remain.",
+    "Plans intentionally adapted to targets, inventory, failures and available oak as ordinary progression; executor and measurement source stayed fixed. No comparison claiming that changing workload optimized the controller.",
+    "Final stop happens after measurement; cancellation/cleanup ticks are excluded. Earlier historical reports are unchanged."
+  ]
+}

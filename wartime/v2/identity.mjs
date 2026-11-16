@@ -12,6 +12,7 @@ export const CODE_FILES = [
   "host.ts",
   "identity.mjs",
   "knowledge-worker.mjs",
+  "long-run.mjs",
   "knowledge.mjs",
   "managed-websocket.mjs",
   "protocol.mjs",

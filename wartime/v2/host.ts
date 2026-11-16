@@ -1,4 +1,5 @@
 // Persistent owner. Never run inside execute_code. Short bridge calls update it.
+import { LiveMeasure } from "./long-run.mjs";
 import { runtimeIdentity } from "./identity.mjs";
 import { createServer } from "node:http";
 import { readFile, chmod, stat, mkdir, rmdir } from "node:fs/promises";
@@ -35,6 +36,8 @@ export async function startInjected({ sdk, config }: any) {
 }
 export async function createBridge(executor: any, config: any) {
   const implementation = await runtimeIdentity();
+  const measurement = config.measurementFile ? new LiveMeasure(executor, config.measurementFile) : null;
+  const measurementOff = measurement ? executor.adapter.subscribe((s: any) => { const start=performance.now(); measurement.observe(s); const ms=performance.now()-start; const o=measurement.overhead??={callbacks:0,totalMs:0,maxMs:0}; o.callbacks++; o.totalMs+=ms; o.maxMs=Math.max(o.maxMs,ms); }) : null;
   const identity = () => ({
     implementation,
     runId: config.runId ?? null,
@@ -85,6 +88,17 @@ export async function createBridge(executor: any, config: any) {
       const { operation, ...a } = JSON.parse(body);
       let result;
       switch (operation) {
+        case "measurement_begin":
+          if (!measurement) throw Error("MEASUREMENT_NOT_CONFIGURED");
+          result = await measurement.begin(a.durationMs); break;
+        case "measurement_claim":
+          if (!measurement) throw Error("MEASUREMENT_NOT_CONFIGURED");
+          result = measurement.claim(a.id); break;
+        case "measurement_end":
+          if (!measurement) throw Error("MEASUREMENT_NOT_CONFIGURED");
+          result = await measurement.end(); break;
+        case "measurement_status":
+          result = measurement?.summary(); break;
         case "identity":
           result = identity();
           break;
@@ -111,6 +125,7 @@ export async function createBridge(executor: any, config: any) {
           result = executor.plannerRequests();
           break;
         case "planner_complete":
+          measurement?.complete(a.id);
           result = executor.completePlan(
             a.id,
             a.proposal,
@@ -172,6 +187,8 @@ export async function createBridge(executor: any, config: any) {
     executor,
     server,
     async close() {
+      measurementOff?.();
+      if (measurement?.running) await measurement.end();
       await executor.stop();
       await new Promise<void>((r) => server.close(() => r()));
     },

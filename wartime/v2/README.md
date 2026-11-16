@@ -41,6 +41,8 @@ GATEWAY_DIRECT=false WARTIME_RUN_CONFIG=wartime/.wartime/run-config.json \
 bun wartime/v2/run.ts resume RETURNED_RUN_ID
 ```
 
+The [resume lease follow-up](resume-lease-followup-report.json) verifies that authoritative account generation and recovery budgets are reloaded under the acquired run lease; invalid newer records are never overwritten by a stale snapshot.
+
 An active same-run lease causes repeated/concurrent startup to stop without launching another client or controller. Explicit resume preserves the account and progress when readiness succeeds. A verified successful resume resets its failed-attempt streak; cumulative attempt counters and replacement use remain in the private record. Old planner tokens never resume automatically.
 
 ### Stuck old-character reconnect: one automatic fresh fallback

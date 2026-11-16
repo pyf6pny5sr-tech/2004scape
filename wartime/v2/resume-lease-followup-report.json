@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "0f05817433e05c264a456b3b9c4b6ef5101ea07f",
+  "validatedAt": "2026-11-16T16:08:57.367907+00:00",
+  "scope": "Focused resumed-run stale-snapshot race; deterministic cloud regressions only. No new accounts, gameplay or remote attempts.",
+  "environment": {
+    "provider": "Codex Cloud",
+    "os": "Linux",
+    "node": "24.22.1",
+    "bun": "1.4.4 (38afee6c8)"
+  },
+  "change": "Reload and revalidate resumed run state while holding its lease before recovery/establishment. On post-lock load failure, discard the in-memory snapshot and release the acquired lease without writing the record. Preliminary world validation, active-owner refusal and new-run creation remain intact.",
+  "regressions": [
+    "A cooperating owner replaces the active generation and spends recovery/replacement budget after the initial read and before lease acquisition; resume uses the newer identity and exhausted budget instead of reverting them.",
+    "Post-lock schema-invalid state remains byte-for-byte unchanged, with lease released and no recovery/client/owner startup.",
+    "Post-lock world-mismatched state remains byte-for-byte unchanged, with lease released and no recovery/client/owner startup.",
+    "Post-lock malformed JSON remains byte-for-byte unchanged, with lease released and no recovery/client/owner startup."
+  ],
+  "checks": [
+    {
+      "command": "node --test wartime/v2/test/run.test.mjs",
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "command": "node --test wartime/v2/test/*.test.mjs",
+      "passed": 53,
+      "failed": 0
+    },
+    {
+      "command": "bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts",
+      "passed": 57,
+      "failed": 0
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "sourceSha256": {
+    "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+    "test/run.test.mjs": "b4b592b4b627e2e702e3e011ec69bcb0aeda131a6c674cb4c2687ea688080127"
+  },
+  "historicalEvidence": "new-run-validation-report.json and earlier gameplay/maintenance reports remain unchanged; their traces are not recast as tests of this follow-up.",
+  "liveStatus": "Unchanged: prior live new-run attempt stopped at GATEWAY_WEBSOCKET_TRANSPORT before login; no new remote attempt was made for this follow-up.",
+  "publication": {
+    "onlyBranch": "wartime-integration",
+    "mainMerged": false,
+    "websiteDeployed": false
+  },
+  "commitIdentity": "The commit containing this follow-up report."
+}

@@ -28,6 +28,18 @@ export class RunManager {
     if (resume) await this.store.load();
     else await this.store.create();
     await this.store.acquire(resume);
+    // The pre-lease read is only a preliminary check. Another owner may have
+    // advanced the account generation or recovery budget before acquisition.
+    // Never establish or save from that stale snapshot.
+    if (resume) {
+      try {
+        await this.store.load();
+      } catch (error) {
+        this.store.record = undefined;
+        await this.store.release();
+        throw error;
+      }
+    }
     this.externalAbort = () => {
       this.abort.abort(new RunError("RUN_CANCELLED"));
       if (this.established) void this.close("CANCELLED");

@@ -436,3 +436,124 @@ test("corrupt persisted recovery budgets fail closed before creating identities"
   );
   assert.equal(f.state.launches.length, 1);
 });
+
+test("resume reloads the generation and spent budget saved between initial read and lease acquisition", async (t) => {
+  const f = await fixture(t);
+  const initial = await f.start();
+  await initial.close();
+  const attempted = [];
+  const manager = new RunManager(
+    f.config,
+    { mode: "resume", runId: initial.store.id },
+    {
+      ...f.deps,
+      launchClient: async (store) => {
+        attempted.push(store.account.character);
+        return {
+          ready: Promise.reject(new RunError("OLD_LOGIN_AMBIGUOUS")),
+          close: async () => {},
+        };
+      },
+    },
+  );
+  const acquire = manager.store.acquire.bind(manager.store);
+  let newerName, newerPassword;
+  manager.store.acquire = async (resume) => {
+    assert.equal(manager.store.record.activeGeneration, 0);
+    assert.equal(manager.store.record.replacementsUsed, 0);
+    // A different cooperating owner wins the lease after our initial read.
+    const other = new RunStore(runConfig(f.config), initial.store.id);
+    await other.load();
+    await other.acquire(true);
+    try {
+      other.account.reconnectAttemptsUsed = 2;
+      other.record.replacementsUsed = 1;
+      other.appendIdentity("REPLACED_AFTER_RECONNECT_BUDGET");
+      other.account.reconnectAttemptsUsed = 1;
+      other.account.evidence.loginAttempted = true;
+      other.account.evidence.freshStateConfirmed = true;
+      newerName = other.account.character;
+      newerPassword = other.account.password;
+      await other.save();
+    } finally {
+      await other.release();
+    }
+    await acquire(resume);
+  };
+  await assert.rejects(manager.start(), /REPLACEMENT_BUDGET_EXHAUSTED/);
+  const saved = JSON.parse(await readFile(initial.store.file, "utf8"));
+  assert.deepEqual(attempted, [newerName]);
+  assert.equal(saved.activeGeneration, 1);
+  assert.equal(saved.replacementsUsed, 1);
+  assert.equal(saved.accounts.length, 2);
+  assert.equal(saved.accounts[1].password, newerPassword);
+  assert.equal(saved.accounts[1].reconnectAttemptsUsed, 2);
+  assert.equal(saved.accounts[0].reconnectAttemptsUsed, 2);
+});
+
+for (const invalid of ["schema", "world", "syntax"])
+  test(
+    "post-lease " +
+      invalid +
+      " validation failure releases lease without overwriting the newer record",
+    async (t) => {
+      const f = await fixture(t);
+      const initial = await f.start();
+      await initial.close();
+      let recoveries = 0;
+      const manager = new RunManager(
+        f.config,
+        { mode: "resume", runId: initial.store.id },
+        {
+          ...f.deps,
+          recover: async () => {
+            recoveries++;
+          },
+        },
+      );
+      const acquire = manager.store.acquire.bind(manager.store);
+      let bytes;
+      manager.store.acquire = async (resume) => {
+        const other = new RunStore(runConfig(f.config), initial.store.id);
+        await other.load();
+        await other.acquire(true);
+        try {
+          bytes =
+            invalid === "syntax"
+              ? "{invalid json"
+              : invalid === "schema"
+                ? JSON.stringify({
+                    schemaVersion: 1,
+                    note: "new invalid state",
+                  })
+                : JSON.stringify({
+                    ...other.record,
+                    world: "http://localhost:9999",
+                  });
+          await writeFile(other.file, bytes, { mode: 0o600 });
+        } finally {
+          await other.release();
+        }
+        await acquire(resume);
+      };
+      await assert.rejects(
+        manager.start(),
+        invalid === "schema"
+          ? /RUN_RECORD_INVALID/
+          : invalid === "world"
+            ? /RUN_WORLD_IDENTITY_CHANGED/
+            : SyntaxError,
+      );
+      assert.equal(await readFile(initial.store.file, "utf8"), bytes);
+      assert.equal(manager.store.lock, null);
+      assert.equal(manager.store.record, undefined);
+      assert.equal(recoveries, 0);
+      assert.equal(f.state.launches.length, 1);
+      assert.equal(f.state.client, false);
+      assert.equal(f.state.owner, false);
+      await assert.rejects(
+        stat(path.join(manager.store.dir, "owner.lock")),
+        (e) => e.code === "ENOENT",
+      );
+    },
+  );

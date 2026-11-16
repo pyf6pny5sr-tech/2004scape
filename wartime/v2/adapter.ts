@@ -1,3 +1,4 @@
+import { resourceAction } from "./resource-actions";
 import { copy } from "./protocol.mjs";
 import { BotActions } from "../../sdk/actions";
 import {
@@ -120,11 +121,7 @@ export class SDKAdapter {
         throw new Error("ESCAPE_PLANE_MISMATCH");
       if (c.action === "escape")
         return bot.walkTo(c.x, c.z, 0, { timeout: 15000 });
-      if (['chop','mine'].includes(c.action) && c.target?.x!==undefined) {
-        const target=state.nearbyLocs?.find((l:any)=>l.x===c.target.x&&l.z===c.target.z&&l.level===state.player.level&&l.reachable!==false&&(c.target.id===undefined||l.id===c.target.id)&&(c.target.name===undefined||l.name.toLowerCase()===c.target.name.toLowerCase()));
-        if(!target)throw Error('FRESH_RESOURCE_TARGET_NOT_FOUND');
-        return c.action==='chop'?bot.chopTree(target):bot.mineRock(target,{timeout:15000});
-      }
+      if(['chop','burn_logs'].includes(c.action))return resourceAction(guarded,bot,c,valid);
       // Reuse v1's reviewed exact item/loc resolution and SDK call signatures only.
       return WartimeController.prototype.dispatch.call(
         { bot, sdk: guarded, resolve: WartimeController.prototype.resolve },

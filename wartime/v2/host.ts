@@ -168,12 +168,8 @@ export async function createBridge(executor: any, config: any) {
         case "replay":
           result = await executor.replay(a.name);
           break;
-        case "maintenance":
-          result = executor.requestMaintenance(a.version);
-          break;
-        case "cancel_maintenance":
-          result = executor.cancelMaintenance();
-          break;
+        case "cancel":
+          result=executor.cancel();break;
         case "resume":
           result = executor.resume();
           break;
@@ -205,7 +201,6 @@ export async function createBridge(executor: any, config: any) {
     server.listen(config.socket, () => resolve());
   });
   await chmod(config.socket, 0o600);
-  for (const v of config.stagedVersions ?? []) executor.stage(v);
   return {
     executor,
     server,

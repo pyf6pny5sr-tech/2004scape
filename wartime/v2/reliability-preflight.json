@@ -1,0 +1,59 @@
+{
+  "scope": "Preflight: retire church/automatic gameplay risk pauses, improve actual resource reliability, preserve manual cancel/stop and connection correctness",
+  "baseCommit": "5dda557024d25dbc57135760241bca3ab7e4681a",
+  "sourcePin": "Containing implementation commit; runtime file hashes below",
+  "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+  "diagnosis": {
+    "previousExactBoundary": "29 failed-attempt increments;27 routine_failed events;18 SDK_ACTION_FAILED,7 FRESH_RESOURCE_TARGET_NOT_FOUND,2 ACTION_DEADLINE;2 additional invalidated/canceled helper attempts not guessed into categories",
+    "privateEpisodeInspection": "Recorded failures inspected were chops; no failed burns or connection/ownership failures appeared in those episodes. Episode file persistence/time boundaries can include a different final step than exact-cutoff event counts, so event evidence is the denominator authority.",
+    "sdkContracts": [
+      "sendInteractLoc(x,z,locId,option)",
+      "sendUseItemOnItem(sourceSlot,targetSlot)",
+      "sendClickDialog(serverOptionIndex)",
+      "waitForCondition rejects exactly Error(waitForCondition timed out) on condition timeout"
+    ],
+    "hypothesisAndFix": "Legacy chop helper short-circuits on depletion and resolves loc before UI waits. New resource path resolves current loc/slots after UI, waits three observed ticks for late depletion effects, and reconciles only fresh actual original postconditions. Actual new-run causes will be reported."
+  },
+  "tests": {
+    "initialNodeSuite": {
+      "total": 76,
+      "passed": 75,
+      "failed": 1
+    },
+    "initialBunSuite": {
+      "total": 100,
+      "passed": 99,
+      "failed": 1
+    },
+    "initialFailure": "New report-rate test used strict equality across floating-point operation ordering; changed to a1e-12 tolerance, with same formula and expected denominator.",
+    "finalFocusedNode": {
+      "command": "node --test wartime/v2/test/executor.test.mjs wartime/v2/test/continuity.test.mjs wartime/v2/test/reliability-report.test.mjs",
+      "passed": 38,
+      "failed": 0
+    },
+    "finalFocusedBun": {
+      "command": "bun test wartime/v2/test/executor.test.mjs wartime/v2/test/continuity.test.mjs wartime/v2/test/reliability-report.test.mjs wartime/v2/test/resource-actions.test.ts",
+      "passed": 56,
+      "failed": 0
+    },
+    "finalRealSDKAndResource": {
+      "command": "bun test wartime/v2/test/adapter.test.ts wartime/v2/test/resource-actions.test.ts",
+      "passed": 24,
+      "failed": 0
+    },
+    "note": "Existing relevant suites ran once, with focused reruns after fixes. An additional unknown-error test and two actual-SDK packet/dialog tests were included in final focused runs. Node/Bun overlap; no single77/103 full-green suite is claimed."
+  },
+  "changedContract": "Historical church/automatic health/combat/region pause tests removed or replaced by manual-control/continued-gameplay tests. Reports unchanged. No hidden gameplay risk toggles.",
+  "metrics": "verifiedActions stays helper completion metric; helperVerifiedCompletions explicit; continuedOwnedEffectSteps separate. Failure denominator is completed helper dispatches, excluding passive effects and in-flight attempts.",
+  "sourceFileSha256": {
+    "executor.mjs": "abda6e93f1d02fae41cd69726188c60048fb4e35a7c8f651eb072328854b66d8",
+    "continuity.mjs": "947fce2ffcc05f90166cccb5c31082da60b266544b63db4731b60b5e2dce6e29",
+    "resource-actions.ts": "87585eecb2386ebe1c6c94414a1fb87631c7da6251bf00faf2063be5cccc3954",
+    "adapter.ts": "1accd82065bbc6fb967780c21c39933d45ee1fcac286410b3e8555e6b8180556",
+    "host.ts": "596a8dda2d77394774409cfa44bc283968d8530e19b83e58e00a1dafbece2d49",
+    "protocol.mjs": "5175cdb353e4296a1b3f4d6a5920c8a60af9cc96bb90f1bd55b152333deb06ca",
+    "run-store.mjs": "571f21995c321fbfe35eee78af1b6da3f9b96d65b55425f199b81755c81d2d14",
+    "identity.mjs": "d85ccda7a1ac8ab78964d2a1220ba334ce8e5003c5266692f8055b731d6d3f96",
+    "reliability-report.mjs": "832bf93519c5d3d7fcfeaa2590d312e86206a231d8465ec941fcad5755636171"
+  }
+}

@@ -1,4 +1,4 @@
-import { validateContinuation, continuationUnsafe, nextContinuation, inside, ordinaryResourceFailure } from "./continuity.mjs";
+import { validateContinuation, nextContinuation, ordinaryResourceFailure } from "./continuity.mjs";
 import { Memory } from "../memory.mjs";
 import { Telemetry } from "./telemetry.mjs";
 import {
@@ -27,22 +27,6 @@ export class Executor {
         directory: config.directory,
       });
     bounded(this.config.maxAgeMs, 1, 10000, "STATE_AGE");
-    if (config.church) {
-      const c = config.church;
-      for (const [k, lo, hi] of [
-        ["x", 0, 16383],
-        ["z", 0, 16383],
-        ["level", 0, 3],
-        ["radius", 0, 5],
-        ["anchorId", 0, 1000000],
-        ["anchorRadius", 1, 32],
-        ["minHp", 1, 1000],
-        ["playerClearance", 0, 32],
-      ])
-        bounded(c[k], lo, hi, "CHURCH_" + k);
-    }
-    if (config.safety?.eatAtHp !== undefined)
-      bounded(config.safety.eatAtHp, 0, 1000, "EAT_HP");
     this.metrics = new Telemetry();
     this.metrics.count("avoidableIdleTicks", 0);
     this.adapter.metrics = this.metrics;
@@ -60,13 +44,11 @@ export class Executor {
     this.planning = new Map();
     this.requests = [];
     this.events = [];
-    this.maintenance = null;
     this.lastTick = null;
     this.lastRevision = null;
     this.tickSerial = 0;
     this.cooldownUntil = 0;
     this.eligibleAt = 0;
-    this.staged = new Set();
     this.lastFreshAt = 0;
     this.lastTickTime = null;
     this.stopRequested = false;
@@ -133,7 +115,7 @@ export class Executor {
     if (state) this.observe(state);
     this.watchdog = setInterval(() => {
       if(this.active?.continuation && Date.now()>=this.active.expiresAt)this.cancelActive("CONTINUATION_ACTION_EXPIRED");
-      if (this.phase !== "STOPPED" && !this.fresh()) {
+      if (this.phase !== "STOPPED" && (!this.adapter.connected()||!this.adapter.controlled()||!this.adapter.bound(this.identity)||!Number.isFinite(this.adapter.age())||this.adapter.age()>this.config.maxAgeMs)) {
         if (!["PAUSED", "BLOCKED"].includes(this.phase)) {
           this.invalidate("STALE_OR_DISCONNECTED", { session: true });
           this.phase = "PAUSED";
@@ -148,15 +130,9 @@ export class Executor {
     if (task) this.task++;
     if (session) this.session++;
     this.cancelActive(reason);
-    this.pendingEmergency = null;
+    this.pendingResourceResume = null;
     this.continuation = null;
     this.gatherLease = null;
-    if (
-      this.maintenance &&
-      (this.maintenance.activated ||
-        ["PUBLICATION_CLOCK_RESET", "LIFE_CHANGED"].includes(reason))
-    )
-      this.postpone(reason);
     this.queue = [];
     this.routine = null;
     this.planning.clear();
@@ -202,7 +178,6 @@ export class Executor {
     this.unsub?.();
     this.unconn?.();
     if (this.active) await this.active.done;
-    if (this.maintenance?.work) await this.maintenance.work;
     if (this.persistence) await this.persistence;
     if (this.leaseHeld) {
       await rmdir(this.leasePath);
@@ -218,7 +193,7 @@ export class Executor {
       goal.description.length > 2000
     )
       throw new Error("INVALID_GOAL");
-    if (!["PLAYING", "PAUSED"].includes(this.phase) || this.maintenance)
+    if (!["PLAYING", "PAUSED"].includes(this.phase))
       throw new Error("NOT_PLAYING");
     this.invalidate("TASK_CHANGED", { task: true });
     this.goal = copy(goal);
@@ -227,7 +202,7 @@ export class Executor {
     return this.token();
   }
   submit(proposal) {
-    if (this.phase !== "PLAYING" || this.maintenance)
+    if (this.phase !== "PLAYING")
       throw new Error("NOT_ACCEPTING_PLANS");
     if (!proposal || !this.same(proposal.token)) throw new Error("STALE_PLAN");
     if (
@@ -253,7 +228,7 @@ export class Executor {
     const steps = proposal.steps.map(validateCommand);
     const repeat = bounded(proposal.repeat ?? 1, 1, 20, "REPEAT");
     const continuation = proposal.continuation ? validateContinuation(proposal.continuation, this.state, this.token()) : null;
-    if(continuation && steps.some(c=>!(['chop','burn_logs','walk'].includes(c.action))||(c.action==='chop'&&c.target.name!==continuation.target.name)||(c.action==='burn_logs'&&c.item.name!==continuation.log.name)||(c.action==='walk'&&!inside(continuation.area,{worldX:c.x,worldZ:c.z,level:c.level}))))throw Error('CONTINUATION_INCOMPATIBLE_STEP');
+    if(continuation && steps.some(c=>!(['chop','burn_logs','walk'].includes(c.action))||(c.action==='chop'&&c.target.name!==continuation.target.name)||(c.action==='burn_logs'&&c.item.name!==continuation.log.name)))throw Error('CONTINUATION_INCOMPATIBLE_STEP');
     const routine = {
       id: randomUUID(),
       token: copy(proposal.token),
@@ -346,7 +321,9 @@ export class Executor {
           this.lastRevision !== null &&
           revision < this.lastRevision));
     if (reset) {
+      const retained=this.continuation;
       this.invalidate("PUBLICATION_CLOCK_RESET", { session: true });
+      this.pendingResourceResume=retained;
       this.cooldownUntil = 0;
       this.lastTickTime = null;
     }
@@ -427,10 +404,12 @@ export class Executor {
     if (newTick && s.player?.animId !== undefined && s.player.animId !== -1)
       this.metrics.count("animationObservedTicks");
     if (this.life !== 0 && this.life !== s.player?.lifeId) {
+      const retained=this.continuation??this.pendingResourceResume;
       this.invalidate("LIFE_CHANGED", { session: true });
+      this.pendingResourceResume=retained;
       this.cooldownUntil = 0;
-      this.phase = "PAUSED";
-      this.blockReason = "REPLAN_AFTER_RESPAWN";
+      if(this.phase!=="BLOCKED")this.phase="PLAYING";
+      this.blockReason="WAITING_FOR_LIVE_STATE";
     }
     this.life = s.player?.lifeId ?? 0;
     if (!this.adapter.bound(this.identity)) {
@@ -439,37 +418,14 @@ export class Executor {
     }
     if (!this.fresh()) {
       this.cancelActive("UNSAFE_STATE");
-      if (this.maintenance) this.postpone("UNSAFE_OR_STALE");
       return;
     }
     this.lastFreshAt = now;
-    if(this.active?.continuation){
-      const unsafe=continuationUnsafe(this.active.grant,this.state);
-      if(unsafe){this.invalidate(unsafe,{task:true});this.phase='PAUSED';this.blockReason=unsafe;if(this.state.player.hp<=(this.config.safety?.eatAtHp??0))this.emergency();return;}
-      if(Date.now()>=this.active.expiresAt)this.cancelActive('CONTINUATION_ACTION_EXPIRED');
-    }
-    if (this.continuation) {
-      const unsafe = continuationUnsafe(this.continuation, this.state);
-      if (unsafe) { this.invalidate(unsafe, {task:true}); this.phase='PAUSED'; this.blockReason=unsafe; if(this.state.player.hp<=(this.config.safety?.eatAtHp??0))this.emergency(); return; }
-      if (this.continuation.expiresAt <= Date.now()) {
-        this.continuation=null; this.metrics.count('continuationExpirations');
-        if(this.active?.continuation)this.cancelActive('CONTINUATION_EXPIRED');
-      }
-    }
-    if (this.phase === "BLOCKED") return;
-    if (this.state.player.hp <= (this.config.safety?.eatAtHp ?? 0)) {
-      if ((this.emergencyAttempts ?? 0) < 3) this.emergency();
-    } else this.emergencyAttempts = 0;
-    if (this.phase === "PAUSED") return;
-    if (this.maintenance && this.phase === "EMERGENCY") {
-      this.schedule();
-      return;
-    }
-    if (this.maintenance) {
-      if (newTick) this.metrics.count("intentionalMaintenanceTicks");
-      this.advanceMaintenance();
-      return;
-    }
+    if(this.pendingResourceResume&&this.phase!=="BLOCKED"){const g=this.pendingResourceResume;this.pendingResourceResume=null;if(g.expiresAt>Date.now()&&g.remaining>0)this.continuation={...g,token:this.token()};}
+    if(this.phase==="PAUSED"&&this.blockReason==="STALE_OR_DISCONNECTED"){this.phase="PLAYING";this.blockReason=null;}
+    if(this.active?.continuation&&Date.now()>=this.active.expiresAt)this.cancelActive('CONTINUATION_ACTION_EXPIRED');
+    if(this.continuation?.expiresAt<=Date.now()){this.continuation=null;this.metrics.count('continuationExpirations');}
+    if(['BLOCKED','PAUSED'].includes(this.phase))return;
     if (newTick) {
       if (this.active) this.metrics.count("ongoingActionTicks");
       else if (this.tickSerial < this.cooldownUntil)
@@ -489,50 +445,14 @@ export class Executor {
       } catch {}
     }
   }
-  emergency() {
-    if (this.phase === "EMERGENCY") return;
-    this.emergencyAttempts = (this.emergencyAttempts ?? 0) + 1;
-    this.metrics.count("emergencies");
-    this.invalidate("HEALTH_EMERGENCY", { task: true });
-    if (this.maintenance) this.postpone("HEALTH_EMERGENCY");
-    this.phase = "EMERGENCY";
-    const safety = this.config.safety ?? {};
-    let command;
-    const food = this.state.inventory?.find((i) =>
-      i.optionsWithIndex?.some((o) => o.text.toLowerCase() === "eat"),
-    );
-    if (food)
-      command = {
-        action: "eat",
-        target: { id: food.id },
-        expect: [{ type: "hp_gain", amount: 1 }],
-        cooldownTicks: 3,
-      };
-    else if (safety.escape)
-      command = {
-        action: "escape",
-        ...safety.escape,
-        expect: [{ type: "position", ...safety.escape }],
-        cooldownTicks: 1,
-      };
-    if (!command) {
-      this.phase = "PAUSED";
-      this.blockReason = "EMERGENCY_NO_APPROVED_FALLBACK";
-      return;
-    }
-    // The prior action must unwind before the safety action owns dispatch.
-    this.pendingEmergency = validateCommand(command);
-    this.event("emergency");
-    this.schedule();
-  }
   gatherMatches(c) {
     const g = this.gatherLease;
     return (
       !!g &&
       this.same(g.token) &&
       g.action === c.action &&
-      (c.target.id === undefined || c.target.id === g.target.id) &&
-      (c.target.x === undefined || (c.target.x===g.target.x&&c.target.z===g.target.z)) &&
+      (c.target.name !== undefined || c.target.id === undefined || c.target.id === g.target.id) &&
+      (!c.target.exact || (c.target.x===g.target.x&&c.target.z===g.target.z)) &&
       (c.target.name === undefined ||
         c.target.name.toLowerCase() === g.target.name.toLowerCase())
     );
@@ -570,6 +490,7 @@ export class Executor {
       });
       g.baseline = copy(this.state);
       this.metrics.count("continuedGatherEffects");
+      this.metrics.count("continuedOwnedEffectSteps");
       this.event("continued_gather_effect", { action: c.action });
       queueMicrotask(() => this.schedule());
       return true;
@@ -583,7 +504,11 @@ export class Executor {
       else if (s.player.animId !== -1) {
         this.metrics.count("gatherInteractionSuppressions");
         return "GATHER_CONTINUING";
-      } else throw new Error("GATHER_CONTINUATION_UNCERTAIN_REPLAN");
+      } else {
+        this.gatherLease.idleSince??=this.tickSerial;
+        if(this.tickSerial-this.gatherLease.idleSince<2)return 'GATHER_SETTLING';
+        this.gatherLease=null;
+      }
     }
     if (this.tickSerial < this.cooldownUntil) return "COOLDOWN";
     if (
@@ -629,14 +554,6 @@ export class Executor {
       ["STOPPED", "BLOCKED", "PAUSED"].includes(this.phase)
     )
       return;
-    if (this.pendingEmergency) {
-      if (this.tickSerial < (this.safetyCooldownUntil ?? 0)) return;
-      const c = this.pendingEmergency;
-      this.pendingEmergency = null;
-      this.launch(c, null, "emergency");
-      return;
-    }
-    if (this.maintenance) return;
     if (this.phase !== "PLAYING") return;
     if (this.routine?.continuation && this.queue.length && !this.active) this.routine=null;
     if (!this.routine) this.routine = this.queue.shift() ?? null;
@@ -694,30 +611,29 @@ export class Executor {
     this.launch(c, r, "routine");
   }
   ensureRefillRequest() {
-    if(this.phase==='PLAYING'&&!this.maintenance&&!this.planning.size&&this.requests.length<2)
+    if(this.phase==='PLAYING'&&!this.planning.size&&this.requests.length<2)
       this.requestPlan({reason:'approved_runway_refill',continuation:this.continuationStatus()});
   }
   continuationStatus() {
     const g=this.continuation;
-    return g?{recipe:g.recipe,remainingActions:g.remaining,expiresAt:g.expiresAt,runwayMs:Math.max(0,g.expiresAt-Date.now()),failures:g.failures,backoffTicks:Math.max(0,(g.retryAt??0)-this.tickSerial),area:copy(g.area)}:null;
+    return g?{recipe:g.recipe,remainingActions:g.remaining,expiresAt:g.expiresAt,runwayMs:Math.max(0,g.expiresAt-Date.now()),failures:g.failures,backoffTicks:Math.max(0,(g.retryAt??0)-this.tickSerial)}:null;
   }
   refillContinuation() {
     const g=this.continuation;
     if(!g||!this.same(g.token)||g.expiresAt<=Date.now()||g.remaining<=0){this.continuation=null;return;}
     if(!this.planning.size)this.ensureRefillRequest();
     if(this.tickSerial<(g.retryAt??0))return;
-    const unsafe=continuationUnsafe(g,this.state);if(unsafe){this.continuation=null;this.phase='PAUSED';this.blockReason=unsafe;return;}
     const choice=nextContinuation(g,this.state,this.tickSerial);
-    if(choice.reason){this.continuation=null;this.phase='PAUSED';this.blockReason=choice.reason;this.event('continuation_yielded',{reason:choice.reason});return;}
+    if(choice.reason){g.retryAt=this.tickSerial+Math.min(8,2**Math.min(3,(g.waitRounds??0)+1));g.waitRounds=(g.waitRounds??0)+1;this.blockReason=choice.reason;this.metrics.count('resourceWaitRounds');this.event('resource_wait',{reason:choice.reason,backoffTicks:g.retryAt-this.tickSerial});return;}
+    g.waitRounds=0;
     const command=validateCommand(choice.command);g.remaining--;
     this.routine={id:randomUUID(),token:this.token(),expiresAt:g.expiresAt,steps:[command],repeat:1,index:0,cycle:0,results:[],recordIds:[],continuation:true,continuationId:g.id};
     this.metrics.count('continuationActionsGenerated');
   }
   launch(c, r, kind) {
     const grantAtLaunch = r?.continuation ? this.continuation : null;
+    let before = copy(this.state), received = this.adapter.receivedAt();
     const token = this.token(),
-      before = copy(this.state),
-      received = this.adapter.receivedAt(),
       abort = new AbortController(),
       started = performance.now();
     const active = {
@@ -739,8 +655,6 @@ export class Executor {
     this.cooldownUntil =
       this.tickSerial +
       Math.max(c.cooldownTicks ?? 1, this.policy.minCooldownTicks);
-    if (kind === "emergency")
-      this.safetyCooldownUntil = this.tickSerial + (c.cooldownTicks ?? 1);
     this.event("dispatch", {
       action: c.action,
       kind,
@@ -763,16 +677,20 @@ export class Executor {
             this.same(token) &&
             this.fresh() &&
             (!r || r.expiresAt > Date.now()) &&
-            this.phase !== "BLOCKED" && (!r?.continuation || (grantAtLaunch && !continuationUnsafe(grantAtLaunch,this.state))),
+            this.phase !== "BLOCKED",
         );
+        if(result?.observationBaseline){before=copy(result.observationBaseline);received=result.baselineReceivedAt;}
+        if(result?.resolvedTarget)active.resolvedTarget=result.resolvedTarget;
         if (abort.signal.aborted || !this.same(token) || (r&&r.expiresAt<=Date.now()))
           throw new Error("OLD_GENERATION");
         if (result?.success === false && ['chop','mine','burn_logs','walk'].includes(c.action)) {
+          this.metrics.count('helperReportedFailures');
           ordinaryRecoverable=ordinaryResourceFailure(result.reason,result.message);
-          const observed=this.adapter.state();
-          if(ordinaryRecoverable&&(!r||r.expiresAt>Date.now())&&(!grantAtLaunch||!continuationUnsafe(grantAtLaunch,this.state))&&this.fresh()&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&c.expect.every(e=>expected(e,before,observed))) {
-            this.event('effect_reconciled',{action:c.action});this.metrics.count('helperFailuresReconciledByFreshEffect');
-          } else throw new Error('SDK_ACTION_FAILED');
+          const cause=['resource_unavailable','resource_depleted','resource_timeout','fire_blocked'].includes(result.reason)?result.reason.toUpperCase():ordinaryRecoverable?'RESOURCE_HELPER_DELAY':'SDK_ACTION_FAILED';
+          if(ordinaryRecoverable){
+            try {await this.adapter.verify(s=>this.fresh()&&this.same(token)&&s.player?.lifeId===before.player.lifeId&&(!r||r.expiresAt>Date.now())&&this.adapter.receivedAt()>received&&c.expect.every(e=>expected(e,before,s)),1200,abort.signal);this.metrics.count('helperFailuresReconciledByFreshEffect');this.event('effect_reconciled',{action:c.action,cause});}
+            catch(error){if(error?.message!=='waitForCondition timed out')throw error;this.event('resource_failure',{action:c.action,cause});throw Error(cause);}
+          }else throw Error(cause);
         } else if (result?.success === false) {
           const known = [
             "not_attackable",
@@ -793,7 +711,7 @@ export class Executor {
             this.fresh() &&
             this.same(token) &&
             s.player?.lifeId === before.player.lifeId &&
-            (!r || r.expiresAt>Date.now()) && (!grantAtLaunch || !continuationUnsafe(grantAtLaunch,s)) &&
+            (!r || r.expiresAt>Date.now()) &&
             this.adapter.receivedAt() > received &&
             c.expect.every((e) => expected(e, before, s)),
           c.timeoutMs ?? 15000,
@@ -825,14 +743,17 @@ export class Executor {
         );
         this.metrics.add("actionToEffectMs", performance.now() - started);
         this.metrics.count("verifiedActions");
+        this.metrics.count("helperVerifiedCompletions");
       } catch (e) {
         reason = abort.signal.aborted ? "CANCELLED" : String(e.message);
+        if(reason==="waitForCondition timed out"&&["chop","burn_logs","mine","walk"].includes(c.action))reason="RESOURCE_EFFECT_TIMEOUT";
+        if(r&&r.expiresAt<=Date.now())reason="ACTION_APPROVAL_EXPIRED";
         ordinaryRecoverable ||= ordinaryResourceFailure(reason);
         const observed=this.adapter.state();
-        if(ordinaryRecoverable&&!abort.signal.aborted&&this.same(token)&&(!r||r.expiresAt>Date.now())&&(!grantAtLaunch||!continuationUnsafe(grantAtLaunch,this.state))&&this.fresh()&&['chop','mine','burn_logs','walk'].includes(c.action)&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&c.expect.every(x=>expected(x,before,observed))) {
+        if(ordinaryRecoverable&&!abort.signal.aborted&&this.same(token)&&(!r||r.expiresAt>Date.now())&&this.fresh()&&['chop','mine','burn_logs','walk'].includes(c.action)&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&c.expect.every(x=>expected(x,before,observed))) {
           after=copy(observed);status='verified';reason=null;
           this.cooldownUntil=Math.max(this.cooldownUntil,this.tickSerial+Math.max(c.cooldownTicks??1,this.policy.minCooldownTicks));
-          this.metrics.count('verifiedActions');this.metrics.count('helperFailuresReconciledByFreshEffect');this.metrics.add('actionToEffectMs',performance.now()-started);
+          this.metrics.count('verifiedActions');this.metrics.count('helperVerifiedCompletions');this.metrics.count('helperFailuresReconciledByFreshEffect');this.metrics.add('actionToEffectMs',performance.now()-started);
           this.event('effect_reconciled',{action:c.action});
         } else this.metrics.count("failures");
       }
@@ -851,7 +772,7 @@ export class Executor {
             if(this.continuation&&(!r.continuation||r.continuationId===this.continuation.id)){this.continuation.consecutiveFailures=0;if(c.action==='walk')this.continuation.relocate=false;}
             if(this.planning.size)this.metrics.count('verifiedActionsWhilePlannerPending');
             if (active.gathering) {
-              const target = (before.nearbyLocs ?? [])
+              const target = active.resolvedTarget ?? (before.nearbyLocs ?? [])
                 .filter(
                   (l) =>
                     l.level === before.player.level &&
@@ -876,40 +797,27 @@ export class Executor {
             this.finishFailure(r, reason, ordinaryRecoverable);
           }
         }
-        if (kind === "emergency") {
-          this.phase = "PAUSED";
-          this.blockReason =
-            status === "verified"
-              ? "REPLAN_AFTER_EMERGENCY"
-              : "EMERGENCY_FAILED";
-        }
+
       }
-      if (this.pendingEmergency) this.schedule();
-      else if (this.maintenance) this.advanceMaintenance();
-      else this.schedule();
+      this.schedule();
     })();
   }
   finishFailure(r, reason, ordinaryRecoverable = false) {
-    const queued = this.queue;
-    this.routine = null;
-    this.queue = [];
-    this.phase = "PAUSED";
-    this.blockReason = reason;
+    this.routine=null;this.blockReason=reason;
     const g=this.continuation,c=r?.steps[r.index];
-    if(ordinaryRecoverable&&g&&this.same(g.token)&&this.fresh()&&!continuationUnsafe(g,this.state)&&g.remaining>0&&g.expiresAt>Date.now()&&['chop','burn_logs','walk'].includes(c?.action)&&
-       (r.continuation||(['chop','burn_logs'].includes(c.action)))&&g.consecutiveFailures<2&&g.failures<6&&reason!=='PRECONDITION_FAILED') {
-      if(r.continuation&&r.continuationId!==g.id){this.queue=queued;this.phase='PLAYING';this.event('retired_continuation_yielded');if(r)this.recordRoutine(r).catch(()=>{});return;}
-      g.failures++;g.consecutiveFailures++;g.retryAt=this.tickSerial+2**g.consecutiveFailures;
-      if(c.action==='burn_logs')g.relocate=true;
-      if(c.action==='chop'&&c.target.x!==undefined)g.blockedTargets.push({x:c.target.x,z:c.target.z,until:this.tickSerial+12});
-      if(c.action==='walk')g.blockedTiles.push({x:c.x,z:c.z});
-      this.gatherLease=null;this.phase='PLAYING';
-      if(r.continuation&&queued.length){this.queue=queued;this.metrics.count('continuationYieldToQueuedPlan');}
-      this.metrics.count('boundedContinuationRecoveries');
-      this.event('continuation_recovery',{action:c.action,reason,backoffTicks:2**g.consecutiveFailures});this.ensureRefillRequest();
-    } else if(g) this.continuation=null;
-    this.event("routine_failed", { reason });
-    if (r) this.recordRoutine(r).catch(() => {});
+    this.event('routine_failed',{reason});if(r)this.recordRoutine(r).catch(()=>{});
+    if(ordinaryRecoverable&&g&&this.same(g.token)&&g.expiresAt>Date.now()&&g.remaining>0){
+      if(r.continuation&&r.continuationId!==g.id){this.event('retired_continuation_yielded');return;}
+      g.failures++;g.consecutiveFailures++;
+      g.retryAt=this.tickSerial+Math.min(8,2**Math.min(3,g.consecutiveFailures));
+      if(c?.action==='burn_logs'&&(reason==='FIRE_BLOCKED'||(reason==='RESOURCE_TIMEOUT'&&g.consecutiveFailures>=2)))g.relocate=true;
+      if(c?.action==='chop'&&c.target.x!==undefined)g.blockedTargets.push({x:c.target.x,z:c.target.z,until:this.tickSerial+8});
+      if(c?.action==='walk')g.blockedTiles.push({x:c.x,z:c.z});
+      this.gatherLease=null;this.metrics.count('boundedContinuationRecoveries');
+      this.event('continuation_recovery',{action:c?.action,reason,backoffTicks:g.retryAt-this.tickSerial});this.ensureRefillRequest();
+      // A bounded attempt failed; independent approved queued work is retained.
+    }else if(!ordinaryRecoverable&&!['PRECONDITION_FAILED','COMBAT_TARGET_ONLY_IS_NOT_SERVER_ACCEPTANCE'].includes(reason)){this.block(reason);}
+    else this.ensureRefillRequest();
   }
   advanceRoutine(r, result) {
     r.results.push(result);
@@ -998,13 +906,6 @@ export class Executor {
       continuation: this.continuationStatus(),
       lastEpisode: this.lastEpisode ?? null,
       lastEpisodeRoutineId: this.lastEpisodeRoutineId ?? null,
-      maintenance: this.maintenance
-        ? {
-            stage: this.maintenance.stage,
-            reason: this.maintenance.reason,
-            version: this.maintenance.version,
-          }
-        : null,
       observation: s
         ? {
             tick: s.tick,
@@ -1037,336 +938,11 @@ export class Executor {
       events: copy(this.events),
     };
   }
-  stage(version) {
-    if (!this.policies.has(version))
-      throw new Error("VERSION_NOT_IN_TRUSTED_REGISTRY");
-    this.staged.add(version);
-    return { version };
-  }
-  churchFailure() {
-    const c = this.config.church,
-      s = this.state;
-    if (!c?.operatorVerifiedWorldRules) return "CHURCH_WORLD_RULES_UNVERIFIED";
-    if (!this.fresh()) return "CHURCH_STALE_STATE";
-    if (
-      s.player.level !== c.level ||
-      Math.abs(s.player.worldX - c.x) > c.radius ||
-      Math.abs(s.player.worldZ - c.z) > c.radius
-    )
-      return "CHURCH_OUTSIDE_ARRIVAL_REGION";
-    if (s.player.combat?.inCombat) return "CHURCH_COMBAT_ACTIVE";
-    if (s.player.hp < c.minHp) return "CHURCH_HEALTH_TOO_LOW";
-    if (
-      (s.nearbyNpcs ?? []).some(
-        (n) => n.inCombat && n.distance <= c.playerClearance,
-      )
-    )
-      return "CHURCH_NEARBY_NPC_COMBAT";
-    if ((s.nearbyPlayers ?? []).some((p) => p.distance <= c.playerClearance))
-      return "CHURCH_PLAYER_NEARBY";
-    if (
-      !s.nearbyLocs?.some(
-        (l) =>
-          l.id === c.anchorId &&
-          l.level === c.level &&
-          Math.abs(l.x - c.x) <= c.anchorRadius &&
-          Math.abs(l.z - c.z) <= c.anchorRadius,
-      )
-    )
-      return "CHURCH_ANCHOR_NOT_OBSERVED";
-    return null;
-  }
-  churchSafe() {
-    return this.churchFailure() === null;
-  }
-  requestMaintenance(version) {
-    if (
-      this.phase !== "PLAYING" ||
-      this.maintenance ||
-      !this.staged.has(version) ||
-      !this.config.church
-    )
-      throw new Error("MAINTENANCE_NOT_READY");
-    const saved = {
-      goal: copy(this.goal),
-      continuation: copy(this.continuation),
-      routine: this.routine
-        ? { ...copy(this.routine), inFlight: !!this.active }
-        : null,
-      queue: copy(this.queue),
-    };
-    this.invalidate("MAINTENANCE", { task: true });
-    this.maintenance = {
-      stage: "REQUESTED",
-      version,
-      previous: this.policy.id,
-      saved,
-      started: performance.now(),
-      received: this.adapter.receivedAt(),
-      deadline: performance.now() + 60000,
-    };
-    this.event("maintenance_requested", { version });
-    this.advanceMaintenance();
-    return this.status();
-  }
-  postpone(reason) {
-    if (
-      !this.maintenance ||
-      ["POSTPONED", "CANCELLED"].includes(this.maintenance.stage)
-    )
-      return;
-    if (this.maintenance.activated) {
-      this.rollbackMaintenance(reason);
-      return;
-    }
-    this.maintenance.reason = reason;
-    this.maintenance.stage = "POSTPONED";
-    this.phase = "PAUSED";
-    this.blockReason = reason;
-    this.event("maintenance_postponed", { reason });
-  }
-  cancelMaintenance() {
-    if (!this.maintenance) throw new Error("NO_MAINTENANCE");
-    if (this.maintenance.activated)
-      this.rollbackMaintenance("MAINTENANCE_CANCELLED_REPLAN");
-    else {
-      this.policy = this.policies.get(this.maintenance.previous);
-      this.controller++;
-    }
-    this.invalidate("MAINTENANCE_CANCELLED");
-    this.maintenance.stage = "CANCELLED";
-    this.phase = "PAUSED";
-    this.blockReason = "MAINTENANCE_CANCELLED_REPLAN";
-    this.event("maintenance_cancelled");
+  cancel() {
+    this.invalidate('MANUAL_CANCEL',{task:true});this.phase='PAUSED';this.blockReason='MANUAL_CANCEL';return this.status();
   }
   resume() {
-    if (!["PAUSED", "BLOCKED"].includes(this.phase) || !this.fresh())
-      throw new Error("FRESH_OWNED_STATE_REQUIRED");
-    if (this.phase === "BLOCKED")
-      throw new Error("NEW_EXPLICIT_HANDOFF_REQUIRED");
-    this.maintenance = null;
-    this.invalidate("EXPLICIT_RESUME", { task: true });
-    this.phase = "PLAYING";
-    this.blockReason = null;
-    return this.token();
-  }
-  advanceMaintenance() {
-    const m = this.maintenance;
-    if (!m || ["POSTPONED", "CANCELLED"].includes(m.stage)) return;
-    if (performance.now() > m.deadline) {
-      this.postpone("MAINTENANCE_DEADLINE");
-      return;
-    }
-    if (!this.fresh() || this.state.player.combat?.inCombat) {
-      this.cancelActive("MAINTENANCE_UNSAFE");
-      this.postpone("UNSAFE_OR_STALE");
-      return;
-    }
-    if (m.busy || this.active) return;
-    const c = this.config.church;
-    if (m.stage === "REQUESTED") {
-      m.stage = "RELOCATING";
-      this.phase = "RELOCATING";
-      if (!this.churchSafe()) {
-        if (this.state.player.level !== c.level) {
-          this.postpone("CHURCH_PLANE_REQUIRES_APPROVED_ROUTE");
-          return;
-        }
-        this.launch(
-          validateCommand({
-            action: "walk",
-            x: c.x,
-            z: c.z,
-            level: c.level,
-            tolerance: c.radius,
-            expect: [
-              {
-                type: "position",
-                x: c.x,
-                z: c.z,
-                level: c.level,
-                tolerance: c.radius,
-              },
-            ],
-            timeoutMs: 30000,
-          }),
-          null,
-          "maintenance-route",
-        );
-        return;
-      }
-    }
-    if (m.stage === "RELOCATING") {
-      if (!this.churchSafe()) {
-        this.postpone(this.churchFailure());
-        return;
-      }
-      m.stage = "QUIESCING";
-      m.quiet = 0;
-      m.lastQuietTick = this.tickSerial;
-      m.lastQuietPublicTick = this.lastTick;
-      m.received = this.adapter.receivedAt();
-      this.event("church_verified");
-      return;
-    }
-    if (m.stage === "QUIESCING") {
-      if (!this.churchSafe()) {
-        this.postpone(this.churchFailure());
-        return;
-      }
-      // Count only consecutive fresh idle game ticks after arrival/drain.
-      // A busy publication resets the streak, even within an already-seen tick.
-      if (
-        this.state.player.animId !== -1 ||
-        this.adapter.receivedAt() <= m.received
-      ) {
-        m.quiet = 0;
-        m.lastQuietTick = this.tickSerial;
-        m.lastQuietPublicTick = this.lastTick;
-        return;
-      }
-      if (m.lastQuietTick === this.tickSerial) return;
-      m.quiet =
-        m.lastQuietTick === this.tickSerial - 1 &&
-        m.lastQuietPublicTick === this.lastTick - 1
-          ? (m.quiet ?? 0) + 1
-          : 1;
-      m.lastQuietTick = this.tickSerial;
-      m.lastQuietPublicTick = this.lastTick;
-      if (m.quiet < 2) return;
-      m.busy = true;
-      m.work = (async () => {
-        try {
-          const token = this.token();
-          const checkpoint = {
-            description: m.saved.goal?.description ?? "Maintenance",
-            nextStep: JSON.stringify({
-              stage: "CHECKPOINTED",
-              version: this.policy.id,
-              nextVersion: m.version,
-              token,
-              goal: m.saved.goal,
-              position: this.state.player,
-              inventory: this.state.inventory,
-              equipment: this.state.equipment,
-              skills: this.state.skills,
-              dialog: this.state.dialog,
-              interface: this.state.interface,
-              routine: m.saved.routine
-                ? { index: m.saved.routine.index, cycle: m.saved.routine.cycle }
-                : null,
-            }).slice(0, 2000),
-          };
-          await this.memory.checkpoint(checkpoint);
-          // Full checkpoint is private and atomic; unlike the brief v1 goal, never truncate it.
-          await this.memory.writeJson(
-            this.memory.directory + "/maintenance.json",
-            {
-              schemaVersion: 2,
-              token,
-              version: this.policy.id,
-              nextVersion: m.version,
-              saved: m.saved,
-              observed: copy(this.state),
-              recordedAt: new Date().toISOString(),
-            },
-          );
-          if (
-            this.maintenance !== m ||
-            !this.same(token) ||
-            !this.churchSafe() ||
-            m.stage !== "QUIESCING" ||
-            performance.now() > m.deadline
-          )
-            throw new Error("CHECKPOINT_INVALIDATED");
-          m.stage = "CHECKPOINTED";
-          this.event("checkpointed");
-          m.stage = "UPDATING";
-          const next = this.policies.get(m.version);
-          if (!next || !this.staged.has(m.version))
-            throw new Error("UNSTAGED_VERSION");
-          // Swap actual trusted policy behavior under the stable executor/SDK owner.
-          this.policy = next;
-          m.activated = true;
-          this.controller++;
-          m.received = this.adapter.receivedAt();
-          m.stage = "REVALIDATING";
-          this.event("version_activated", {
-            version: next.id,
-            cooldown: next.minCooldownTicks,
-          });
-        } catch {
-          if (
-            !this.stopRequested &&
-            this.maintenance === m &&
-            !["CANCELLED", "POSTPONED"].includes(m.stage)
-          )
-            this.rollbackMaintenance("ACTIVATION_FAILED");
-        } finally {
-          m.busy = false;
-        }
-      })();
-      return;
-    }
-    if (m.stage === "REVALIDATING") {
-      if (this.adapter.receivedAt() <= m.received) return;
-      if (!this.churchSafe()) {
-        this.rollbackMaintenance("REVALIDATION_FAILED");
-        return;
-      }
-      m.stage = "RESUMING";
-      this.goal = m.saved.goal;
-      if(m.saved.continuation?.expiresAt>Date.now()&&!continuationUnsafe(m.saved.continuation,this.state))this.continuation={...copy(m.saved.continuation),token:this.token()};
-      // Resume only remaining work under a new token; never replay an in-flight command.
-      const routines = [m.saved.routine, ...m.saved.queue].filter(Boolean);
-      const remaining = [];
-      for (const r of routines) {
-        if (r.continuation) continue; // Only a still-valid restored grant may regenerate resource work.
-        if (r.inFlight) continue;
-        if (r.results?.length && r.results.at(-1).status !== "verified")
-          continue;
-        const make = (steps, repeat) => ({
-          ...r,
-          id: randomUUID(),
-          steps,
-          index: 0,
-          cycle: 0,
-          repeat,
-          results: [],
-          token: this.token(),
-          expiresAt: Date.now() + 60000,
-        });
-        const cycles = Math.max(0, r.repeat - r.cycle);
-        if (!cycles) continue;
-        remaining.push(make(r.steps.slice(r.index), 1));
-        if (cycles > 1) remaining.push(make(r.steps, cycles - 1));
-      }
-      if (remaining.length > 5) {
-        this.postpone("RESUME_QUEUE_REQUIRES_REPLAN");
-        return;
-      }
-      this.routine = remaining.shift() ?? null;
-      this.queue = remaining;
-      this.metrics.add("maintenanceMs", performance.now() - m.started);
-      this.metrics.count("maintenanceCompleted");
-      this.event("maintenance_resumed", { version: this.policy.id });
-      this.maintenance = null;
-      this.phase = "PLAYING";
-      this.schedule();
-    }
-  }
-  rollbackMaintenance(reason) {
-    const m = this.maintenance;
-    if (!m) return;
-    m.activated = false;
-    this.policy = this.policies.get(m.previous);
-    this.controller++;
-    this.invalidate("MAINTENANCE_ROLLBACK");
-    m.stage = "POSTPONED";
-    m.reason = reason;
-    this.phase = "PAUSED";
-    this.blockReason = reason;
-    this.metrics.count("rollbacks");
-    this.event("rollback", { version: this.policy.id, reason });
+    if(this.phase!=='PAUSED'||!this.fresh())throw Error('FRESH_OWNED_STATE_REQUIRED');
+    this.invalidate('EXPLICIT_RESUME',{task:true});this.phase='PLAYING';this.blockReason=null;return this.token();
   }
 }

@@ -21,6 +21,8 @@ const extras = new Set([
   "escape",
 ]);
 export function validateCommand(c) {
+  if(c?.target?.exact!==undefined&&typeof c.target.exact!=="boolean")throw Error("INVALID_EXACT_TARGET");
+  if(c?.target?.exact){bounded(c.target.x,0,16383,"TARGET_X");bounded(c.target.z,0,16383,"TARGET_Z");}
   if (!c || typeof c !== "object") throw new Error("INVALID_COMMAND");
   if (!extras.has(c.action)) validateStep(c);
   else {

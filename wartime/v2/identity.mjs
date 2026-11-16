@@ -7,6 +7,7 @@ import path from "node:path";
 const exec = promisify(execFile);
 export const CODE_FILES = [
   "adapter.ts",
+  "resource-actions.ts",
   "client.mjs",
   "continuity-capture.mjs",
   "executor.mjs",

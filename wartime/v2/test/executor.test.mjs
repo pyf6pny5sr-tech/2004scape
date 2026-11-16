@@ -74,7 +74,7 @@ async function fixture(t, options = {}) {
       return { success: true };
     },
     verify: async (fn) => {
-      if (!fn(state)) throw new Error("not observed");
+      if (!fn(state)) throw new Error("waitForCondition timed out");
       return structuredClone(state);
     },
   };
@@ -197,7 +197,7 @@ test("clock reset, death and delayed planner replies invalidate old work", async
   assert.throws(() => f.executor.completePlan(r.id, null), /STALE/);
   f.state.player.lifeId++;
   f.emit();
-  assert.equal(f.executor.phase, "PAUSED");
+  assert.equal(f.executor.phase, "PLAYING");
   assert.throws(
     () => f.executor.submit(f.proposal([walk(3244)], { token })),
     /NOT_ACCEPTING|STALE/,
@@ -218,35 +218,6 @@ test("full inventory and unmet preconditions fail before SDK dispatch", async (t
   );
   assert.equal(f.calls.length, 0);
   assert.equal(f.executor.blockReason, "FULL_INVENTORY");
-});
-test("low health cancels only own action, waits for unwind and uses approved food", async (t) => {
-  const f = await fixture(t, { safety: { eatAtHp: 4 } });
-  let aborted = false;
-  f.adapter.execute = async (c, b, signal, valid) => {
-    if (c.action === "walk")
-      return new Promise((r, j) =>
-        signal.addEventListener("abort", () => {
-          aborted = true;
-          j(new Error("cancel"));
-        }),
-      );
-    f.calls.push(c);
-    f.state.player.hp += 3;
-    f.emit();
-    return { success: true };
-  };
-  f.executor.submit(f.proposal([walk(3244)]));
-  await flush();
-  f.state.inventory = [
-    { id: 315, name: "Shrimps", count: 1, optionsWithIndex: [{ text: "Eat" }] },
-  ];
-  f.state.player.hp = 3;
-  f.emit();
-  await flush();
-  await flush();
-  assert.ok(aborted);
-  assert.equal(f.calls[0].action, "eat");
-  assert.equal(f.executor.phase, "PAUSED");
 });
 test("preemption stops queue and rejects reconnect/resume without new handoff", async (t) => {
   const f = await fixture(t);
@@ -319,62 +290,6 @@ test("strict ownership transport failure is UNKNOWN, never zero; active owner bl
   );
   authorizeStartup(config, { state: "ZERO", inGame: true });
 });
-test("maintenance checkpoints, changes real policy and resumes under one owner", async (t) => {
-  const f = await fixture(t);
-  const owner = f.executor.owner;
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  for (
-    let i = 0;
-    i < 20 && f.executor.metrics.counts.maintenanceCompleted !== 1;
-    i++
-  ) {
-    f.emit();
-    await new Promise((r) => setTimeout(r, 2));
-  }
-  assert.equal(f.executor.policy.minCooldownTicks, 2);
-  assert.equal(f.executor.policy.id, "cautious-2");
-  assert.equal(f.executor.owner, owner);
-  assert.equal(f.executor.phase, "PLAYING");
-  assert.equal(f.executor.metrics.counts.maintenanceCompleted, 1);
-  assert.ok(await f.executor.memory.goal());
-});
-test("unsafe church postpones; bad revalidation rolls back and cancellation never resumes blindly", async (t) => {
-  const f = await fixture(t);
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  for (
-    let i = 0;
-    i < 20 && f.executor.maintenance.stage !== "REVALIDATING";
-    i++
-  ) {
-    f.emit();
-    await new Promise((r) => setTimeout(r, 2));
-  }
-  f.state.nearbyPlayers = [
-    { kind: "player", index: 5, name: "test", distance: 1 },
-  ];
-  f.emit();
-  assert.equal(f.executor.policy.id, "steady-1");
-  assert.equal(f.executor.metrics.counts.rollbacks, 1);
-  assert.equal(f.executor.phase, "PAUSED");
-  f.executor.resume();
-  f.executor.requestMaintenance("cautious-2");
-  f.executor.cancelMaintenance();
-  assert.equal(f.executor.maintenance.stage, "CANCELLED");
-  assert.equal(f.executor.phase, "PAUSED");
-});
-test("missing church anchor never counts as safe arrival", async (t) => {
-  const f = await fixture(t);
-  f.state.nearbyLocs = [];
-  f.emit();
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  await flush();
-  assert.equal(f.executor.maintenance.stage, "POSTPONED");
-  assert.equal(f.executor.metrics.counts.maintenanceCompleted, undefined);
-});
-
 test("same tick newer revision is not a cooldown tick, and reordered tokens remain valid", async (t) => {
   const f = await fixture(t);
   f.adapter.execute = async (c) => {
@@ -401,9 +316,9 @@ test("acknowledgement without effect is never learned and already-satisfied stat
   f.adapter.execute = async () => ({ success: true });
   f.executor.submit(f.proposal([walk(3244)]));
   await flush();
-  assert.equal(f.executor.phase, "PAUSED");
+  assert.equal(f.executor.phase, "PLAYING");
   assert.equal(f.executor.metrics.counts.verifiedActions, undefined);
-  f.executor.resume();
+  f.executor.setGoal({description:"updated approved task"});
   f.executor.submit(f.proposal([walk(3243)]));
   await flush();
   assert.equal(f.calls.length, 0);
@@ -434,61 +349,9 @@ test("fresh checked preconditions prevent dispatch and expired routines never se
   );
   assert.equal(f.calls.length, 0);
   assert.equal(f.executor.blockReason, "PRECONDITION_FAILED");
-  f.executor.resume();
+  f.executor.setGoal({description:"updated explicit task"});
   const p = f.proposal([walk(3244)], { expiresAt: Date.now() - 1 });
   assert.throws(() => f.executor.submit(p), /LIFETIME/);
-});
-test("trusted policy version changes actual cooldown eligibility", async (t) => {
-  const f = await fixture(t);
-  f.adapter.execute = async (c) => {
-    f.calls.push(c);
-    f.state.player.worldX = c.x;
-    f.emit(false);
-    return { success: true };
-  };
-  f.executor.policy = cautious;
-  f.executor.submit(f.proposal([walk(3244), walk(3243)]));
-  await flush();
-  assert.equal(f.calls.length, 1);
-  f.emit();
-  await flush();
-  assert.equal(f.calls.length, 1);
-  f.emit();
-  await flush();
-  assert.equal(f.calls.length, 2);
-});
-
-test("safety monitor interrupts maintenance route and dispatches food after route unwinds", async (t) => {
-  const f = await fixture(t, { safety: { eatAtHp: 4 } });
-  f.executor.config.church = {
-    ...f.executor.config.church,
-    x: 3245,
-    radius: 0,
-  };
-  f.adapter.execute = async (c, b, signal) => {
-    if (c.action === "walk")
-      return new Promise((r, j) =>
-        signal.addEventListener("abort", () => j(new Error("cancel"))),
-      );
-    f.calls.push(c);
-    f.state.player.hp += 3;
-    f.emit();
-    return { success: true };
-  };
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  await flush();
-  assert.equal(f.executor.active.kind, "maintenance-route");
-  f.state.inventory = [
-    { id: 315, name: "Shrimps", count: 1, optionsWithIndex: [{ text: "Eat" }] },
-  ];
-  f.state.player.hp = 3;
-  f.emit();
-  await flush();
-  await flush();
-  assert.equal(f.calls[0]?.action, "eat");
-  assert.equal(f.executor.phase, "PAUSED");
-  assert.equal(f.executor.maintenance.stage, "POSTPONED");
 });
 test("status authentication, transport and occupancy stay distinct", async () => {
   const auth = await strictStatus("https://example.com", async () => ({
@@ -644,166 +507,10 @@ test("client combat target alone cannot become a verified server attack or learn
     ]),
   );
   await flush();
-  assert.equal(f.executor.phase, "PAUSED");
+  assert.equal(f.executor.phase, "PLAYING");
   assert.equal(
     f.executor.blockReason,
     "COMBAT_TARGET_ONLY_IS_NOT_SERVER_ACCEPTANCE",
   );
   assert.equal(f.executor.metrics.counts.verifiedActions, undefined);
-});
-
-async function reachRevalidation(f) {
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  for (
-    let i = 0;
-    i < 30 && f.executor.maintenance.stage !== "REVALIDATING";
-    i++
-  ) {
-    f.emit();
-    await new Promise((r) => setTimeout(r, 2));
-  }
-  assert.equal(f.executor.maintenance.stage, "REVALIDATING");
-  assert.equal(f.executor.policy.id, "cautious-2");
-}
-
-for (const failure of [
-  "combat",
-  "stale advance",
-  "stale observation",
-  "deadline",
-  "cancel",
-  "disconnect",
-]) {
-  test(
-    "activated maintenance restores prior policy on " + failure,
-    async (t) => {
-      const f = await fixture(t);
-      await reachRevalidation(f);
-      const token = f.executor.token();
-      const owner = f.executor.owner;
-      if (failure === "combat") {
-        f.state.player.combat.inCombat = true;
-        f.emit();
-      }
-      if (failure === "stale advance") {
-        f.setAge(5000);
-        f.executor.advanceMaintenance();
-      }
-      if (failure === "stale observation") {
-        f.setAge(5000);
-        f.emit();
-      }
-      if (failure === "deadline") {
-        f.executor.maintenance.deadline = performance.now() - 1;
-        f.executor.advanceMaintenance();
-      }
-      if (failure === "cancel") f.executor.cancelMaintenance();
-      if (failure === "disconnect") f.disconnect();
-      assert.equal(f.executor.policy.id, "steady-1");
-      assert.equal(f.executor.owner, owner);
-      assert.ok(!f.executor.same(token));
-      assert.equal(f.executor.metrics.counts.rollbacks, 1);
-      assert.equal(
-        f.executor.maintenance.stage,
-        failure === "cancel" ? "CANCELLED" : "POSTPONED",
-      );
-      f.setAge(0);
-      f.state.player.combat.inCombat = false;
-      for (let i = 0; i < 3; i++) {
-        f.emit();
-        await flush();
-      }
-      assert.equal(f.calls.length, 0);
-      assert.equal(f.executor.policy.id, "steady-1");
-      assert.equal(f.executor.metrics.counts.maintenanceCompleted, undefined);
-    },
-  );
-}
-
-test("watchdog restores an activated policy when no fresh publications arrive", async (t) => {
-  const f = await fixture(t);
-  await reachRevalidation(f);
-  const owner = f.executor.owner;
-  f.setAge(5000);
-  await new Promise((r) => setTimeout(r, 300));
-  assert.equal(f.executor.policy.id, "steady-1");
-  assert.equal(f.executor.owner, owner);
-  assert.equal(f.executor.maintenance.stage, "POSTPONED");
-  assert.equal(f.executor.phase, "PAUSED");
-  assert.equal(f.executor.metrics.counts.rollbacks, 1);
-  assert.equal(f.calls.length, 0);
-});
-
-test("quiescence requires two consecutive fresh idle ticks after busy animations", async (t) => {
-  const f = await fixture(t);
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  f.state.player.animId = 879;
-  for (let i = 0; i < 4; i++) f.emit();
-  assert.equal(f.executor.maintenance.quiet, 0);
-  f.state.player.animId = -1;
-  f.emit();
-  assert.equal(f.executor.maintenance.quiet, 1);
-  assert.equal(f.executor.maintenance.stage, "QUIESCING");
-  f.emit(false);
-  assert.equal(f.executor.maintenance.quiet, 1);
-  assert.equal(f.executor.maintenance.stage, "QUIESCING");
-  // A busy revision followed by idle in the same tick cannot preserve the streak.
-  f.state.player.animId = 879;
-  f.emit(false);
-  f.state.player.animId = -1;
-  f.emit(false);
-  assert.equal(f.executor.maintenance.quiet, 0);
-  f.emit();
-  assert.equal(f.executor.maintenance.quiet, 1);
-  assert.equal(f.executor.maintenance.stage, "QUIESCING");
-  f.emit();
-  await f.executor.maintenance.work;
-  assert.equal(f.executor.maintenance.stage, "REVALIDATING");
-});
-
-test("missing public ticks break the quiescence streak", async (t) => {
-  const f = await fixture(t);
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  f.emit();
-  assert.equal(f.executor.maintenance.quiet, 1);
-  f.state.tick += 2;
-  f.emit();
-  assert.equal(f.executor.maintenance.quiet, 1);
-  assert.equal(f.executor.maintenance.stage, "QUIESCING");
-  f.emit();
-  await f.executor.maintenance.work;
-  assert.equal(f.executor.maintenance.stage, "REVALIDATING");
-});
-
-test("cancel during checkpoint prevents late activation and preserves cancellation state", async (t) => {
-  const f = await fixture(t);
-  let release;
-  const gate = new Promise((r) => (release = r));
-  const checkpoint = f.executor.memory.checkpoint.bind(f.executor.memory);
-  f.executor.memory.checkpoint = async (goal) => {
-    await gate;
-    return checkpoint(goal);
-  };
-  f.executor.stage("cautious-2");
-  f.executor.requestMaintenance("cautious-2");
-  f.emit();
-  f.emit();
-  const m = f.executor.maintenance;
-  assert.equal(m.busy, true);
-  f.executor.cancelMaintenance();
-  release();
-  await m.work;
-  f.setAge(5000);
-  f.emit();
-  f.setAge(0);
-  f.emit();
-  assert.equal(m.stage, "CANCELLED");
-  assert.equal(f.executor.policy.id, "steady-1");
-  assert.equal(f.executor.phase, "PAUSED");
-  assert.equal(f.executor.metrics.counts.maintenanceCompleted, undefined);
-  assert.equal(f.calls.length, 0);
-  assert.ok(!f.executor.events.some((e) => e.type === "version_activated"));
 });

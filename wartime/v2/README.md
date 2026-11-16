@@ -2,43 +2,38 @@
 
 Start here for the new implementation. v1 and its historical report remain unchanged. V2 runs ordinary approved routines in one long-lived Bun process while the frontier model thinks through short private bridge calls. It does not select a model, call a paid provider automatically, train weights, or run upstream Minecraft Voyager. No separate sanitized controller ZIP was supplied or inspected; compatibility with Wartime's existing controller must be checked in its own runtime.
 
-The [focused maintenance follow-up report](maintenance-followup-report.json) covers rollback on unsafe/stale/deadline/canceled revalidation and two consecutive fresh idle ticks before checkpointing. Historical gameplay/timing evidence and live limitations below remain unchanged.
-
-**Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. [Supplemental live maintenance](live-maintenance-report.json) also verified same-account church relocation, steady-1 → cautious-2, unchanged owner and resumed queued action. PvP remains untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
+**Current contract:** church maintenance and automatic HP/combat/region gameplay pauses are retired at the user's request. Manual `cancel`/`stop` remain authoritative; stale/disconnected/auth/ownership state still cannot dispatch. Historical maintenance and prior live reports below preserve what those older versions exercised, not current requirements. No church detour or staged in-game policy update is part of startup or play.
 
 ## Live continuity follow-up
 
 The [new fixed 20-minute online report](continuity-run-report.md) tests pinned implementation 0ad0cab on the same account: actual game-service planning idle **484/1,348 ticks (35.91%)**, compared with audited baseline **518/599 (86.48%)**—**50.57 percentage points / 58.48% relative reduction**. Verified throughput rose **62 → 187 actions**; 29 failed-attempt counter increments and 315 ambiguous planning ticks remain. Higher starting skills, workload/tool timing and baseline developer periods limit causal comparison. See [sanitized JSON](continuity-run-report.json), including all 19 intervals, early guard pauses, source identity, cleanup and failure-count distinctions. This measured this cloud agent, not the separate Wartime runtime or isolated inference.
 
-## Approved continuity while the current agent plans
+## Approved resource goal while the current agent plans
 
-The current agent can approve a **finite woodcutting/Firemaking reserve** alongside an ordinary short proposal. The executor chooses fresh eligible work from that exact recipe and inventory while the agent services prefetched requests. It never generates new goals or model reasoning. Do not reset the goal or call `resume` just to answer a refill request: those invalidate work. Use the current pending request and `planner_complete`/`agent.mjs complete` to append ordinary work and renew the reserve without canceling the current action.
-
-Add `continuation` to the proposal (compute the future timestamp in your current tools):
+You are already the planner. For an ordinary woodcutting/Firemaking goal, use a short proposal plus a finite resource continuation. Do not reset goals just to refill; service an existing pending request while work continues. No second provider/key or nested login is needed.
 
 ```js
 {
-  steps: [/* ordinary approved typed steps, using current observations */],
+  steps: [{action:"chop", target:{name:"Tree"}, expect:[
+    {type:"inventory_gain",item:{name:"Logs"},amount:1},
+    {type:"xp_gain",skill:"Woodcutting",amount:1}
+  ]}],
   continuation: {
-    recipe: "woodcut_firemake",
-    target: {name: "Tree"}, log: {name: "Logs"},
-    area: {x: CURRENT_AREA_X, z: CURRENT_AREA_Z, level: 0, radius: 12},
-    minHp: CURRENT_FULL_HEALTH,
-    maxActions: 40, expiresAt: Date.now() + 110000,
-    fireTiles: [/* up to 8 explicitly approved {x,z} alternatives inside area */]
+    recipe:"woodcut_firemake", target:{name:"Tree"}, log:{name:"Logs"},
+    maxActions:80, expiresAt:Date.now()+170000
   }
 }
 ```
 
-This is a contract illustration; choose actual area/tiles from the live world, not the placeholders. Only `Tree`/`Logs` and `Oak`/`Oak logs` recipes are accepted. Reserve approval lasts **at most 120 seconds and 40 generated actions**, not an entire session. Area radius is at most 16 tiles. Current status/context includes remaining actions, expiry/runway, backoff and failures. Request prefetch occurs while approved work remains; service it before runway drops below 45 seconds or action reserve is low. New explicit queued work takes priority at the next action boundary. A proposal without `continuation` retires the old reserve; a changed goal cancels/drains it. Renewal never extends an already-active action's original expiry/safety authority.
+This is a tool-contract illustration: compute timestamps in your current tools. Only Tree/Logs or Oak/Oak logs resource goals are accepted. There is no region, HP or combat pause toggle to configure. Each grant is at most **80 generated attempts/180 seconds**; remaining budget/expiry/runway and backoff are visible in status. Refill proactively before runway is low. A proposal without continuation retires future reserve work; manual cancel/stop and changed goals revoke old authority. Renewals never extend an already-active action's original expiry.
 
-Within the approved area, the reserve burns existing matching logs before gathering another reachable approved tree. Burning that fails or finds an observed fire can use only the supplied bounded alternative tiles; movement is for useful fire placement, not idle padding. It never repeats chat, combat, trade, arbitrary items or destructive actions. Each operation has fresh expected effects, target coordinates/type and SDK cancellation guards. Busy productive gathering is not re-clicked each tick.
+Resource targets are freshly resolved after UI handling, at dispatch. A remembered coordinate is a preference; `target.exact:true` with explicit x/z is available when a real exact target is intended. Actual dispatched target/plane anchors the gathering lease. Tree disappearance gets three observed ticks for late log/XP publication; a short read-only reconciliation can prove original effects after an ambiguous helper outcome. No effect means failure, never fake success or verified learning.
 
-A known ordinary resource failure may recover with **two consecutive attempts, tick backoff of 2 then 4, and at most 6 recoveries per grant**. Failed dependent tails are discarded; each generated replacement is reselected from fresh inventory/targets. Unknown/auth/network/ownership/rate/protocol errors do not auto-retry. An ambiguous helper result counts as verified only if a fresh same-life/same-generation observation actually satisfies every original expected outcome. It is never successful merely because the promise resolved.
+Ordinary failures preserve independent approved queued work and the finite resource goal. Target/depletion waits use bounded tick backoff (2,4,8 ticks), reselect live alternatives, and do not clear useful work or demand a model resume. Failed attempts consume grant budget; backoff never runs past its expiry. Full inventory uses approved burnable logs if available; unavailable work waits without no-op packets. Fire placement uses current empty neighboring tiles or optional explicit `fireTiles` preferences, only when needed for that resource task. Automatic combat/chat/trade or unrelated goals are never generated.
 
-Expiry, exhaustion, stale/disconnected state, damage/combat, leaving the area, unavailable targets or a full inventory with no approved burnable logs yield/stop. Stop, cancellation, emergencies and church maintenance revoke live continuation authority; maintenance may regenerate only a still-valid checkpointed grant after fresh revalidation, without reviving expired generated actions. These limits mean the agent must keep servicing real requests; finite reserves cannot wake an inactive chat or provide unlimited autonomy.
+HP/combat changes and walking outside an old region do not cancel the goal. Death/life changes invalidate old action callbacks and plan tokens; the still-valid finite resource goal can be regenerated from fresh respawn state. Invalid/stale/unknown owner/session state cannot dispatch or reconnect into a takeover fight. Unexpected/auth/network/protocol errors are preserved, not called resource timeouts. `cancel` is a deliberate manual hold until a new approved goal/resume; `stop` shuts down the owned run/client.
 
-For a comparable passive benchmark, use [continuity-capture.mjs](continuity-capture.mjs) `init/begin/claim/complete/watch/stop` with one private `--directory` and existing run `--home`. `begin` defaults to a fixed 20-minute deadline, `watch` is bounded to 45 seconds and refuses an open planning claim, and `claim` brackets gameplay servicing: reasoning/tools plus any intervening progress/status commentary and scheduling overhead; it does not isolate inference. All request/event/exact-boundary evidence is captured automatically before play; no ledger or report edits belong inside claims. [continuity-report.mjs](continuity-report.mjs) performs offline comparison using the unchanged baseline classifier and requires an explicit post-run window audit before calling a subset gameplay-only.
+The capture CLI [continuity-capture.mjs](continuity-capture.mjs) is prepared before play: `init/begin/context/claim/complete/watch/stop`, private `--directory`, existing run `--home`. Claims include reasoning/tools/scheduling/status commentary, not isolated inference. Observation waits are outside open claims. The unchanged passive classifier and overlap math are used by [reliability-report.mjs](reliability-report.mjs) to compare against the previous continuity run, including failures/rates, ambiguity and long idle stretches. No code/report/ledger authoring belongs inside a timed gameplay claim.
 
 ## Twenty-minute online idle baseline
 
@@ -119,7 +114,7 @@ Output is sanitized JSON with a run ID, generated name, status, world and privat
 
 A local config file is **not** registration proof. Milestones distinguish private config created, login attempted, client logged in, fresh state confirmed, client attached, onboarding complete and controller ready. The pinned login server auto-registers unknown users through game login; the local no-login-server engine establishes a new game profile instead of a SQL account. The fresh-state checks are observed game evidence, not a direct database existence query. Unknown/auth/transport outcomes do not get labeled as account creation.
 
-Keep this process running and expose its returned socket through the existing short-call bridge. Tool calls, planner turns, ticks and church policy updates reuse this identity. Do **not** invoke `new` for each tool call. For the same run after a clean stop or crash, use its returned run ID:
+Keep this process running and expose its returned socket through the existing short-call bridge. Tool calls, planner turns, ticks and planner turns reuse this identity. Do **not** invoke `new` for each tool call. For the same run after a clean stop or crash, use its returned run ID:
 
 ```sh
 GATEWAY_DIRECT=false WARTIME_RUN_CONFIG=wartime/.wartime/run-config.json \
@@ -165,8 +160,6 @@ Private configuration (chmod `600`; store outside the public tree):
   "socket": "/private/runtime/wartime-v2.sock",
   "directory": "/private/runtime/memory",
   "initialVersion": "steady-1",
-  "stagedVersions": ["cautious-2"],
-  "safety": {"eatAtHp": 4},
   "handoff": {
     "previousOwnerStopped": false,
     "acceptNonAtomicGatewayRisk": false,
@@ -176,7 +169,7 @@ Private configuration (chmod `600`; store outside the public tree):
 }
 ```
 
-These canonical service addresses are an explicit example, not permission to move an established character there. Set the actual verified world and matching gateway host. V2 does not rewrite legacy Fly.io names, follow HTTP status redirects, or probe alternate gateway ports. Remote connections require HTTPS/WSS; plain HTTP/WS is allowed for a local emulator. `GATEWAY_DIRECT=false` preserves the selected SDK endpoint.
+These canonical service addresses are an explicit example, not permission to move an established character there. Set the actual verified world and matching gateway host. V2 does not rewrite legacy Fly.io names, follow HTTP status redirects, or probe alternate gateway ports. Remote connections require HTTPS/WSS; this online product flow requires HTTPS/WSS. `GATEWAY_DIRECT=false` preserves the selected SDK endpoint.
 
 Supply the authorized password privately through the host's secret environment as `WARTIME_GAME_PASSWORD`; never put it in model text, commands pasted into a chat, a committed file, or logs. No live player credentials are bundled. Start the standalone host only after the explicit handoff:
 
@@ -233,21 +226,10 @@ V1's reviewed action signatures are reused for walk, chop, mine, talk, object/NP
 - `prayer_on` / `prayer_off` with `index:0..14`; `combat_style` with `style:0..3`; `escape` with `x,z,level`.
 - Additional expectations: `prayer:{index,active}`, `combat_style:{style}`, `combat_target:{kind,index}`. Other expectation/precondition formats are documented in v1 and validated again. `timeoutMs` bounds each action helper and its effect wait. Cooldowns are explicit observed-tick lower bounds, not claims about all live server mechanics.
 
-A stable safety monitor can abort only this host's action, waits for it to unwind, then uses observed food or a privately configured escape destination. It pauses ordinary work and invalidates previous plans. Recovery attempts are bounded; a missing fallback or failed safety action is explicit. It does not promise PvP competence, invent safe destinations or undo already-sent packets. The same monitor stays loaded through trusted policy maintenance. Old-generation callbacks are prevented from sending further SDK packets by an execution scope plus a guarded SDK proxy.
 
-## Church maintenance and trusted deployment boundary
+## Historical maintenance evidence
 
-Configure an actual church privately after verifying the chosen world, routes and rules. The arrival/anchor below were also verified in the [same-account live maintenance check](live-maintenance-report.json); they are not a universal safe zone. Recheck current world rules, reachability and safety before use:
-
-```json
-{"church":{"operatorVerifiedWorldRules":true,"x":3243,"z":3209,"level":0,"radius":0,"anchorId":409,"anchorRadius":6,"minHp":8,"playerClearance":5}}
-```
-
-The anchor is an observed Altar at `(3243,3205,0)`; the blocked altar tile is not a walk destination. Arrival requires the configured region/plane, an actual nearby configured anchor, enough HP, no current combat, no nearby fighting NPCs and no nearby players within the clearance. These checks cannot prove absence of an unseen threat or confer PvP immunity. Missing anchors, unsafe arrival or stale state postpone maintenance with a reason.
-
-`maintenance: {version:'cautious-2'}` follows REQUESTED → RELOCATING → QUIESCING → CHECKPOINTED → UPDATING → REVALIDATING → RESUMING. It uses the same SDK owner, cancels/drains old work, waits for fresh idle observations, writes a full atomic private checkpoint, swaps a trusted policy module, requires another fresh safe observation, then resumes the saved goal and remaining queued approved work with new generations. An interrupted in-flight command is **not blindly replayed**; its routine requires re-planning after reconciliation. `cancel_maintenance` restores the prior policy and pauses for explicit re-planning. Activation/revalidation failure rolls back the policy and stays paused. Time in maintenance is intentional downtime, not planner idle time.
-
-The stable supervisor loads a **fixed trusted registry** from `versions/steady.mjs` and `versions/cautious.mjs`. Staging is operator-only through private startup `stagedVersions`; the model bridge cannot stage files, import paths, execute shell commands or download executable updates. The tested update changes real scheduling policy from a one-tick to a two-tick minimum cooldown and retains the stable safety/SDK owner. This is a policy-module version handoff, **not arbitrary hot replacement of the supervisor, adapter or Node runtime**. New registry code must be reviewed/tested/deployed by the trusted operator. Updating the supervisor itself requires a separate controlled stop/handoff; do not claim an untested arbitrary code hot-swap.
+[Maintenance follow-up](maintenance-followup-report.json) and [live maintenance](live-maintenance-report.json) describe older builds. The current runtime has no church movement/update workflow or automatic gameplay risk interruption. Core updates use an explicit manual stop and normal restart; historical reports are not current setup instructions.
 
 ## Validation and telemetry
 
@@ -256,18 +238,11 @@ node --test wartime/v2/test/*.test.mjs
 bun test wartime/v2/test/*.test.mjs wartime/v2/test/adapter.test.ts
 ```
 
-The deterministic tests are supplemental. The opt-in real local probe starts the actual standalone host, uses an already-attached **disposable local character**, performs movement/replay/retrieval and a church handoff, and writes ignored private evidence:
+Deterministic tests are supplemental; product setup and live validation target only the selected online service. Older local/emulator probes and church traces are historical and are not current setup instructions. Never change the live tick rate for a speed demonstration.
 
-```sh
-WARTIME_LOCAL_BOT_ENV=/private/local-test/bot.env \
-bun wartime/v2/test/cloud-gameplay.ts
-```
+Telemetry reports bounded sample distributions (n, p50/p95/p99, min/max): observed tick cadence and interval-to-interval jitter; observer-callback-to-helper dispatch; SDK publication age at dispatch; raw SDK packet acknowledgement; helper-start-to-observed-postcondition; planner request duration; and explicit manual-control events. Counts distinguish cooldown, ongoing helper/animation, approved eligible work, no approved work, planner starvation, manual holds, verified throughput, failures, cancellations and pre-emption/disconnects. Small-sample percentiles are descriptive, not stable performance estimates. Client tick counters are session-relative; network batching can compress observed intervals. These metrics cannot identify exact server phase or separate all server/network latency. Packet acknowledgement does not prove game execution.
 
-It requires the local engine on 8888 and gateway on 7780. It refuses a non-local bot configuration. Use the upstream setup and tested build exception described in v1's local-test documentation. The live engine's tick rate must not be changed for a speed demonstration.
-
-Telemetry reports bounded sample distributions (n, p50/p95/p99, min/max): observed tick cadence and interval-to-interval jitter; observer-callback-to-helper dispatch; SDK publication age at dispatch; raw SDK packet acknowledgement; helper-start-to-observed-postcondition; planner request duration; and maintenance duration. Counts distinguish cooldown, ongoing helper/animation, approved eligible work, no approved work, planner starvation, intentional maintenance, verified throughput, failures, cancellations and pre-emption/disconnects. Small-sample percentiles are descriptive, not stable performance estimates. Client tick counters are session-relative; network batching can compress observed intervals. These metrics cannot identify exact server phase or separate all server/network latency. Packet acknowledgement does not prove game execution.
-
-For **live validation**, use Wartime's already-authorized runtime with the default fresh-account run (or explicitly choose existing-player mode). Record the configured world, actual agent/tool turnaround (separate any explicitly measured inference time), workload and comparable before/after observation windows. Keep approved routines running during real model calls, measure counts/latency and perform a planned church update when safe. If no real PvP encounter occurs, report it as untested. A local probe or synthetic pending promise never substitutes for these online requirements. Fresh-account establishment through the supported client is now authorized; unrelated account takeover is never part of startup. Prior reports describing no account signup remain historical.
+For **live validation**, use Wartime's already-authorized runtime with the default fresh-account run (or explicitly choose existing-player mode). Record the configured world, actual agent/tool turnaround (separate any explicitly measured inference time), workload and comparable before/after observation windows. Keep approved routines running during real model calls, measure counts/latency and retain all ordinary recovery periods. If no real PvP encounter occurs, report it as untested. A local probe or synthetic pending promise never substitutes for these online requirements. Fresh-account establishment through the supported client is now authorized; unrelated account takeover is never part of startup. Prior reports describing no account signup remain historical.
 
 ### Focused transport and gathering checks
 

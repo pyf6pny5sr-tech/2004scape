@@ -50,6 +50,7 @@ export function runConfig(input) {
     maxAutomaticReplacements: input.maxAutomaticReplacements ?? 1,
     onboarding: input.onboarding ?? "skip_tutorial",
   };
+  delete c.church;delete c.safety;delete c.stagedVersions;
   if (!path.isAbsolute(c.runtimeRoot)) fail("ABSOLUTE_RUNTIME_ROOT_REQUIRED");
   bounded(c.startupTimeoutMs, 1000, 120000, "STARTUP_TIMEOUT");
   bounded(c.reconnectTimeoutMs, 1000, 30000, "RECONNECT_TIMEOUT");

@@ -1,3 +1,5 @@
+**Current runtime override:** church maintenance and automatic gameplay HP/combat/region pauses are retired. Manual stop/cancel and connection/session correctness remain. Follow [v2 current handoff](v2/HANDOFF.txt); older reports describe historical builds.
+
 # Wartime · 2004Scape controller
 
 **New implementation:** [Wartime v2: persistent host, model bridge and church maintenance](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [separate validation report](v2/validation-report.json) distinguishes disposable cloud gameplay from outstanding online/model validation. The v1 implementation and historical report below remain intact.

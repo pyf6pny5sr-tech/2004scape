@@ -21,4 +21,34 @@ export function analyzeTrace(rows,windows,durationMs){
  const cadence=rows.slice(1).filter((t,i)=>t.tick===rows[i].tick+1).map((t)=>t.start-rows[rows.indexOf(t)-1].start);
  return {durationMs,whole,claimedAgentToolIntervals:planning,planningWindows:windows.map((w,i)=>({index:i+1,startSeconds:w.start/1000,endSeconds:(w.end??durationMs)/1000,turnaroundMs:(w.end??durationMs)-w.start,incomplete:!!w.incomplete,...aggregate([[w.start,w.end??durationMs]])})),perMinute:Array.from({length:Math.ceil(durationMs/60000)},(_,i)=>({minute:i+1,...aggregate([[i*60000,Math.min(durationMs,(i+1)*60000)]])})),cadenceMs:distribution(cadence),jitterMs:distribution(cadence.slice(1).map((v,i)=>Math.abs(v-cadence[i]))),consistency:{exclusiveBucketSum:Object.values(whole.buckets).reduce((a,b)=>a+b,0),equalsObservedTicks:Object.values(whole.buckets).reduce((a,b)=>a+b,0)===whole.observedTicks,planningUnionDoesNotDoubleCount:planning.observedTicks<=whole.observedTicks}};
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const entries=(await readFile(process.argv[2],'utf8')).trim().split('\n').map(l=>JSON.parse(l));const end=entries.findLast(e=>e.kind==='end');if(!end)throw Error('MEASUREMENT_NOT_FINISHED');console.log(JSON.stringify(analyzeTrace(entries.filter(e=>e.kind==='tick'),end.windows,end.at),null,2));}
+// Entire-window exclusions are an explicit transcript-audit input, never selected by outcome.
+export function auditPlanningSubset(rows, windows, durationMs, excludedIndices) {
+ if (!Array.isArray(excludedIndices) || new Set(excludedIndices).size !== excludedIndices.length ||
+     excludedIndices.some(i => !Number.isInteger(i) || i < 1 || i > windows.length))
+   throw Error('INVALID_AUDIT_WINDOW_INDICES');
+ const excluded = [...excludedIndices].sort((a,b) => a-b);
+ const included = windows.map((_,i) => i+1).filter(i => !excluded.includes(i));
+ const selected = included.map(i => windows[i-1]);
+ const result = analyzeTrace(rows, selected, durationMs);
+ const ranges = union(selected.map(w => [w.start, w.end ?? durationMs]));
+ return {
+  selection: 'Conservative transcript audit; exclude whole mixed development/report-support windows, with no within-window time estimates or outcome-based selection',
+  includedWindowIndices: included,
+  excludedWindowIndices: excluded,
+  claimedDurationMs: ranges.reduce((sum,[start,end]) => sum+end-start,0),
+  aggregate: result.claimedAgentToolIntervals,
+  windows: result.planningWindows.map((w,i) => ({...w,index:included[i]})),
+ };
+}
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
+ const entries=(await readFile(process.argv[2],'utf8')).trim().split('\n').map(l=>JSON.parse(l));
+ const end=entries.findLast(e=>e.kind==='end');if(!end)throw Error('MEASUREMENT_NOT_FINISHED');
+ const rows=entries.filter(e=>e.kind==='tick');
+ const result=analyzeTrace(rows,end.windows,end.at);
+ if(process.argv[3]!==undefined){
+  if(process.argv[3]!=='--exclude-windows'||!process.argv[4]||process.argv.length!==5)
+   throw Error('USAGE_TRACE_OPTIONAL_EXCLUDE_WINDOWS_COMMA_SEPARATED_INDICES');
+  result.gameplayPlanningOnly=auditPlanningSubset(rows,end.windows,end.at,process.argv[4].split(',').map(Number));
+ }
+ console.log(JSON.stringify(result,null,2));
+}

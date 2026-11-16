@@ -8,7 +8,7 @@ The [focused maintenance follow-up report](maintenance-followup-report.json) cov
 
 ## Twenty-minute online idle baseline
 
-The [long-run report](long-run-report.md) records 15 current-agent planning intervals over 20 minutes: 969/1,055 planning-overlap ticks were visibly idle (91.8%), with helper ambiguity separate. Whole-run idle includes failure/recovery and unclaimed operational/developer periods. This is this cloud agent/controller, not the separate Wartime instance or isolated inference. See its measurement protocol and [sanitized JSON](long-run-report.json); do not use `avoidableIdleTicks=0` as a real idle result.
+The [audit-corrected long-run report](long-run-report.md) preserves **969/1,055 idle ticks (91.8%) across all 15 claim-to-completion intervals, including mixed development/report support**. A separate conservative gameplay-planning-only subset excludes entire windows 1,5,8,10,11,12: **518/599 idle ticks (86.5%)**, with 33 ambiguous ticks, across nine retained windows. Whole-run idle and the raw trace are unchanged. Exact developer durations were not measured; tool/scheduling overhead remains in both scopes. This is this cloud agent/controller, not the separate Wartime instance or isolated inference. See the audit and [sanitized JSON](long-run-report.json); do not use `avoidableIdleTicks=0` as a real idle result.
 
 ## Default agent-first online setup
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "20-minute ONLINE run of Wartime v2 with THIS cloud agent as planner; separate inaccessible Wartime runtime was not tested",
+  "scope": "20-minute ONLINE run with THIS cloud agent; all 15 claim intervals include mixed development/report support, with a separate conservative gameplay-only audited subset. Separate Wartime runtime not tested.",
   "sourceCommit": "6220c0326beb90844e0b3e697c1fbc6a9b7db33d",
   "baseCommit": "b9a5e268624672ed368205d38f30b9c6f78eaf4f",
   "sourceIdentity": {
@@ -75,11 +75,12 @@
     "busyUnproven": "Animation/combat evidence with no observed progress in that bucket; no claim every such tick was productive.",
     "progress": "Any observed movement or inventory/XP delta in a tick. A no-XP tick is not automatically idle; random gathering attempts may fail.",
     "eligibleQueuedIdle": "Only a conservative side-effect-free walk subset has full known eligibility checked; other queued no-dispatch work is unresolved. No such tick occurred here.",
-    "planning": "Only explicit measurement_claim request through planner_complete submission; includes current agent reasoning, retrieval/tool/scheduling time, never isolated inference. Automatic request lifetime and prefetch wait are separate.",
+    "planning": "All claim-to-completion intervals, whether gameplay-only or mixed development/report-support. The original 969/1055 figure is preserved for this broad instrumented scope; it must not be called pure gameplay thinking or isolated inference.",
     "planningOverlap": "Tick counted once in union if any part overlaps claimed interval; individual window counts may touch boundary ticks. Seconds use actual overlap of observed timestamp intervals, not whole-tick multiplication.",
     "seconds": "Estimated from observed publication interval duration; no synchronized server phase. Unobserved initial 160ms is not idle.",
     "pauses": "Live collector originally combines paused/cooldown flags. Offline analyzer explicitly splits cooldown from stationary controller pauses; no maintenance/safety pause was requested in this run. All failed/recovery periods remain.",
-    "outsidePlanning": "All unclaimed time contains live monitoring, progress updates, scheduling and developer/report-support work; it is not labeled model thinking and all its ticks remain in whole-run totals."
+    "outsidePlanning": "All time outside explicit claims remains in whole-run totals, including monitoring, updates and support work. Development/report support ALSO occurred inside six claims; only the audited subset removes entire known/uncertain mixed windows.",
+    "gameplayPlanningOnly": "Transcript-audited subset retaining original indices 2,3,4,6,7,9,13,14,15; exclude entire mixed/uncertain windows 1,5,8,10,11,12 based on activities, not tick outcomes. No exact developer durations are known. Retained intervals still include game-related tools and scheduling overhead."
   },
   "analysis": {
     "durationMs": 1200001,
@@ -167,8 +168,10 @@
         "coveredObservationSeconds": 24.802,
         "automaticRequestLifetimeMs": 24827,
         "unclaimedBeforeActualPlanningMs": 25,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Initial move to tree area and consume two existing logs"
+        "source": "This cloud agent supplied the gameplay proposal through existing tools; the claim interval also contains development/report-support work.",
+        "purpose": "Initial move to tree area and consume two existing logs",
+        "auditClassification": "exclude_mixed",
+        "auditReason": "Authored long-complete.mjs between claim and completion; helper construction is development/support work."
       },
       {
         "index": 2,
@@ -195,8 +198,10 @@
         "coveredObservationSeconds": 15.613,
         "automaticRequestLifetimeMs": 27538,
         "unclaimedBeforeActualPlanningMs": 11925,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Bounded normal-tree gather/burn continuation"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Bounded normal-tree gather/burn continuation",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Live inventory/target assessment and bounded gathering/burning continuation; no support-code/report work identified."
       },
       {
         "index": 3,
@@ -227,8 +232,10 @@
         "coveredObservationSeconds": 30.381,
         "automaticRequestLifetimeMs": 30394,
         "unclaimedBeforeActualPlanningMs": 13,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Recovery using current targets and cited knowledge/SDK semantics"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Recovery using current targets and cited knowledge/SDK semantics",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Read controller/SDK chop and target-resolution semantics to understand an actual live chop failure and choose the next gameplay plan. Retained as action-specific gameplay reasoning, not measurement/report work."
       },
       {
         "index": 4,
@@ -259,8 +266,10 @@
         "coveredObservationSeconds": 22.563,
         "automaticRequestLifetimeMs": 54225,
         "unclaimedBeforeActualPlanningMs": 31662,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Prefetch continuation while existing approved work ran"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Prefetch continuation while existing approved work ran",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Assessed active progression and prefetched bounded continuation; no support-code/report work identified."
       },
       {
         "index": 5,
@@ -287,8 +296,10 @@
         "coveredObservationSeconds": 37.684,
         "automaticRequestLifetimeMs": 37695,
         "unclaimedBeforeActualPlanningMs": 11,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Consume surplus logs and resume gathering"
+        "source": "This cloud agent supplied the gameplay proposal through existing tools; the claim interval also contains development/report-support work.",
+        "purpose": "Consume surplus logs and resume gathering",
+        "auditClassification": "exclude_mixed",
+        "auditReason": "Measurement-classifier/report-methodology review occurred during the claim; conservatively exclude the entire window even without a support-code edit."
       },
       {
         "index": 6,
@@ -315,8 +326,10 @@
         "coveredObservationSeconds": 33.102,
         "automaticRequestLifetimeMs": 33118,
         "unclaimedBeforeActualPlanningMs": 16,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Move toward fresh burning/gathering area"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Move toward fresh burning/gathering area",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Chose inventory management and gathering/navigation steps. The long-watch.mjs formatting edit followed the awaited completion command in the same sequential shell command, so was outside this window."
       },
       {
         "index": 7,
@@ -343,8 +356,10 @@
         "coveredObservationSeconds": 21.91,
         "automaticRequestLifetimeMs": 21920,
         "unclaimedBeforeActualPlanningMs": 10,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Replan after route stopped adjacent; observed tree-type selection"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Replan after route stopped adjacent; observed tree-type selection",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Assessed actual route failure, inventory and observed tree targets before replanning; no measurement/report work identified."
       },
       {
         "index": 8,
@@ -373,8 +388,10 @@
         "coveredObservationSeconds": 29.687,
         "automaticRequestLifetimeMs": 29700,
         "unclaimedBeforeActualPlanningMs": 13,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Replan after type-specific target disappeared"
+        "source": "This cloud agent supplied the gameplay proposal through existing tools; the claim interval also contains development/report-support work.",
+        "purpose": "Replan after type-specific target disappeared",
+        "auditClassification": "exclude_mixed",
+        "auditReason": "Inspected request fields and edited long-claim.mjs to append the private claim ledger before completion."
       },
       {
         "index": 9,
@@ -403,8 +420,10 @@
         "coveredObservationSeconds": 20.573,
         "automaticRequestLifetimeMs": 20589,
         "unclaimedBeforeActualPlanningMs": 16,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Try observed skill-appropriate oak as ordinary progression"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Try observed skill-appropriate oak as ordinary progression",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Assessed observed skills/inventory and chose nearby oak gathering. Offline analyzer/test authoring occurred after this window completed, before window 10."
       },
       {
         "index": 10,
@@ -433,8 +452,10 @@
         "coveredObservationSeconds": 35.508,
         "automaticRequestLifetimeMs": 35524,
         "unclaimedBeforeActualPlanningMs": 16,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Use observed oak/normal logs for Firemaking"
+        "source": "This cloud agent supplied the gameplay proposal through existing tools; the claim interval also contains development/report-support work.",
+        "purpose": "Use observed oak/normal logs for Firemaking",
+        "auditClassification": "exclude_mixed",
+        "auditReason": "Start/end timestamp reporting and correction plus process/tool-return diagnosis (Date conversion, ps, output-file size and private run-status checks) occurred while the claim was open."
       },
       {
         "index": 11,
@@ -463,8 +484,10 @@
         "coveredObservationSeconds": 27.141,
         "automaticRequestLifetimeMs": 27166,
         "unclaimedBeforeActualPlanningMs": 25,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Resume normal-tree gather/burn after deadline"
+        "source": "This cloud agent supplied the gameplay proposal through existing tools; the claim interval also contains development/report-support work.",
+        "purpose": "Resume normal-tree gather/burn after deadline",
+        "auditClassification": "exclude_mixed",
+        "auditReason": "Checked retained event-ledger request births before completion; this is evidence/report-support work."
       },
       {
         "index": 12,
@@ -491,8 +514,10 @@
         "coveredObservationSeconds": 25.705,
         "automaticRequestLifetimeMs": 82053,
         "unclaimedBeforeActualPlanningMs": 56348,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Continue observed successful routine with free inventory"
+        "source": "This cloud agent supplied the gameplay proposal through existing tools; the claim interval also contains development/report-support work.",
+        "purpose": "Continue observed successful routine with free inventory",
+        "auditClassification": "exclude_mixed",
+        "auditReason": "Edited long-watch.mjs to retain long-all-events.jsonl and inspected recordRoutine/episode evidence before completion."
       },
       {
         "index": 13,
@@ -517,8 +542,10 @@
         "coveredObservationSeconds": 24.583,
         "automaticRequestLifetimeMs": 97702,
         "unclaimedBeforeActualPlanningMs": 73119,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Continue same progression workload"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Continue same progression workload",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Ordinary bounded gather/burn continuation from live progression/inventory; no support-code/report work identified."
       },
       {
         "index": 14,
@@ -545,8 +572,10 @@
         "coveredObservationSeconds": 32.794,
         "automaticRequestLifetimeMs": 32806,
         "unclaimedBeforeActualPlanningMs": 12,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Consume actual leftover log and replan after failure"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Consume actual leftover log and replan after failure",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Ordinary recovery/inventory/target planning after a live action failure; no support-code/report work identified."
       },
       {
         "index": 15,
@@ -571,8 +600,10 @@
         "coveredObservationSeconds": 34.067,
         "automaticRequestLifetimeMs": 34074,
         "unclaimedBeforeActualPlanningMs": 7,
-        "source": "This cloud agent reasoned from live context and submitted approved steps through its existing tools; not isolated inference",
-        "purpose": "Short route to previously reached area, inventory management and final gathering"
+        "source": "Transcript-audited gameplay reasoning/tools by this cloud agent; tool/scheduling overhead remains, not isolated model inference.",
+        "purpose": "Short route to previously reached area, inventory management and final gathering",
+        "auditClassification": "retain_gameplay",
+        "auditReason": "Chose a short route to a previously reached region and bounded inventory/gathering work; no support-code/report work identified."
       }
     ],
     "perMinute": [
@@ -1143,9 +1174,283 @@
     "requestLifecycle": {
       "requestsObserved": 22,
       "completedRequests": 15,
-      "claimedActualPlanningIntervals": 15,
       "birthTimesAvailableForAllClaims": true,
-      "unservedPrefetchIsThinking": false
+      "unservedPrefetchIsThinking": false,
+      "claimedAgentToolIntervals": 15
+    },
+    "gameplayPlanningOnly": {
+      "selection": "Conservative transcript audit; exclude whole mixed development/report-support windows, with no within-window time estimates or outcome-based selection",
+      "includedWindowIndices": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        9,
+        13,
+        14,
+        15
+      ],
+      "excludedWindowIndices": [
+        1,
+        5,
+        8,
+        10,
+        11,
+        12
+      ],
+      "claimedDurationMs": 235586,
+      "aggregate": {
+        "observedTicks": 599,
+        "buckets": {
+          "no_approved_work_idle": 515,
+          "cooldown": 7,
+          "observed_progress": 29,
+          "busy_without_proven_progress": 12,
+          "pending_helper_possible_idle": 33,
+          "stationary_controller_pause": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 204.941,
+          "cooldown": 1.5799999999999998,
+          "observed_progress": 11.272,
+          "busy_without_proven_progress": 4.803,
+          "pending_helper_possible_idle": 12.596,
+          "stationary_controller_pause": 0.394
+        },
+        "physicallyStationaryTicks": 576,
+        "visibleIdleLowerBoundTicks": 518,
+        "visibleIdleLowerBoundPercent": 86.47746243739566,
+        "possibleAdditionalIdleTicks": 33,
+        "busyOrProgressTicks": 41,
+        "longestVisibleIdleStreakTicks": 86,
+        "longestVisibleIdleStreakEstimatedSeconds": 34.067,
+        "coveredObservationSeconds": 235.586
+      },
+      "windows": [
+        {
+          "index": 2,
+          "startSeconds": 47.817,
+          "endSeconds": 63.43,
+          "turnaroundMs": 15613,
+          "incomplete": false,
+          "observedTicks": 40,
+          "buckets": {
+            "no_approved_work_idle": 39,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "no_approved_work_idle": 15.549,
+            "cooldown": 0.064
+          },
+          "physicallyStationaryTicks": 40,
+          "visibleIdleLowerBoundTicks": 39,
+          "visibleIdleLowerBoundPercent": 97.5,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 39,
+          "longestVisibleIdleStreakEstimatedSeconds": 15.549,
+          "coveredObservationSeconds": 15.613
+        },
+        {
+          "index": 3,
+          "startSeconds": 86.427,
+          "endSeconds": 116.808,
+          "turnaroundMs": 30381,
+          "incomplete": false,
+          "observedTicks": 77,
+          "buckets": {
+            "observed_progress": 17,
+            "busy_without_proven_progress": 2,
+            "no_approved_work_idle": 57,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 6.582999999999999,
+            "busy_without_proven_progress": 0.775,
+            "no_approved_work_idle": 22.811999999999998,
+            "cooldown": 0.211
+          },
+          "physicallyStationaryTicks": 61,
+          "visibleIdleLowerBoundTicks": 57,
+          "visibleIdleLowerBoundPercent": 74.02597402597402,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 19,
+          "longestVisibleIdleStreakTicks": 52,
+          "longestVisibleIdleStreakEstimatedSeconds": 20.794,
+          "coveredObservationSeconds": 30.381
+        },
+        {
+          "index": 4,
+          "startSeconds": 148.47,
+          "endSeconds": 171.033,
+          "turnaroundMs": 22563,
+          "incomplete": false,
+          "observedTicks": 58,
+          "buckets": {
+            "pending_helper_possible_idle": 33,
+            "observed_progress": 12,
+            "busy_without_proven_progress": 10,
+            "cooldown": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 12.596,
+            "observed_progress": 4.689,
+            "busy_without_proven_progress": 4.028,
+            "cooldown": 1.25
+          },
+          "physicallyStationaryTicks": 51,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 33,
+          "busyOrProgressTicks": 22,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 22.563
+        },
+        {
+          "index": 6,
+          "startSeconds": 305.122,
+          "endSeconds": 338.224,
+          "turnaroundMs": 33102,
+          "incomplete": false,
+          "observedTicks": 84,
+          "buckets": {
+            "stationary_controller_pause": 1,
+            "no_approved_work_idle": 83
+          },
+          "estimatedObservationIntervalSeconds": {
+            "stationary_controller_pause": 0.237,
+            "no_approved_work_idle": 32.865
+          },
+          "physicallyStationaryTicks": 84,
+          "visibleIdleLowerBoundTicks": 84,
+          "visibleIdleLowerBoundPercent": 100,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 84,
+          "longestVisibleIdleStreakEstimatedSeconds": 33.102,
+          "coveredObservationSeconds": 33.102
+        },
+        {
+          "index": 7,
+          "startSeconds": 398.146,
+          "endSeconds": 420.056,
+          "turnaroundMs": 21910,
+          "incomplete": false,
+          "observedTicks": 56,
+          "buckets": {
+            "stationary_controller_pause": 1,
+            "no_approved_work_idle": 55
+          },
+          "estimatedObservationIntervalSeconds": {
+            "stationary_controller_pause": 0.027,
+            "no_approved_work_idle": 21.883000000000003
+          },
+          "physicallyStationaryTicks": 56,
+          "visibleIdleLowerBoundTicks": 56,
+          "visibleIdleLowerBoundPercent": 100,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 56,
+          "longestVisibleIdleStreakEstimatedSeconds": 21.91,
+          "coveredObservationSeconds": 21.91
+        },
+        {
+          "index": 9,
+          "startSeconds": 572.061,
+          "endSeconds": 592.634,
+          "turnaroundMs": 20573,
+          "incomplete": false,
+          "observedTicks": 53,
+          "buckets": {
+            "stationary_controller_pause": 1,
+            "no_approved_work_idle": 51,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "stationary_controller_pause": 0.13,
+            "no_approved_work_idle": 20.418999999999997,
+            "cooldown": 0.024
+          },
+          "physicallyStationaryTicks": 53,
+          "visibleIdleLowerBoundTicks": 52,
+          "visibleIdleLowerBoundPercent": 98.11320754716981,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 52,
+          "longestVisibleIdleStreakEstimatedSeconds": 20.549,
+          "coveredObservationSeconds": 20.573
+        },
+        {
+          "index": 13,
+          "startSeconds": 959.966,
+          "endSeconds": 984.549,
+          "turnaroundMs": 24583,
+          "incomplete": false,
+          "observedTicks": 62,
+          "buckets": {
+            "no_approved_work_idle": 62
+          },
+          "estimatedObservationIntervalSeconds": {
+            "no_approved_work_idle": 24.583000000000013
+          },
+          "physicallyStationaryTicks": 62,
+          "visibleIdleLowerBoundTicks": 62,
+          "visibleIdleLowerBoundPercent": 100,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 62,
+          "longestVisibleIdleStreakEstimatedSeconds": 24.583,
+          "coveredObservationSeconds": 24.583
+        },
+        {
+          "index": 14,
+          "startSeconds": 1041.419,
+          "endSeconds": 1074.213,
+          "turnaroundMs": 32794,
+          "incomplete": false,
+          "observedTicks": 83,
+          "buckets": {
+            "no_approved_work_idle": 82,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "no_approved_work_idle": 32.763000000000005,
+            "cooldown": 0.031
+          },
+          "physicallyStationaryTicks": 83,
+          "visibleIdleLowerBoundTicks": 82,
+          "visibleIdleLowerBoundPercent": 98.79518072289157,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 82,
+          "longestVisibleIdleStreakEstimatedSeconds": 32.763,
+          "coveredObservationSeconds": 32.794
+        },
+        {
+          "index": 15,
+          "startSeconds": 1136.404,
+          "endSeconds": 1170.471,
+          "turnaroundMs": 34067,
+          "incomplete": false,
+          "observedTicks": 86,
+          "buckets": {
+            "no_approved_work_idle": 86
+          },
+          "estimatedObservationIntervalSeconds": {
+            "no_approved_work_idle": 34.067
+          },
+          "physicallyStationaryTicks": 86,
+          "visibleIdleLowerBoundTicks": 86,
+          "visibleIdleLowerBoundPercent": 100,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 86,
+          "longestVisibleIdleStreakEstimatedSeconds": 34.067,
+          "coveredObservationSeconds": 34.067
+        }
+      ]
     }
   },
   "coverage": {
@@ -1248,7 +1553,27 @@
       "endSeconds": 679.531,
       "note": "Broad enclosing unclaimed interval includes observation/report updates as well as offline analyzer/test authoring; exact keystroke duration was not instrumented. It is excluded from claimed thinking, retained in whole totals."
     },
-    "otherEvidenceSupportWork": "Private ledger/event-retention helpers and status formatting were adjusted outside claims; these operational intervals remain in the unclaimed category, not model thinking. Report assembly completed after fixed end."
+    "otherEvidenceSupportWork": "Correction: private ledger/event-support work was not all outside claims. Windows 1,5,8,10,11,12 contain known or conservatively identified development/report-methodology work and are excluded in full from gameplayPlanningOnly, while retained unchanged in all-claim and whole-run totals. Exact developer task durations were not instrumented.",
+    "mixedClaimWindowIndices": [
+      1,
+      5,
+      8,
+      10,
+      11,
+      12
+    ],
+    "auditedGameplayWindowIndices": [
+      2,
+      3,
+      4,
+      6,
+      7,
+      9,
+      13,
+      14,
+      15
+    ],
+    "exactDeveloperDurationsKnown": false
   },
   "checks": {
     "passed": 12,
@@ -1299,10 +1624,140 @@
     "This cloud agent and its tool scheduling were tested, not the separate Wartime environment/model or isolated inference.",
     "Single character/session/workload, 20 minutes, not proof of unlimited autonomy or PvP ability. No public chat/PvP action.",
     "Many full routines failed or required replanning; this is not a successful low-idle benchmark. Observed skill XP may increase even when an SDK helper reports failure; verified actions and actual XP are kept separate.",
-    "Whole-run idle includes unclaimed operational/developer/report periods. Use claimed interval intersection as primary answer to thinking-time question.",
+    "All-claim intervals include mixed gameplay and developer/report work. Use gameplayPlanningOnly for the conservative narrower subset; whole-run and original all-claim totals remain intact.",
     "Standing still alone is not idle. Busy animation may still hide ineffective work; helper ambiguity could contain useful attempts or wasted time. Missing ticks are not invented as idle.",
     "Idle is a conservative observation-based estimate; no server execution trace or authoritative hidden-action state. Small boundary uncertainty at tick/window edges and millisecond clock quantization remain.",
     "Plans intentionally adapted to targets, inventory, failures and available oak as ordinary progression; executor and measurement source stayed fixed. No comparison claiming that changing workload optimized the controller.",
-    "Final stop happens after measurement; cancellation/cleanup ticks are excluded. Earlier historical reports are unchanged."
-  ]
+    "Final stop happens after measurement; cancellation/cleanup ticks are excluded. Earlier historical reports are unchanged.",
+    "The audit excludes whole windows without inventing developer durations. Neither subset nor all-claim turnaround isolates inference or tests the separate Wartime instance; no live run was repeated for this correction."
+  ],
+  "auditCorrection": {
+    "date": "2026-11-16",
+    "correctsPublishedCommit": "8aeb249",
+    "error": "The original report falsely stated that all private ledger/event-support edits occurred outside claims and treated all 15 claim windows as genuine gameplay-planning-only intervals.",
+    "method": "Review all 15 windows against the command/activity sequence, preserving the fixed raw trace. Entire known/uncertain mixed windows excluded before examining subset arithmetic; no guessed within-window developer durations and no outcome-based filtering.",
+    "excludedWindowIndices": [
+      1,
+      5,
+      8,
+      10,
+      11,
+      12
+    ],
+    "retainedWindowIndices": [
+      2,
+      3,
+      4,
+      6,
+      7,
+      9,
+      13,
+      14,
+      15
+    ],
+    "all15WindowReview": [
+      {
+        "index": 1,
+        "classification": "exclude_mixed",
+        "evidence": "Authored long-complete.mjs between claim and completion; helper construction is development/support work."
+      },
+      {
+        "index": 2,
+        "classification": "retain_gameplay",
+        "evidence": "Live inventory/target assessment and bounded gathering/burning continuation; no support-code/report work identified."
+      },
+      {
+        "index": 3,
+        "classification": "retain_gameplay",
+        "evidence": "Read controller/SDK chop and target-resolution semantics to understand an actual live chop failure and choose the next gameplay plan. Retained as action-specific gameplay reasoning, not measurement/report work."
+      },
+      {
+        "index": 4,
+        "classification": "retain_gameplay",
+        "evidence": "Assessed active progression and prefetched bounded continuation; no support-code/report work identified."
+      },
+      {
+        "index": 5,
+        "classification": "exclude_mixed",
+        "evidence": "Measurement-classifier/report-methodology review occurred during the claim; conservatively exclude the entire window even without a support-code edit."
+      },
+      {
+        "index": 6,
+        "classification": "retain_gameplay",
+        "evidence": "Chose inventory management and gathering/navigation steps. The long-watch.mjs formatting edit followed the awaited completion command in the same sequential shell command, so was outside this window."
+      },
+      {
+        "index": 7,
+        "classification": "retain_gameplay",
+        "evidence": "Assessed actual route failure, inventory and observed tree targets before replanning; no measurement/report work identified."
+      },
+      {
+        "index": 8,
+        "classification": "exclude_mixed",
+        "evidence": "Inspected request fields and edited long-claim.mjs to append the private claim ledger before completion."
+      },
+      {
+        "index": 9,
+        "classification": "retain_gameplay",
+        "evidence": "Assessed observed skills/inventory and chose nearby oak gathering. Offline analyzer/test authoring occurred after this window completed, before window 10."
+      },
+      {
+        "index": 10,
+        "classification": "exclude_mixed",
+        "evidence": "Start/end timestamp reporting and correction plus process/tool-return diagnosis (Date conversion, ps, output-file size and private run-status checks) occurred while the claim was open."
+      },
+      {
+        "index": 11,
+        "classification": "exclude_mixed",
+        "evidence": "Checked retained event-ledger request births before completion; this is evidence/report-support work."
+      },
+      {
+        "index": 12,
+        "classification": "exclude_mixed",
+        "evidence": "Edited long-watch.mjs to retain long-all-events.jsonl and inspected recordRoutine/episode evidence before completion."
+      },
+      {
+        "index": 13,
+        "classification": "retain_gameplay",
+        "evidence": "Ordinary bounded gather/burn continuation from live progression/inventory; no support-code/report work identified."
+      },
+      {
+        "index": 14,
+        "classification": "retain_gameplay",
+        "evidence": "Ordinary recovery/inventory/target planning after a live action failure; no support-code/report work identified."
+      },
+      {
+        "index": 15,
+        "classification": "retain_gameplay",
+        "evidence": "Chose a short route to a previously reached region and bounded inventory/gathering work; no support-code/report work identified."
+      }
+    ],
+    "wholeAndAllClaimCountsUnchanged": true,
+    "privateTraceHashUnchanged": true,
+    "mixedWindowsCombinedClaimDurationMs": 180527,
+    "durationWarning": "The combined duration of excluded windows is NOT measured developer time. All of each mixed window is excluded conservatively, including its gameplay work.",
+    "subsetLimit": "No further measurement/report-support work was identified in the retained windows. This is a transcript audit, not an instrumented per-task activity profiler; game-related retrieval, action semantics inspection (window 3), tool and scheduling overhead remain.",
+    "checks": {
+      "wholeAggregateUnchanged": true,
+      "allClaimAggregateUnchanged": true,
+      "wholePerMinuteTimelineUnchanged": true,
+      "originalWindowAndThroughputUnchanged": true,
+      "rawTraceHashUnchanged": true,
+      "all15ReviewedExactlyOnce": true,
+      "wholeWindowIndicesPartition": true,
+      "subsetTickSum": true,
+      "subsetIdleSum": true,
+      "subsetAmbiguousSum": true,
+      "subsetDurationSum": true,
+      "subsetSecondsPartition": true,
+      "excludedPlusRetainedIsAllClaimDuration": true
+    },
+    "focusedTests": {
+      "command": "node --test wartime/v2/test/long-analysis.test.mjs",
+      "passed": 3,
+      "failed": 0
+    },
+    "noNewLiveRunOrProductChange": true,
+    "checksPassed": 13
+  }
 }

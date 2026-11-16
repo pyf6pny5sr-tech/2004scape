@@ -6,6 +6,10 @@ The [focused maintenance follow-up report](maintenance-followup-report.json) cov
 
 **Online agent integration passed in one fresh cloud session.** See [agent-first validation](agent-first-validation-report.json): approved proxy transport, real login/onboarding, current-agent plan acceptance, four verified actions and skill replay. [Supplemental live maintenance](live-maintenance-report.json) also verified same-account church relocation, steady-1 → cautious-2, unchanged owner and resumed queued action. PvP remains untested online. Earlier reports retain their historical limits. Never infer ownership or gameplay from a browser image or failed status request.
 
+## Live continuity follow-up
+
+The [new fixed 20-minute online report](continuity-run-report.md) tests pinned implementation 0ad0cab on the same account: actual game-service planning idle **484/1,348 ticks (35.91%)**, compared with audited baseline **518/599 (86.48%)**—**50.57 percentage points / 58.48% relative reduction**. Verified throughput rose **62 → 187 actions**; 29 failed-attempt counter increments and 315 ambiguous planning ticks remain. Higher starting skills, workload/tool timing and baseline developer periods limit causal comparison. See [sanitized JSON](continuity-run-report.json), including all 19 intervals, early guard pauses, source identity, cleanup and failure-count distinctions. This measured this cloud agent, not the separate Wartime runtime or isolated inference.
+
 ## Approved continuity while the current agent plans
 
 The current agent can approve a **finite woodcutting/Firemaking reserve** alongside an ordinary short proposal. The executor chooses fresh eligible work from that exact recipe and inventory while the agent services prefetched requests. It never generates new goals or model reasoning. Do not reset the goal or call `resume` just to answer a refill request: those invalidate work. Use the current pending request and `planner_complete`/`agent.mjs complete` to append ordinary work and renew the reserve without canceling the current action.

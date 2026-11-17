@@ -71,7 +71,7 @@ export async function createBridge(executor: any, config: any) {
   });
   // Optional private evidence augments capture only; baseline tick classification is unchanged.
   const evidence = measurement ? new ContinuityEvidence(executor, config.measurementFile + ".evidence.jsonl", identity) : null;
-  if(scorer||evidence){const originalEvent=executor.event.bind(executor);executor.event=(type:any,details:any={})=>{originalEvent(type,details);evidence?.event(executor.events.at(-1));if(type==='episode')scorer?.capture({kind:'episode',ref:details.id,id:'episode:'+details.id});if(type==='skill_verified')scorer?.capture({kind:'procedure',name:details.name,id:'procedure:'+details.name+':'+details.episodeId});};}
+  if(scorer||evidence){const originalEvent=executor.event.bind(executor);executor.event=(type:any,details:any={})=>{originalEvent(type,details);evidence?.event(executor.events.at(-1));if(type==='episode')scorer?.capture({kind:'episode',ref:details.id,id:'episode:'+details.id});if(type==='skill_verified')scorer?.capture({kind:'procedure',name:details.name,expectedEpisode:details.episodeId,recordedSkillProof:details.skillProof,id:'procedure:'+details.name+':'+details.episodeId});};}
   if (measurement && evidence) {
     const begin = measurement.begin.bind(measurement), end = measurement.end.bind(measurement);
     measurement.begin = async (durationMs: any) => {

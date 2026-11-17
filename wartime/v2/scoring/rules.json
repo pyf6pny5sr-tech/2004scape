@@ -84,7 +84,7 @@
     {
       "id": "kill_streak",
       "points": 25,
-      "evidence": "Three own confirmed kills without confirmed death, once per distinct three-kill streak segment.",
+      "evidence": "Three distinct own confirmed kills without death in one confirmed life; conservatively awarded once on reaching3. Longer-streak eligibility unresolved.",
       "sdkAutomation": false
     },
     {
@@ -152,7 +152,7 @@
     "Ambiguous social/clan/PvP/improvement eligibility is pending until a trusted verifier supplies complete structured proof. Model text and score_claim never award points.",
     "Only baseLevel changes score; temporary boosts do not. XP comparisons require same skill/world/XP-rate regime, complete reset-free coverage and non-overlapping >=5min windows. Starting levels, tools and methods are context, not separate record baselines; credible progression or method improvement may earn100. Complete windows are restarted when their active method/equipment changes, then compared with the existing same-skill record.",
     "PK participants must be clan members confirmed in trip evidence, each counted once; base and participant awards are separate exact user amounts.",
-    "Improvement facts require comparable before/after evidence, meaningful metric decrease/increase and gameplay throughput/experience not reduced; no automatic award from scheduler counters.",
+    "Improvement facts require comparable genuine before/after metric evidence; only monitoring additionally requires gameplay experience not reduced. No automatic award from scheduler counters.",
     "Unclear ordinal/eligibility interpretations stay pending, not silently awarded.",
     "Three-kill streak is conservatively awarded once upon reaching three distinct own kills in a confirmed life; no extra awards for a longer streak without explicit eligibility clarification."
   ],

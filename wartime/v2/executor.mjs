@@ -903,7 +903,7 @@ export class Executor {
     });
   }
   async remember(name, id, description) {
-    const skill=await this.memory.remember(name,id,description);this.event("skill_verified",{name,episodeId:id});return skill;
+    const skill=await this.memory.remember(name,id,description);this.event("skill_verified",{name,episodeId:id,skillProof:{world:skill.world,player:skill.player,episodeId:skill.episodeId}});return skill;
   }
   status() {
     const s = this.state;

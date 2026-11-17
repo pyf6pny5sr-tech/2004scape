@@ -8,16 +8,6 @@
     "bun": "1.4.4"
   },
   "tests": {
-    "finalNode": {
-      "passed": 109,
-      "failed": 0,
-      "files": 10
-    },
-    "finalBun": {
-      "passed": 153,
-      "failed": 0,
-      "files": 16
-    },
     "overlap": "Do not add Node/Bun counts as unique tests.",
     "focusedCoverage": [
       "Every scoring family has positive/negative trusted fixtures, not live social/clan/PvP validation",
@@ -35,13 +25,34 @@
       "First range guard used Proxy-handler this instead of captured adapter flag;6/10 new packet fixtures failed. Fixed actual binding; final10/10 pass.",
       "First XP fixture input accidentally made first window faster; corrected the fixture rate sequence, not award expectations.",
       "Prepared-home ownership guard correctly refused our prematurely created capture subdirectory; moved only our metadata outside the new runtime home. No account was created."
-    ]
+    ],
+    "lastBroadSuitePin": "5b9f4baa36ff067a5a6481a64c85c5d27b42b63f",
+    "broadNodeBeforeReview": {
+      "passed": 109,
+      "failed": 0,
+      "files": 10
+    },
+    "broadBunBeforeReview": {
+      "passed": 153,
+      "failed": 0,
+      "files": 16
+    },
+    "finalFocusedNode": {
+      "passed": 29,
+      "failed": 0,
+      "files": 3
+    },
+    "finalFocusedBun": {
+      "passed": 40,
+      "failed": 0,
+      "files": 5
+    }
   },
   "preparedRuntime": {
     "state": "PREPARED_NO_ACCOUNT_OR_TIMER",
     "guardAndScorerFilesCopied": true,
     "computedIdentityMatchesPrivatePreparedCopy": true,
-    "buildSha256": "ff0c4954b950a6597f2f337801d3602556d3bbe99362c242842ce13dcd2aab7c",
+    "buildSha256": "ccf9fecab78008b791e05cbd11e5141207d362578bff2af90541bd1bb2b5fc35",
     "identityFileCount": 29,
     "reportReplayToolsExcludedFromRuntimeIdentity": true
   },
@@ -49,25 +60,25 @@
     "artifact": "scoring-replay-preflight.json",
     "recordedIntentsEqual": true,
     "noDrops": true,
-    "onMainCpuMs": 1000.34,
-    "offMainCpuMs": 373.402,
-    "workerCpuMs": 1851.157,
+    "onMainCpuMs": 1098.678,
+    "offMainCpuMs": 196.684,
+    "workerCpuMs": 1980.571,
     "limits": "Replays recorded intents through an independent passive off/on pipeline; does not rerun the executor or prove identical live scheduling. Skill snapshots are held from retained episodes between observations; replay scoring is a load fixture, not an awarded live balance. Pacing is fixture-only, never model thinking. Separate temporary ledger; original account/ledger untouched."
   },
   "scoreSemantics": "Exact amounts in scoring/rules.json. Unsupported evidence pending; model text cannot award. XP methods/levels context, not separate baselines. Passive visible idle is not penalizable proof. No old1379/test balance is imported.",
   "sourceModuleSha256": {
     "adapter.ts": "37a30ae3227794e84d6c942a739832fcaa5171829889c4dc91b09948d090b600",
     "range-tank.mjs": "7781a154d2921b17a5e8b35f466ca657803a5d65492addfd5e942e2f6039370c",
-    "scoring/client.mjs": "fd0266a927b21b1e5acd48fb525979ce0b47643dddba0c6a720580b7fbda820a",
-    "scoring/engine.mjs": "4b2c4c0c56b9ff4c6ce77d63e6b22f75010b1fddfc40d15217c0a33033bc0f4a",
-    "scoring/worker.mjs": "2be13688dfc79aa496d7f918629558de5c55197c4f7176348b5d89e42e4cd938",
-    "scoring/rules.json": "4a293d068e0661151dec81ec943e7e7875394b1d414ee6fd06b5053ec5adbe96",
+    "scoring/client.mjs": "5272352577e54484629505d0882272dde8f6f66a9acabda942435d5d9254d36a",
+    "scoring/engine.mjs": "b037ac43666c24219d540c55d6e1557550fa697768a948052298b37b72eb0f45",
+    "scoring/worker.mjs": "d2fbcc836f40146436ef5791f1cf03e1f43706b24fafe96a095dfa47dc86cb4e",
+    "scoring/rules.json": "06a17cd5031104436717d78d800bd4bc55d5912d1d04cabd6155839904b35dc9",
     "resource-actions.ts": "5e2dad285ff487c3248a223bcb16a7843035398199a1df956ffdd96bad8e6305",
     "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
     "continuity-capture.mjs": "a43431eab44f9a70d32265f1a006fa28fad8994f8b3bbdac3de8f82150386ae3",
-    "executor.mjs": "cc20e42ccfb831cce645fc24184f0d284a32f53854e2a0da4561a2642d15ca49",
+    "executor.mjs": "9ce3268c662ba9f5a996f50ecfd0c18c53be0528ac665dab09864320aee6ffbf",
     "continuity.mjs": "83f80584d5eb62b2bc4ff751d6c85e1ab4dee1ddd5ecebdf094aecc56647ec74",
-    "host.ts": "7f50bc330b4a3026c5703d273760abf9e17796d64492d83eb89ed82fb6cf3412",
+    "host.ts": "6a0644c4fa6c0c0fea645168968870e60ed608adbd0dfdd487d460f88cc1dd50",
     "identity.mjs": "c18c8247e27157b6039366dcf53733dbe4e249de5376478a597aa857e1efc7a0",
     "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
     "long-run.mjs": "e485c01e0031cf672173d72b72d415ba7dc9807d7f9900d6cf906e1d3107150d",
@@ -85,5 +96,13 @@
     "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
     "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
     "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
-  }
+  },
+  "supersedesPin": "5b9f4baa36ff067a5a6481a64c85c5d27b42b63f",
+  "reviewCorrections": [
+    "Non-bank losses retire known mined units using a proven lower bound; mixed bank splits and mismatched before-inventory chains preserve pending uncertainty and consistent lot totals.",
+    "gameplayExperienceNotReduced is additional eligibility only for monitoring, not the other five genuine improvements.",
+    "Fallback death and delayed metadata/respawn share one durable alias; confirmed stream/publication reset uses separate context and uncertain reset death is not invented as another deduction.",
+    "Procedure scoring journals immutable proof from the completed durable skill write; scorer delay, same-name later episode and restart retain historical award identity. Reproduced EVIDENCE_HASH_CHANGED before fix.",
+    "Kill-streak text matches conservative once-per-life policy, longer-streak eligibility explicitly unresolved."
+  ]
 }

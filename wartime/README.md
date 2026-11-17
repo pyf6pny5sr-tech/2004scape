@@ -2,7 +2,7 @@
 
 # Wartime · 2004Scape controller
 
-**New implementation:** [Wartime v2: persistent host, model bridge and church maintenance](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [separate validation report](v2/validation-report.json) distinguishes disposable cloud gameplay from outstanding online/model validation. The v1 implementation and historical report below remain intact.
+**New implementation:** [Wartime v2: persistent host and current-agent bridge](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [latest live reliability report](v2/reliability-run-report.md) records a fixed20-minute online run, measured idle/failures and remaining long pauses. The [original v2 validation](v2/validation-report.json) remains historical. The v1 implementation and historical report below remain intact.
 
 This project combines cited 2004Scape knowledge with a model-driven RS-SDK controller. Current v2 runs use an explicitly configured world/gateway; the legacy target was https://rs-sdk-demo.fly.dev/. It provides:
 - the model supplies Voyager-style curriculum, planning and critique;
@@ -15,7 +15,7 @@ It is an original adaptation of Voyager's design, not the upstream Minecraft run
 
 **Wartime is already the planner.** From this repository it can run `node wartime/v2/agent.mjs ensure --world https://rs-sdk.maxbittker.com --gateway wss://rs-sdk.maxbittker.com/gateway` using its existing tools. The helper prepares its private pinned SDK/client workspace and knowledge, discovers/verifies an active run or starts/resumes the correct one. No second provider, API key, Codex login, billing or human SDK-directory assembly is required. Status is read-only and reports computed source/build identity.
 
-Use [the online agent instructions](v2/README.md), [handoff](v2/HANDOFF.txt) and [prompt](v2/NEW-RUN-PROMPT.txt). A deliberately new top-level run gets fresh private account credentials; normal tools/ticks/planning/maintenance retain the run, and bounded old-character replacement remains available. Approved routines run while the current agent thinks, but the host cannot wake an inactive chat or invent new reasoning. An unattended provider is optional, not a readiness dependency.
+Use [the online agent instructions](v2/README.md), [handoff](v2/HANDOFF.txt) and [prompt](v2/NEW-RUN-PROMPT.txt). A deliberately new top-level run gets fresh private account credentials; normal tools/ticks/planning retain the run, and bounded old-character replacement remains available. Approved routines run while the current agent thinks, but the host cannot wake an inactive chat or invent new reasoning. An unattended provider is optional, not a readiness dependency.
 
 Run only on the chosen cloud/agent host, not Windows. Connect to the explicit online service through its configured approved route; do not substitute a local server or bypass proxy/TLS policy. Earlier local tests and prior provider-oriented handoffs are historical, not the current default.
 

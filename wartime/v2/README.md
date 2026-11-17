@@ -4,7 +4,13 @@ Start here for the new implementation. v1 and its historical report remain uncha
 
 **Current contract:** church maintenance and automatic HP/combat/region gameplay pauses are retired at the user's request. Manual `cancel`/`stop` remain authoritative; stale/disconnected/auth/ownership state still cannot dispatch. Historical maintenance and prior live reports below preserve what those older versions exercised, not current requirements. No church detour or staged in-game policy update is part of startup or play.
 
-## Live continuity follow-up
+## Latest live reliability follow-up
+
+The [new fixed20-minute online report](reliability-run-report.md) measured runtime **01e6ad7**: **245 helper-verified completions** versus187; failed dispatches **18/263 (6.84%)** versus29/216 (13.43%). Whole-run visible idle fell **18.73%→15.30%**; all15 actual claim-to-submission intervals fell **35.91%→30.13%**. The separate audited subset excludes entire mixed support/gameplay claim1: **80/514 (15.56%)**, with every claim retained in the all-claim/whole totals.
+
+Long pauses remain: whole longest idle worsened **64.407s→107.541s** while a finite grant expired and a prefetched request went unserved, followed by rejected agent submissions. Helper ambiguity increased **29.67%→34.57%**. These results are this cloud agent's reasoning/tools/scheduling, with higher starting skills, not isolated inference or the inaccessible Wartime runtime. See [sanitized counts, timing, audit and source identity](reliability-run-report.json). The post-window **695f615** manual-cancel life/clock fix passed39 tests each under Node and Bun and was not live-measured. Owned processes stopped; no replacement/new account.
+
+## Historical live continuity follow-up
 
 The [new fixed 20-minute online report](continuity-run-report.md) tests pinned implementation 0ad0cab on the same account: actual game-service planning idle **484/1,348 ticks (35.91%)**, compared with audited baseline **518/599 (86.48%)**—**50.57 percentage points / 58.48% relative reduction**. Verified throughput rose **62 → 187 actions**; 29 failed-attempt counter increments and 315 ambiguous planning ticks remain. Higher starting skills, workload/tool timing and baseline developer periods limit causal comparison. See [sanitized JSON](continuity-run-report.json), including all 19 intervals, early guard pauses, source identity, cleanup and failure-count distinctions. This measured this cloud agent, not the separate Wartime runtime or isolated inference.
 

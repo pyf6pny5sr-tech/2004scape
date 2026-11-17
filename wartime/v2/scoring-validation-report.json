@@ -1,0 +1,3487 @@
+{
+  "schemaVersion": 1,
+  "scope": "Fresh disposable character, range-tank contract and score0; this cloud agent is planner. Not the user future production character, old Wartime, weight training or isolated model timing.",
+  "sourceCommit": "af7ca20886e03a1efccbe9ba2f18ba466d4fba59",
+  "sourceIdentity": {
+    "implementation": "wartime-v2",
+    "identityProtocol": 1,
+    "buildSha256": "7627cdc2652e08a6461222e0b1646c11c97495c7e2fd54bd3e58ff29b7ae261c",
+    "moduleSha256": {
+      "adapter.ts": "37a30ae3227794e84d6c942a739832fcaa5171829889c4dc91b09948d090b600",
+      "range-tank.mjs": "7781a154d2921b17a5e8b35f466ca657803a5d65492addfd5e942e2f6039370c",
+      "scoring/client.mjs": "5272352577e54484629505d0882272dde8f6f66a9acabda942435d5d9254d36a",
+      "scoring/engine.mjs": "7eb13561278b66ba31dae5ccba0550c06adb5c2808b21e0caee308021029a523",
+      "scoring/worker.mjs": "d2fbcc836f40146436ef5791f1cf03e1f43706b24fafe96a095dfa47dc86cb4e",
+      "scoring/rules.json": "06a17cd5031104436717d78d800bd4bc55d5912d1d04cabd6155839904b35dc9",
+      "resource-actions.ts": "5e2dad285ff487c3248a223bcb16a7843035398199a1df956ffdd96bad8e6305",
+      "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+      "continuity-capture.mjs": "a43431eab44f9a70d32265f1a006fa28fad8994f8b3bbdac3de8f82150386ae3",
+      "executor.mjs": "9ce3268c662ba9f5a996f50ecfd0c18c53be0528ac665dab09864320aee6ffbf",
+      "continuity.mjs": "83f80584d5eb62b2bc4ff751d6c85e1ab4dee1ddd5ecebdf094aecc56647ec74",
+      "host.ts": "6a0644c4fa6c0c0fea645168968870e60ed608adbd0dfdd487d460f88cc1dd50",
+      "identity.mjs": "c18c8247e27157b6039366dcf53733dbe4e249de5376478a597aa857e1efc7a0",
+      "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+      "long-run.mjs": "e485c01e0031cf672173d72b72d415ba7dc9807d7f9900d6cf906e1d3107150d",
+      "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+      "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+      "protocol.mjs": "3d918ce42a4c54ad79e055f7230e62dd8bca0ba2e363d95af6e34ed5bfd7eaf0",
+      "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+      "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+      "run-store.mjs": "cf6a476255e3a2c05b4efab7b8523109b9b76c6bcdcea5d02fe03355d35475e9",
+      "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+      "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+      "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+      "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+      "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+      "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+      "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+      "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+    },
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "sdkModuleSha256": {
+      "sdk/index.ts": "ae769e45bdb56e27b075f7b50d71d1b796ae55927406a675a0f59deae9726fe8",
+      "sdk/actions.ts": "4b1ea5b2ba2237ce4bf40c9f4df2175f6e8ff6ed6648f8a1ad26ccfb1b030e97",
+      "sdk/execution-context.ts": "aedaea42e299445ad5f1622338a583168529e9792019b57289d3d5db76cb902b",
+      "server/webclient/src/lite/session.ts": "d68c811f6498b97792a1b2eb85704dad417bb0ac61be6f353097e0b2fcedfc49",
+      "server/webclient/src/lite/net/GameConnection.ts": "fc82aa5a1589f47d128c13e085ffce07a213ca6220c78f7e959a6400bc8f9f77"
+    },
+    "capturedAt": "2026-11-17T05:03:28.610Z",
+    "meaning": "Computed from runtime module files at startup, not a configurable label. Local file/build identity, not remote cryptographic attestation."
+  },
+  "baselineSourceCommit": "7181b7a69458d70e7d5df75ebb72b5d0f081f260",
+  "window": {
+    "startUtc": "2026-11-17T05:04:02.469Z",
+    "endUtc": "2026-11-17T05:16:02.470Z",
+    "durationMs": 720001,
+    "preparationIncluded": false,
+    "fixedDeadline": true,
+    "targetEndUtc": "2026-11-17T05:16:02.469Z"
+  },
+  "environment": {
+    "world": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "node": "24.22.1",
+    "bun": "1.4.4",
+    "location": "Authorized Codex Cloud; online only",
+    "route": "Existing inherited approved proxy/TLS/NO_PROXY route; no endpoint substitution"
+  },
+  "run": {
+    "runId": "rf5d44ff2b21a870cc33d7e54eb733142",
+    "sameRecordedRunAsBaseline": false,
+    "ownerSha256": "d1a94f9e83168b7dd17801b34ec3e242d91b2d96d44257b5cd717379df869571",
+    "ownerUnchangedWithinWindow": true,
+    "newAccounts": 1,
+    "replacements": 0,
+    "cleanup": {
+      "controllerStopped": true,
+      "clientStopped": true,
+      "scorerStopped": true,
+      "runStatus": "STOPPED",
+      "ownerLockReleased": true,
+      "bridgeSocketRemoved": true,
+      "checkedAt": "2026-11-17T05:17:23.077Z",
+      "scope": "Only exact owned process identities from this disposable test; no other accounts/processes touched."
+    },
+    "accountMilestones": {
+      "privateConfigCreated": true,
+      "loginAttempted": true,
+      "clientLoggedIn": true,
+      "freshStateConfirmed": true,
+      "clientAttached": true,
+      "controllerAuthenticated": true,
+      "onboardingComplete": true,
+      "controllerReady": true
+    }
+  },
+  "measurement": {
+    "classifier": "Unchanged long-run.mjs flags and analyze-long-run.mjs reportBucket/overlap accounting",
+    "tickCountSource": "Passive owned SDK tick transitions, not polling iterations",
+    "rawStateChatCredentialsPublic": false,
+    "seconds": "Estimated from observed timestamp intervals; missing ticks are not idle; animation/helper evidence is not proven productivity"
+  },
+  "analysis": {
+    "durationMs": 720001,
+    "whole": {
+      "observedTicks": 1800,
+      "buckets": {
+        "unknown": 1,
+        "no_approved_work_idle": 98,
+        "cooldown": 132,
+        "pending_helper_possible_idle": 728,
+        "observed_progress": 627,
+        "busy_without_proven_progress": 214
+      },
+      "estimatedObservationIntervalSeconds": {
+        "unknown": 0.427,
+        "no_approved_work_idle": 39.175000000000004,
+        "cooldown": 53.034,
+        "pending_helper_possible_idle": 293.8630000000003,
+        "observed_progress": 248.5309999999998,
+        "busy_without_proven_progress": 84.87600000000002
+      },
+      "physicallyStationaryTicks": 1359,
+      "visibleIdleLowerBoundTicks": 98,
+      "visibleIdleLowerBoundPercent": 5.444444444444445,
+      "possibleAdditionalIdleTicks": 728,
+      "busyOrProgressTicks": 841,
+      "longestVisibleIdleStreakTicks": 98,
+      "longestVisibleIdleStreakEstimatedSeconds": 39.175,
+      "coveredObservationSeconds": 719.906
+    },
+    "claimedAgentToolIntervals": {
+      "observedTicks": 483,
+      "buckets": {
+        "no_approved_work_idle": 76,
+        "cooldown": 31,
+        "busy_without_proven_progress": 55,
+        "pending_helper_possible_idle": 192,
+        "observed_progress": 129
+      },
+      "estimatedObservationIntervalSeconds": {
+        "no_approved_work_idle": 30.197000000000003,
+        "cooldown": 11.412999999999998,
+        "busy_without_proven_progress": 20.925000000000004,
+        "pending_helper_possible_idle": 76.23999999999995,
+        "observed_progress": 49.29600000000001
+      },
+      "physicallyStationaryTicks": 396,
+      "visibleIdleLowerBoundTicks": 76,
+      "visibleIdleLowerBoundPercent": 15.734989648033126,
+      "possibleAdditionalIdleTicks": 192,
+      "busyOrProgressTicks": 184,
+      "longestVisibleIdleStreakTicks": 76,
+      "longestVisibleIdleStreakEstimatedSeconds": 30.197,
+      "coveredObservationSeconds": 188.071
+    },
+    "planningWindows": [
+      {
+        "index": 1,
+        "startSeconds": 9.5,
+        "endSeconds": 39.736,
+        "turnaroundMs": 30236,
+        "incomplete": false,
+        "observedTicks": 77,
+        "buckets": {
+          "no_approved_work_idle": 76,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 30.197000000000003,
+          "cooldown": 0.039
+        },
+        "physicallyStationaryTicks": 77,
+        "visibleIdleLowerBoundTicks": 76,
+        "visibleIdleLowerBoundPercent": 98.7012987012987,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 76,
+        "longestVisibleIdleStreakEstimatedSeconds": 30.197,
+        "coveredObservationSeconds": 30.236,
+        "automaticRequestLifetimeMs": 73615,
+        "unclaimedPrefetchMs": 43379
+      },
+      {
+        "index": 2,
+        "startSeconds": 93.229,
+        "endSeconds": 115.067,
+        "turnaroundMs": 21838,
+        "incomplete": false,
+        "observedTicks": 56,
+        "buckets": {
+          "busy_without_proven_progress": 7,
+          "pending_helper_possible_idle": 28,
+          "observed_progress": 16,
+          "cooldown": 5
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 2.323,
+          "pending_helper_possible_idle": 11.337,
+          "observed_progress": 6.199000000000002,
+          "cooldown": 1.979
+        },
+        "physicallyStationaryTicks": 47,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 28,
+        "busyOrProgressTicks": 23,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 21.838,
+        "automaticRequestLifetimeMs": 75335,
+        "unclaimedPrefetchMs": 53497
+      },
+      {
+        "index": 3,
+        "startSeconds": 169.553,
+        "endSeconds": 189.526,
+        "turnaroundMs": 19973,
+        "incomplete": false,
+        "observedTicks": 51,
+        "buckets": {
+          "observed_progress": 11,
+          "busy_without_proven_progress": 9,
+          "pending_helper_possible_idle": 28,
+          "cooldown": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 3.981,
+          "busy_without_proven_progress": 3.368,
+          "pending_helper_possible_idle": 11.407,
+          "cooldown": 1.2169999999999999
+        },
+        "physicallyStationaryTicks": 44,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 28,
+        "busyOrProgressTicks": 20,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 19.973,
+        "automaticRequestLifetimeMs": 71755,
+        "unclaimedPrefetchMs": 51782
+      },
+      {
+        "index": 4,
+        "startSeconds": 242.777,
+        "endSeconds": 256.922,
+        "turnaroundMs": 14145,
+        "incomplete": false,
+        "observedTicks": 36,
+        "buckets": {
+          "pending_helper_possible_idle": 18,
+          "busy_without_proven_progress": 6,
+          "observed_progress": 11,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 7.0600000000000005,
+          "busy_without_proven_progress": 2.418,
+          "observed_progress": 4.305,
+          "cooldown": 0.362
+        },
+        "physicallyStationaryTicks": 27,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 18,
+        "busyOrProgressTicks": 17,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.145,
+        "automaticRequestLifetimeMs": 65583,
+        "unclaimedPrefetchMs": 51438
+      },
+      {
+        "index": 5,
+        "startSeconds": 315.886,
+        "endSeconds": 330.399,
+        "turnaroundMs": 14513,
+        "incomplete": false,
+        "observedTicks": 37,
+        "buckets": {
+          "pending_helper_possible_idle": 16,
+          "observed_progress": 15,
+          "cooldown": 3,
+          "busy_without_proven_progress": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 6.341,
+          "observed_progress": 6.070000000000001,
+          "cooldown": 1.012,
+          "busy_without_proven_progress": 1.0899999999999999
+        },
+        "physicallyStationaryTicks": 26,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 16,
+        "busyOrProgressTicks": 18,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.513,
+        "automaticRequestLifetimeMs": 70526,
+        "unclaimedPrefetchMs": 56013
+      },
+      {
+        "index": 6,
+        "startSeconds": 369.439,
+        "endSeconds": 382.96,
+        "turnaroundMs": 13521,
+        "incomplete": false,
+        "observedTicks": 35,
+        "buckets": {
+          "observed_progress": 11,
+          "busy_without_proven_progress": 5,
+          "pending_helper_possible_idle": 17,
+          "cooldown": 2
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 3.9120000000000004,
+          "busy_without_proven_progress": 1.928,
+          "pending_helper_possible_idle": 6.876000000000001,
+          "cooldown": 0.8049999999999999
+        },
+        "physicallyStationaryTicks": 27,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 17,
+        "busyOrProgressTicks": 16,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 13.521,
+        "automaticRequestLifetimeMs": 50838,
+        "unclaimedPrefetchMs": 37317
+      },
+      {
+        "index": 7,
+        "startSeconds": 426.281,
+        "endSeconds": 443.007,
+        "turnaroundMs": 16726,
+        "incomplete": false,
+        "observedTicks": 43,
+        "buckets": {
+          "pending_helper_possible_idle": 12,
+          "observed_progress": 24,
+          "cooldown": 4,
+          "busy_without_proven_progress": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 4.75,
+          "observed_progress": 9.453000000000003,
+          "cooldown": 1.238,
+          "busy_without_proven_progress": 1.285
+        },
+        "physicallyStationaryTicks": 25,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 12,
+        "busyOrProgressTicks": 27,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 16.726,
+        "automaticRequestLifetimeMs": 56450,
+        "unclaimedPrefetchMs": 39724
+      },
+      {
+        "index": 8,
+        "startSeconds": 483.71,
+        "endSeconds": 498.709,
+        "turnaroundMs": 14999,
+        "incomplete": false,
+        "observedTicks": 38,
+        "buckets": {
+          "pending_helper_possible_idle": 22,
+          "observed_progress": 8,
+          "busy_without_proven_progress": 6,
+          "cooldown": 2
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 8.884,
+          "observed_progress": 2.9610000000000003,
+          "busy_without_proven_progress": 2.354,
+          "cooldown": 0.8
+        },
+        "physicallyStationaryTicks": 33,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 22,
+        "busyOrProgressTicks": 14,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.999,
+        "automaticRequestLifetimeMs": 51392,
+        "unclaimedPrefetchMs": 36393
+      },
+      {
+        "index": 9,
+        "startSeconds": 531.558,
+        "endSeconds": 542.306,
+        "turnaroundMs": 10748,
+        "incomplete": false,
+        "observedTicks": 28,
+        "buckets": {
+          "pending_helper_possible_idle": 12,
+          "observed_progress": 9,
+          "busy_without_proven_progress": 5,
+          "cooldown": 2
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 4.468999999999999,
+          "observed_progress": 3.493,
+          "busy_without_proven_progress": 1.992,
+          "cooldown": 0.794
+        },
+        "physicallyStationaryTicks": 22,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 12,
+        "busyOrProgressTicks": 14,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 10.748,
+        "automaticRequestLifetimeMs": 40998,
+        "unclaimedPrefetchMs": 30250
+      },
+      {
+        "index": 10,
+        "startSeconds": 583.649,
+        "endSeconds": 594.766,
+        "turnaroundMs": 11117,
+        "incomplete": false,
+        "observedTicks": 29,
+        "buckets": {
+          "pending_helper_possible_idle": 14,
+          "busy_without_proven_progress": 3,
+          "observed_progress": 9,
+          "cooldown": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 5.3149999999999995,
+          "busy_without_proven_progress": 1.169,
+          "observed_progress": 3.58,
+          "cooldown": 1.053
+        },
+        "physicallyStationaryTicks": 24,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 14,
+        "busyOrProgressTicks": 12,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 11.117,
+        "automaticRequestLifetimeMs": 50983,
+        "unclaimedPrefetchMs": 39866
+      },
+      {
+        "index": 11,
+        "startSeconds": 632.513,
+        "endSeconds": 643.067,
+        "turnaroundMs": 10554,
+        "incomplete": false,
+        "observedTicks": 28,
+        "buckets": {
+          "observed_progress": 10,
+          "busy_without_proven_progress": 3,
+          "pending_helper_possible_idle": 11,
+          "cooldown": 4
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 3.3989999999999996,
+          "busy_without_proven_progress": 1.214,
+          "pending_helper_possible_idle": 4.279999999999999,
+          "cooldown": 1.6609999999999998
+        },
+        "physicallyStationaryTicks": 22,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 11,
+        "busyOrProgressTicks": 13,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 10.554,
+        "automaticRequestLifetimeMs": 46147,
+        "unclaimedPrefetchMs": 35593
+      },
+      {
+        "index": 12,
+        "startSeconds": 689.09,
+        "endSeconds": 698.791,
+        "turnaroundMs": 9701,
+        "incomplete": false,
+        "observedTicks": 25,
+        "buckets": {
+          "busy_without_proven_progress": 5,
+          "observed_progress": 5,
+          "pending_helper_possible_idle": 14,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 1.7839999999999998,
+          "observed_progress": 1.943,
+          "pending_helper_possible_idle": 5.521000000000001,
+          "cooldown": 0.453
+        },
+        "physicallyStationaryTicks": 22,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 14,
+        "busyOrProgressTicks": 10,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 9.701,
+        "automaticRequestLifetimeMs": 55724,
+        "unclaimedPrefetchMs": 46023
+      }
+    ],
+    "perMinute": [
+      {
+        "minute": 1,
+        "observedTicks": 150,
+        "buckets": {
+          "unknown": 1,
+          "no_approved_work_idle": 98,
+          "cooldown": 3,
+          "pending_helper_possible_idle": 28,
+          "observed_progress": 10,
+          "busy_without_proven_progress": 10
+        },
+        "estimatedObservationIntervalSeconds": {
+          "unknown": 0.427,
+          "no_approved_work_idle": 39.175000000000004,
+          "cooldown": 1.18,
+          "pending_helper_possible_idle": 11.135,
+          "observed_progress": 4.065,
+          "busy_without_proven_progress": 3.923
+        },
+        "physicallyStationaryTicks": 143,
+        "visibleIdleLowerBoundTicks": 98,
+        "visibleIdleLowerBoundPercent": 65.33333333333333,
+        "possibleAdditionalIdleTicks": 28,
+        "busyOrProgressTicks": 20,
+        "longestVisibleIdleStreakTicks": 98,
+        "longestVisibleIdleStreakEstimatedSeconds": 39.175,
+        "coveredObservationSeconds": 59.905
+      },
+      {
+        "minute": 2,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 73,
+          "busy_without_proven_progress": 19,
+          "observed_progress": 48,
+          "cooldown": 11
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 29.62700000000001,
+          "busy_without_proven_progress": 7.124,
+          "observed_progress": 18.952,
+          "cooldown": 4.297000000000001
+        },
+        "physicallyStationaryTicks": 119,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 73,
+        "busyOrProgressTicks": 67,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 3,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 58,
+          "busy_without_proven_progress": 19,
+          "pending_helper_possible_idle": 66,
+          "cooldown": 8
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 22.678,
+          "busy_without_proven_progress": 7.7299999999999995,
+          "pending_helper_possible_idle": 26.494999999999997,
+          "cooldown": 3.097
+        },
+        "physicallyStationaryTicks": 105,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 66,
+        "busyOrProgressTicks": 77,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 4,
+        "observedTicks": 151,
+        "buckets": {
+          "cooldown": 12,
+          "pending_helper_possible_idle": 56,
+          "busy_without_proven_progress": 13,
+          "observed_progress": 70
+        },
+        "estimatedObservationIntervalSeconds": {
+          "cooldown": 4.47,
+          "pending_helper_possible_idle": 22.685999999999996,
+          "busy_without_proven_progress": 5.258000000000001,
+          "observed_progress": 27.586000000000002
+        },
+        "physicallyStationaryTicks": 98,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 56,
+        "busyOrProgressTicks": 83,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 5,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 49,
+          "busy_without_proven_progress": 22,
+          "pending_helper_possible_idle": 73,
+          "cooldown": 7
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 19.122999999999994,
+          "busy_without_proven_progress": 9.06,
+          "pending_helper_possible_idle": 29.095000000000002,
+          "cooldown": 2.7220000000000004
+        },
+        "physicallyStationaryTicks": 112,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 73,
+        "busyOrProgressTicks": 71,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 6,
+        "observedTicks": 151,
+        "buckets": {
+          "cooldown": 11,
+          "busy_without_proven_progress": 18,
+          "observed_progress": 61,
+          "pending_helper_possible_idle": 61
+        },
+        "estimatedObservationIntervalSeconds": {
+          "cooldown": 4.0249999999999995,
+          "busy_without_proven_progress": 6.8950000000000005,
+          "observed_progress": 24.369999999999994,
+          "pending_helper_possible_idle": 24.710000000000015
+        },
+        "physicallyStationaryTicks": 104,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 61,
+        "busyOrProgressTicks": 79,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 7,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 63,
+          "busy_without_proven_progress": 18,
+          "observed_progress": 59,
+          "cooldown": 11
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 25.211000000000006,
+          "busy_without_proven_progress": 6.811,
+          "observed_progress": 23.694000000000006,
+          "cooldown": 4.284
+        },
+        "physicallyStationaryTicks": 109,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 63,
+        "busyOrProgressTicks": 77,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 8,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 55,
+          "observed_progress": 69,
+          "cooldown": 11,
+          "busy_without_proven_progress": 16
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 21.821999999999996,
+          "observed_progress": 27.231000000000005,
+          "cooldown": 4.618999999999999,
+          "busy_without_proven_progress": 6.328
+        },
+        "physicallyStationaryTicks": 98,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 55,
+        "busyOrProgressTicks": 85,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 9,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 71,
+          "observed_progress": 46,
+          "cooldown": 12,
+          "busy_without_proven_progress": 22
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 28.57800000000001,
+          "observed_progress": 17.858000000000004,
+          "cooldown": 4.739999999999999,
+          "busy_without_proven_progress": 8.824000000000002
+        },
+        "physicallyStationaryTicks": 123,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 71,
+        "busyOrProgressTicks": 68,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 10,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 52,
+          "busy_without_proven_progress": 21,
+          "pending_helper_possible_idle": 66,
+          "cooldown": 12
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 20.130000000000006,
+          "busy_without_proven_progress": 8.184,
+          "pending_helper_possible_idle": 26.416000000000004,
+          "cooldown": 5.27
+        },
+        "physicallyStationaryTicks": 117,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 66,
+        "busyOrProgressTicks": 73,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 11,
+        "observedTicks": 151,
+        "buckets": {
+          "busy_without_proven_progress": 18,
+          "pending_helper_possible_idle": 59,
+          "observed_progress": 56,
+          "cooldown": 18
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 7.079000000000001,
+          "pending_helper_possible_idle": 23.60800000000001,
+          "observed_progress": 22.167,
+          "cooldown": 7.146
+        },
+        "physicallyStationaryTicks": 118,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 59,
+        "busyOrProgressTicks": 74,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 12,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 53,
+          "cooldown": 18,
+          "pending_helper_possible_idle": 61,
+          "busy_without_proven_progress": 19
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 20.677000000000007,
+          "cooldown": 7.183999999999999,
+          "pending_helper_possible_idle": 24.479000000000003,
+          "busy_without_proven_progress": 7.660000000000001
+        },
+        "physicallyStationaryTicks": 121,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 61,
+        "busyOrProgressTicks": 72,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 13,
+        "observedTicks": 1,
+        "buckets": {
+          "pending_helper_possible_idle": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 0.001
+        },
+        "physicallyStationaryTicks": 1,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 1,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 0.001
+      }
+    ],
+    "cadenceMs": {
+      "n": 1799,
+      "p50": 400,
+      "p95": 474,
+      "p99": 529,
+      "min": 89,
+      "max": 794
+    },
+    "jitterMs": {
+      "n": 1798,
+      "p50": 48,
+      "p95": 159,
+      "p99": 252,
+      "min": 0,
+      "max": 597
+    },
+    "consistency": {
+      "exclusiveBucketSum": 1800,
+      "equalsObservedTicks": true,
+      "planningUnionDoesNotDoubleCount": true
+    },
+    "gameplayPlanningOnly": {
+      "selection": "Conservative transcript audit; exclude whole mixed development/report-support windows, with no within-window time estimates or outcome-based selection",
+      "includedWindowIndices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "excludedWindowIndices": [],
+      "claimedDurationMs": 188071,
+      "aggregate": {
+        "observedTicks": 483,
+        "buckets": {
+          "no_approved_work_idle": 76,
+          "cooldown": 31,
+          "busy_without_proven_progress": 55,
+          "pending_helper_possible_idle": 192,
+          "observed_progress": 129
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 30.197000000000003,
+          "cooldown": 11.412999999999998,
+          "busy_without_proven_progress": 20.925000000000004,
+          "pending_helper_possible_idle": 76.23999999999995,
+          "observed_progress": 49.29600000000001
+        },
+        "physicallyStationaryTicks": 396,
+        "visibleIdleLowerBoundTicks": 76,
+        "visibleIdleLowerBoundPercent": 15.734989648033126,
+        "possibleAdditionalIdleTicks": 192,
+        "busyOrProgressTicks": 184,
+        "longestVisibleIdleStreakTicks": 76,
+        "longestVisibleIdleStreakEstimatedSeconds": 30.197,
+        "coveredObservationSeconds": 188.071
+      },
+      "windows": [
+        {
+          "index": 1,
+          "startSeconds": 9.5,
+          "endSeconds": 39.736,
+          "turnaroundMs": 30236,
+          "incomplete": false,
+          "observedTicks": 77,
+          "buckets": {
+            "no_approved_work_idle": 76,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "no_approved_work_idle": 30.197000000000003,
+            "cooldown": 0.039
+          },
+          "physicallyStationaryTicks": 77,
+          "visibleIdleLowerBoundTicks": 76,
+          "visibleIdleLowerBoundPercent": 98.7012987012987,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 76,
+          "longestVisibleIdleStreakEstimatedSeconds": 30.197,
+          "coveredObservationSeconds": 30.236
+        },
+        {
+          "index": 2,
+          "startSeconds": 93.229,
+          "endSeconds": 115.067,
+          "turnaroundMs": 21838,
+          "incomplete": false,
+          "observedTicks": 56,
+          "buckets": {
+            "busy_without_proven_progress": 7,
+            "pending_helper_possible_idle": 28,
+            "observed_progress": 16,
+            "cooldown": 5
+          },
+          "estimatedObservationIntervalSeconds": {
+            "busy_without_proven_progress": 2.323,
+            "pending_helper_possible_idle": 11.337,
+            "observed_progress": 6.199000000000002,
+            "cooldown": 1.979
+          },
+          "physicallyStationaryTicks": 47,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 28,
+          "busyOrProgressTicks": 23,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 21.838
+        },
+        {
+          "index": 3,
+          "startSeconds": 169.553,
+          "endSeconds": 189.526,
+          "turnaroundMs": 19973,
+          "incomplete": false,
+          "observedTicks": 51,
+          "buckets": {
+            "observed_progress": 11,
+            "busy_without_proven_progress": 9,
+            "pending_helper_possible_idle": 28,
+            "cooldown": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 3.981,
+            "busy_without_proven_progress": 3.368,
+            "pending_helper_possible_idle": 11.407,
+            "cooldown": 1.2169999999999999
+          },
+          "physicallyStationaryTicks": 44,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 28,
+          "busyOrProgressTicks": 20,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 19.973
+        },
+        {
+          "index": 4,
+          "startSeconds": 242.777,
+          "endSeconds": 256.922,
+          "turnaroundMs": 14145,
+          "incomplete": false,
+          "observedTicks": 36,
+          "buckets": {
+            "pending_helper_possible_idle": 18,
+            "busy_without_proven_progress": 6,
+            "observed_progress": 11,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 7.0600000000000005,
+            "busy_without_proven_progress": 2.418,
+            "observed_progress": 4.305,
+            "cooldown": 0.362
+          },
+          "physicallyStationaryTicks": 27,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 18,
+          "busyOrProgressTicks": 17,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.145
+        },
+        {
+          "index": 5,
+          "startSeconds": 315.886,
+          "endSeconds": 330.399,
+          "turnaroundMs": 14513,
+          "incomplete": false,
+          "observedTicks": 37,
+          "buckets": {
+            "pending_helper_possible_idle": 16,
+            "observed_progress": 15,
+            "cooldown": 3,
+            "busy_without_proven_progress": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 6.341,
+            "observed_progress": 6.070000000000001,
+            "cooldown": 1.012,
+            "busy_without_proven_progress": 1.0899999999999999
+          },
+          "physicallyStationaryTicks": 26,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 16,
+          "busyOrProgressTicks": 18,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.513
+        },
+        {
+          "index": 6,
+          "startSeconds": 369.439,
+          "endSeconds": 382.96,
+          "turnaroundMs": 13521,
+          "incomplete": false,
+          "observedTicks": 35,
+          "buckets": {
+            "observed_progress": 11,
+            "busy_without_proven_progress": 5,
+            "pending_helper_possible_idle": 17,
+            "cooldown": 2
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 3.9120000000000004,
+            "busy_without_proven_progress": 1.928,
+            "pending_helper_possible_idle": 6.876000000000001,
+            "cooldown": 0.8049999999999999
+          },
+          "physicallyStationaryTicks": 27,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 17,
+          "busyOrProgressTicks": 16,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 13.521
+        },
+        {
+          "index": 7,
+          "startSeconds": 426.281,
+          "endSeconds": 443.007,
+          "turnaroundMs": 16726,
+          "incomplete": false,
+          "observedTicks": 43,
+          "buckets": {
+            "pending_helper_possible_idle": 12,
+            "observed_progress": 24,
+            "cooldown": 4,
+            "busy_without_proven_progress": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 4.75,
+            "observed_progress": 9.453000000000003,
+            "cooldown": 1.238,
+            "busy_without_proven_progress": 1.285
+          },
+          "physicallyStationaryTicks": 25,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 12,
+          "busyOrProgressTicks": 27,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 16.726
+        },
+        {
+          "index": 8,
+          "startSeconds": 483.71,
+          "endSeconds": 498.709,
+          "turnaroundMs": 14999,
+          "incomplete": false,
+          "observedTicks": 38,
+          "buckets": {
+            "pending_helper_possible_idle": 22,
+            "observed_progress": 8,
+            "busy_without_proven_progress": 6,
+            "cooldown": 2
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 8.884,
+            "observed_progress": 2.9610000000000003,
+            "busy_without_proven_progress": 2.354,
+            "cooldown": 0.8
+          },
+          "physicallyStationaryTicks": 33,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 22,
+          "busyOrProgressTicks": 14,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.999
+        },
+        {
+          "index": 9,
+          "startSeconds": 531.558,
+          "endSeconds": 542.306,
+          "turnaroundMs": 10748,
+          "incomplete": false,
+          "observedTicks": 28,
+          "buckets": {
+            "pending_helper_possible_idle": 12,
+            "observed_progress": 9,
+            "busy_without_proven_progress": 5,
+            "cooldown": 2
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 4.468999999999999,
+            "observed_progress": 3.493,
+            "busy_without_proven_progress": 1.992,
+            "cooldown": 0.794
+          },
+          "physicallyStationaryTicks": 22,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 12,
+          "busyOrProgressTicks": 14,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 10.748
+        },
+        {
+          "index": 10,
+          "startSeconds": 583.649,
+          "endSeconds": 594.766,
+          "turnaroundMs": 11117,
+          "incomplete": false,
+          "observedTicks": 29,
+          "buckets": {
+            "pending_helper_possible_idle": 14,
+            "busy_without_proven_progress": 3,
+            "observed_progress": 9,
+            "cooldown": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 5.3149999999999995,
+            "busy_without_proven_progress": 1.169,
+            "observed_progress": 3.58,
+            "cooldown": 1.053
+          },
+          "physicallyStationaryTicks": 24,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 14,
+          "busyOrProgressTicks": 12,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 11.117
+        },
+        {
+          "index": 11,
+          "startSeconds": 632.513,
+          "endSeconds": 643.067,
+          "turnaroundMs": 10554,
+          "incomplete": false,
+          "observedTicks": 28,
+          "buckets": {
+            "observed_progress": 10,
+            "busy_without_proven_progress": 3,
+            "pending_helper_possible_idle": 11,
+            "cooldown": 4
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 3.3989999999999996,
+            "busy_without_proven_progress": 1.214,
+            "pending_helper_possible_idle": 4.279999999999999,
+            "cooldown": 1.6609999999999998
+          },
+          "physicallyStationaryTicks": 22,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 11,
+          "busyOrProgressTicks": 13,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 10.554
+        },
+        {
+          "index": 12,
+          "startSeconds": 689.09,
+          "endSeconds": 698.791,
+          "turnaroundMs": 9701,
+          "incomplete": false,
+          "observedTicks": 25,
+          "buckets": {
+            "busy_without_proven_progress": 5,
+            "observed_progress": 5,
+            "pending_helper_possible_idle": 14,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "busy_without_proven_progress": 1.7839999999999998,
+            "observed_progress": 1.943,
+            "pending_helper_possible_idle": 5.521000000000001,
+            "cooldown": 0.453
+          },
+          "physicallyStationaryTicks": 22,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 14,
+          "busyOrProgressTicks": 10,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 9.701
+        }
+      ]
+    }
+  },
+  "coverage": {
+    "duplicates": 0,
+    "resets": 0,
+    "gappedTicks": 0,
+    "invalid": 0,
+    "droppedRows": 0
+  },
+  "collectorOverhead": {
+    "callbacks": 2147,
+    "totalMs": 199.64918099964598,
+    "maxMs": 5.002579000021797
+  },
+  "eventCaptureCoverage": {
+    "started": 1794891842469,
+    "ended": 1794892562470,
+    "droppedEvidenceRows": 0,
+    "enqueuedRows": 451
+  },
+  "planningAudit": {
+    "reviewedAllWindows": true,
+    "excludedWindowIndices": [],
+    "notes": [
+      "All12 claim-to-accepted-completion intervals were actual current-agent gameplay service: live observations, ordinary resource decisions, cited knowledge, durable learning/replay, score evidence and status commentary where it occurred.",
+      "Claim timing includes reasoning, bridge/tool calls, scheduling and intervening progress/status commentary; it is not isolated inference time.",
+      "No source/report/capture/ledger-tool authoring, developer debugging or artificial thinking delay occurred during the fixed window. Prepared evidence ledgers wrote automatically.",
+      "Prepared observation waits were outside completed claims. Unclaimed observation/status/scheduling periods remain in the whole-run totals."
+    ]
+  },
+  "planningLatency": {
+    "actualClaimToCompletionMs": {
+      "n": 12,
+      "p50": 14145,
+      "p95": 30236,
+      "p99": 30236,
+      "min": 9701,
+      "max": 30236
+    },
+    "automaticRequestLifetimeMs": {
+      "n": 12,
+      "p50": 55724,
+      "p95": 75335,
+      "p99": 75335,
+      "min": 40998,
+      "max": 75335
+    },
+    "unservedPrefetchIsThinking": false,
+    "meaning": "Current claims end after successful validation/commit or explicit null decline. Rejected submissions remain inside the open claim through correction. Claim time includes reasoning/tools/scheduling/status commentary, not isolated inference.",
+    "requestLifetimeMeaning": "Automatic prefetch can precede a claim, including the preparation period before this measurement. Unclaimed request lifetime is not model thinking. Every actual claim-to-acceptance interval is included.",
+    "requestsBornWithinWindowMs": {
+      "n": 11,
+      "p50": 55724,
+      "p95": 75335,
+      "p99": 75335,
+      "min": 40998,
+      "max": 75335
+    }
+  },
+  "throughput": {
+    "verifiedActions": 132,
+    "verifiedActionsPerMinute": 10.999984722243441,
+    "failedResults": 9,
+    "countsDelta": {
+      "avoidableIdleTicks": 0,
+      "noApprovedRoutineTicks": 0,
+      "plannerStarvedTicks": 118,
+      "continuationApprovals": 1,
+      "dispatches": 142,
+      "dispatchesWhilePlannerPending": 142,
+      "plannerPlansAccepted": 12,
+      "currentAgentToolPlansAccepted": 12,
+      "packetDispatches:interactLoc": 71,
+      "helperPendingTicks": 1550,
+      "helperPendingWithoutObservedProgressTicks": 1003,
+      "ongoingActionTicks": 1550,
+      "observedProgressPublications": 575,
+      "animationObservedTicks": 223,
+      "observedGatherProgressPublications": 63,
+      "verifiedActions": 132,
+      "helperVerifiedCompletions": 132,
+      "verifiedActionsWhilePlannerPending": 123,
+      "routineCycles": 132,
+      "continuationActionsGenerated": 130,
+      "cooldownDecisions": 133,
+      "episodes": 141,
+      "eligibleTicks": 132,
+      "packetDispatches:clickDialogOption": 224,
+      "packetDispatches:useItemOnItem": 64,
+      "helperReportedFailures": 10,
+      "failures": 9,
+      "boundedContinuationRecoveries": 9,
+      "packetDispatches:walkTo": 7,
+      "helperFailuresReconciledByFreshEffect": 1,
+      "standingChunksStarted": 1
+    },
+    "skillProgress": {
+      "Woodcutting": {
+        "startLevel": 1,
+        "endLevel": 52,
+        "startXp": 0,
+        "endXp": 39375,
+        "xpGain": 39375
+      },
+      "Firemaking": {
+        "startLevel": 1,
+        "endLevel": 59,
+        "startXp": 0,
+        "endXp": 62000,
+        "xpGain": 62000
+      }
+    },
+    "failureReasons": {
+      "RESOURCE_DEPLETED": 8,
+      "FIRE_BLOCKED": 1
+    },
+    "dispatchesDuringPlanning": 31,
+    "observedProgressTicksDuringPlanning": 129,
+    "helperVerifiedCompletions": 132,
+    "continuedOwnedEffectSteps": 0,
+    "totalVerifiedEffectSteps": 132,
+    "failedAttemptCount": 9,
+    "completedDispatchAttempts": 141,
+    "inFlightAtCutoff": 1,
+    "helperReportedFailures": 10,
+    "reconciledHelperFailures": 1,
+    "failureRate": {
+      "denominator": "Completed helper dispatch attempts = helper-verified completions + failed attempts; excludes passive effect steps and in-flight attempts.",
+      "previousFailed": 4,
+      "previousCompleted": 332,
+      "previousPercent": 1.2048192771084338,
+      "currentFailed": 9,
+      "currentCompleted": 141,
+      "currentPercent": 6.382978723404255,
+      "changePercentagePoints": 5.178159446295822,
+      "absoluteChange": 5
+    },
+    "failureCounting": {
+      "failedAttemptCounter": 9,
+      "routineFailedEvents": 9,
+      "otherFailedOrInvalidatedHelperAttempts": 0,
+      "note": "Do not invent a category or successful outcome for a failed counter increment without routine_failed evidence. All failures remain in the completed-attempt rate."
+    },
+    "episodeOutcomes": {
+      "counts": {
+        "chop:verified": 63,
+        "burn_logs:verified": 62,
+        "chop:failed": 8,
+        "walk:verified": 7,
+        "burn_logs:failed": 1
+      },
+      "missingEpisodes": 0,
+      "meaning": "Only episode events captured within exact boundary, joined to private persisted action outcomes. No raw state/name/chat or private path is published."
+    },
+    "resourceVerifiedCompletions": 125,
+    "resourceVerifiedPerMinute": 10.416652199094168,
+    "inFlightAgeAtCutoffMs": 1818
+  },
+  "actionTiming": {
+    "tickCadenceMs": {
+      "n": 1800,
+      "p50": 399.86736299999757,
+      "p95": 473.46745600001304,
+      "p99": 525.5757319999393,
+      "min": 89.04717299999902,
+      "max": 794.8384830000577
+    },
+    "tickJitterMs": {
+      "n": 1800,
+      "p50": 48.08573999989312,
+      "p95": 158.44018199993297,
+      "p99": 251.89843300008215,
+      "min": 0.01031200005672872,
+      "max": 597.565729000009
+    },
+    "plannerRequestMs": {
+      "n": 12,
+      "p50": 55723.54981800006,
+      "p95": 75335.30575700001,
+      "p99": 75335.30575700001,
+      "min": 40998.150181000005,
+      "max": 75335.30575700001
+    },
+    "plannerTurnaroundMs": {
+      "n": 12,
+      "p50": 55723.54981800006,
+      "p95": 75335.30575700001,
+      "p99": 75335.30575700001,
+      "min": 40998.150181000005,
+      "max": 75335.30575700001
+    },
+    "observationToDispatchMs": {
+      "n": 142,
+      "p50": 0.39766899999813177,
+      "p95": 1.0813829999533482,
+      "p99": 35.82658000000811,
+      "min": 0.23472799989394844,
+      "max": 412.0706110000028
+    },
+    "publicationAgeAtDispatchMs": {
+      "n": 142,
+      "p50": 22,
+      "p95": 28,
+      "p99": 56,
+      "min": 20,
+      "max": 433
+    },
+    "dispatchAckMs": {
+      "n": 366,
+      "p50": 111.10353500000201,
+      "p95": 154.04785099998116,
+      "p99": 185.71548200002871,
+      "min": 87.62594499997795,
+      "max": 931.8325429999968
+    },
+    "actionToEffectMs": {
+      "n": 132,
+      "p50": 3249.4498759999988,
+      "p95": 10838.319514999981,
+      "p99": 14092.157116999966,
+      "min": 140.03675199998543,
+      "max": 14827.635053000064
+    }
+  },
+  "continuityEvents": [
+    {
+      "atSeconds": 74.13,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 168.104,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 210.122,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 266.537,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 332.121,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 412.121,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 452.898,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 454.912,
+      "type": "continuation_recovery",
+      "action": "burn_logs",
+      "reason": "FIRE_BLOCKED",
+      "backoffTicks": 4
+    },
+    {
+      "atSeconds": 549.016,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    }
+  ],
+  "comparison": {
+    "auditedGameplayPlanning": {
+      "baselinePercent": 5.803571428571429,
+      "followupPercent": 15.734989648033126,
+      "improvementPercentagePoints": -9.931418219461698,
+      "relativeReductionPercent": -171.12597547380156
+    },
+    "wholeRun": {
+      "baselinePercent": 2.466666666666667,
+      "followupPercent": 5.444444444444445,
+      "improvementPercentagePoints": -2.977777777777778,
+      "relativeReductionPercent": -120.7207207207207
+    },
+    "baselineAuditedWindowIndices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "baselineMixedWindowIndices": [],
+    "baselineWholeRunCaveat": "Prior standing run retained all18 audited gameplay-service intervals and startup idle. Current12-minute validation uses a fresh different character.",
+    "verifiedActionsPerMinute": {
+      "baseline": 16.39993166695139,
+      "followup": 10.999984722243441,
+      "difference": -5.399946944707947
+    },
+    "baselineFailedResults": 4,
+    "followupFailedResults": 9,
+    "higherSkillAndWorkloadCaveat": "This new character starts at Woodcutting/Firemaking1, unlike the higher-skill historical standing character. Random outcomes, routes, workload and agent/tool scheduling differ; this is not a causal scorer off/on experiment.",
+    "allClaimIntervals": {
+      "baselinePercent": 5.803571428571429,
+      "followupPercent": 15.734989648033126,
+      "improvementPercentagePoints": -9.931418219461698,
+      "relativeReductionPercent": -171.12597547380156
+    },
+    "primaryMeaning": "Historical standing-run context uses a different character/skills/workload and cannot isolate scorer slowdown or model inference.",
+    "priorStanding": {
+      "sourceCommit": "7181b7a69458d70e7d5df75ebb72b5d0f081f260",
+      "whole": {
+        "baselinePercent": 2.466666666666667,
+        "followupPercent": 5.444444444444445,
+        "improvementPercentagePoints": -2.977777777777778,
+        "relativeReductionPercent": -120.7207207207207
+      },
+      "allClaims": {
+        "baselinePercent": 5.803571428571429,
+        "followupPercent": 15.734989648033126,
+        "improvementPercentagePoints": -9.931418219461698,
+        "relativeReductionPercent": -171.12597547380156
+      },
+      "helperCompletions": 328,
+      "failedAttempts": 4
+    },
+    "timingConclusion": "Visible-idle percentage and helper throughput are worse than the historical high-skill standing run. This distinct fresh-account session establishes continuing gameplay with bounded separate-process scoring, not causal no-slowdown or improved frontier-model speed."
+  },
+  "checks": {
+    "passed": 24,
+    "failed": 0,
+    "assertions": {
+      "boundaryMetricsMatchPassiveEnd": true,
+      "exclusiveBucketSum": true,
+      "atLeastTenClaimWindows": true,
+      "noIncompleteClaims": true,
+      "sameOwnerCharacterWorldSessionLife": true,
+      "sourceUnchangedDuringMeasurement": true,
+      "noLostEvidenceRows": true,
+      "noDroppedTickRows": true,
+      "noTickNumberGapsOrResets": true,
+      "auditedAllClaims": true,
+      "helperCompletionMetricPreserved": true,
+      "nonnegativeDispatchAccounting": true,
+      "episodeHelperCountMatches": true,
+      "noMissingEpisodeEvidence": true,
+      "exactTwelveMinuteTarget": true,
+      "freshScoreZero": true,
+      "scoreArithmetic": true,
+      "noScorerDrops": true,
+      "scoreFlushed": true,
+      "verifiedLearnedSkillReplay": true,
+      "citedKnowledgeRetrieved": true,
+      "noUnrelatedScoreAward": true,
+      "ownedProcessesCleanedUp": true,
+      "zeroAttackStrength": true
+    }
+  },
+  "jointAssessment": {
+    "planningIdleReduced": false,
+    "throughputNotLowerThanBaseline": false,
+    "actualSkillProgress": true,
+    "note": "Lower idle alone does not establish success; inspect helper ambiguity, action rate, failures and actual progress. Skill/workload/network differences remain.",
+    "scoringGatedActions": false,
+    "scoringGatedActionsMeaning": "No scoring await/approval in dispatch; process-delay/failure fixtures and live continuing work support this contract. They do not prove zero execution overhead or hidden idle."
+  },
+  "operatorNotes": [
+    "New disposable test character/ledger, score0 at ready; no previous provisional1379/test balance/account is reused.",
+    "Current cloud agent is planner; no separate provider/model login, schedule, public social/PvP/death or melee training.",
+    "Different character/starting skills/workload confound comparison with prior standing run. Worker/test/replay measurements are execution overhead, not faster model inference.",
+    "Unproven social/clan/PvP/improvements remain pending. Visible idle is not sufficient proof for penalizable idle.",
+    "Fresh setup observed auto-login and onboarding skip, ready level1 Woodcutting/Firemaking and Attack/Strength XP0 before score baseline; no starting/tutorial points.",
+    "No monitoring, other improvement, social, clan, PvP, runite or controller-development award was claimed or granted.",
+    "Measurement sealed automatically at original fixed end; post-boundary game effects before explicit stop are excluded from the recorded score/tick/action boundary.",
+    "Replay benchmark uses6f5d481, predating final sequential death-cycle fix; live runtime isaf7ca20886e03a1efccbe9ba2f18ba466d4fba59."
+  ],
+  "limitations": [
+    "This cloud agent supplied plans with current tools; no second provider/API key or inaccessible Wartime identity was tested.",
+    "A standing tile, helper promise or no-XP tick alone does not establish idle/productivity. Hidden server work remains uncertain.",
+    "All-claim and whole-run measurements retain every failure, pause and mixed window; any gameplay-only audit excludes entire mixed windows, without invented developer durations.",
+    "One fresh character and12-minute window do not prove unlimited autonomy, live PvP ability, zero hidden idle or a causal no-slowdown result."
+  ],
+  "longPauses": {
+    "whole": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 1,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 39.175,
+      "longPauses": [
+        {
+          "startSeconds": 0.522,
+          "endSeconds": 39.697,
+          "ticks": 98,
+          "observedSeconds": 39.175
+        }
+      ]
+    },
+    "claims": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 1,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 30.197,
+      "longPauses": [
+        {
+          "startSeconds": 9.5,
+          "endSeconds": 39.697,
+          "ticks": 76,
+          "observedSeconds": 30.197
+        }
+      ]
+    },
+    "previousWhole": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 0,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 28.809,
+      "longPauses": [
+        {
+          "startSeconds": 0.555,
+          "endSeconds": 29.364,
+          "ticks": 72,
+          "observedSeconds": 28.809
+        }
+      ]
+    },
+    "previousClaims": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 0,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 15.473,
+      "longPauses": [
+        {
+          "startSeconds": 13.891,
+          "endSeconds": 29.364,
+          "ticks": 39,
+          "observedSeconds": 15.473
+        }
+      ]
+    },
+    "auditedClaims": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 1,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 30.197,
+      "longPauses": [
+        {
+          "startSeconds": 9.5,
+          "endSeconds": 39.697,
+          "ticks": 76,
+          "observedSeconds": 30.197
+        }
+      ]
+    },
+    "originalOverlapAccounting": {
+      "previousWholeTicks": 72,
+      "previousWholeSeconds": 28.809,
+      "previousClaimTicks": 39,
+      "previousClaimSeconds": 15.473,
+      "currentWholeTicks": 98,
+      "currentWholeSeconds": 39.175,
+      "currentClaimTicks": 76,
+      "currentClaimSeconds": 30.197,
+      "note": "Current fresh12-minute and prior standing20-minute overlap/streak values use unchanged definitions; different character/workload limits direct comparison."
+    }
+  },
+  "previousReference": {
+    "sourceCommit": "7181b7a69458d70e7d5df75ebb72b5d0f081f260",
+    "planningIdle": 39,
+    "planningTicks": 672,
+    "wholeIdle": 74,
+    "wholeTicks": 3000
+  },
+  "shipment": {
+    "measuredRuntimeCommit": "af7ca20886e03a1efccbe9ba2f18ba466d4fba59",
+    "finalRuntimeSameAsMeasured": true
+  },
+  "validation": {
+    "preflight": "scoring-preflight.json",
+    "priorBroadPin": "5b9f4baa36ff067a5a6481a64c85c5d27b42b63f",
+    "priorBroadNode": {
+      "passed": 109,
+      "failed": 0
+    },
+    "priorBroadBun": {
+      "passed": 153,
+      "failed": 0
+    },
+    "finalFocusedNode": {
+      "passed": 30,
+      "failed": 0
+    },
+    "finalFocusedBun": {
+      "passed": 41,
+      "failed": 0
+    },
+    "overlap": true
+  },
+  "agentSubmissionAudit": null,
+  "proposalAccounting": {
+    "submissions": 12,
+    "accepted": 12,
+    "rejected": 0,
+    "declined": 0,
+    "correctedAccepted": 0,
+    "rejections": []
+  },
+  "captureSemantics": {
+    "ticks": "Unchanged passive tick classifier and overlap/streak definitions.",
+    "claims": "Current claims end after successful validation/commit or explicit null decline. Rejected submissions remain inside the open claim through correction. Claim time includes reasoning/tools/scheduling/status commentary, not isolated inference.",
+    "previous": "Prior standing run already used accepted-completion/null-decline claim closure. This iteration does not change the passive tick classifier or claim boundaries."
+  },
+  "pendingAtCutoff": {
+    "count": 1,
+    "oldestRequestAgeMs": 21061,
+    "notThinkingWithoutClaim": true
+  },
+  "standingExecution": {
+    "approvedGoals": 1,
+    "boundedChunksStarted": 1,
+    "continuationExpirations": 0,
+    "finalMode": "standing",
+    "maximumGeneratedAttemptsPerChunk": 80,
+    "perActionDeadlineStillEnforced": true,
+    "totalChunksEntered": 2,
+    "chunkCounterMeaning": "boundedChunksStarted counts additional chunk transitions after initial chunk1."
+  },
+  "score": {
+    "initialScore": 0,
+    "finalProvenAwardedScore": 845,
+    "lastDurableScore": 845,
+    "positiveAwards": 845,
+    "deductions": 0,
+    "breakdown": {
+      "skill_level": {
+        "records": 109,
+        "points": 545
+      },
+      "xp_record": {
+        "records": 2,
+        "points": 200
+      },
+      "procedure": {
+        "records": 1,
+        "points": 100
+      },
+      "runite_mined": {
+        "records": 0,
+        "points": 0
+      },
+      "runite_banked": {
+        "records": 0,
+        "points": 0
+      },
+      "social_productive": {
+        "records": 0,
+        "points": 0
+      },
+      "player_trade": {
+        "records": 0,
+        "points": 0
+      },
+      "clan_recruit": {
+        "records": 0,
+        "points": 0
+      },
+      "clan_meeting": {
+        "records": 0,
+        "points": 0
+      },
+      "wild_own_kill": {
+        "records": 0,
+        "points": 0
+      },
+      "clan_enemy_kill": {
+        "records": 0,
+        "points": 0
+      },
+      "pvp_loot": {
+        "records": 0,
+        "points": 0
+      },
+      "pvp_escape": {
+        "records": 0,
+        "points": 0
+      },
+      "kill_streak": {
+        "records": 0,
+        "points": 0
+      },
+      "clan_pk_trip": {
+        "records": 0,
+        "points": 0
+      },
+      "clan_pk_member": {
+        "records": 0,
+        "points": 0
+      },
+      "death": {
+        "records": 0,
+        "points": 0
+      },
+      "travel_speed": {
+        "records": 0,
+        "points": 0
+      },
+      "greatest_weakness": {
+        "records": 0,
+        "points": 0
+      },
+      "avoidable_idle_improved": {
+        "records": 0,
+        "points": 0
+      },
+      "decision_idle_improved": {
+        "records": 0,
+        "points": 0
+      },
+      "inventory_improved": {
+        "records": 0,
+        "points": 0
+      },
+      "monitoring_improved": {
+        "records": 0,
+        "points": 0
+      },
+      "idle_tick": {
+        "records": 0,
+        "points": 0
+      }
+    },
+    "awards": [
+      {
+        "id": "288ea27e1e95577a02676f78e9812a30fda6e67685b34f8debe1093fde7a4533",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "45f78ca07c75a0e82ff637e85dc41fba84d48280123c0cf4ccfac63b54d23bab"
+        ],
+        "semanticKey": "Woodcutting:2"
+      },
+      {
+        "id": "15d7e209079d5e894ef6f8e2f5b537bd48ca7613140e878f37fc1cb840adea45",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "45f78ca07c75a0e82ff637e85dc41fba84d48280123c0cf4ccfac63b54d23bab"
+        ],
+        "semanticKey": "Woodcutting:3"
+      },
+      {
+        "id": "cbf6fc17609923720c180b61e4b88529bd2a6cc93836e6f22f6e07bd303efac7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "45f78ca07c75a0e82ff637e85dc41fba84d48280123c0cf4ccfac63b54d23bab"
+        ],
+        "semanticKey": "Woodcutting:4"
+      },
+      {
+        "id": "32109b906a45abd482c34c0392bb67121b811ac4a1fb0e1e58010fdae911d54d",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "45f78ca07c75a0e82ff637e85dc41fba84d48280123c0cf4ccfac63b54d23bab"
+        ],
+        "semanticKey": "Woodcutting:5"
+      },
+      {
+        "id": "7be1aa26eeeba6d442a428a3951d9a7cb09a8f81becf02af7c768b8e912726cf",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "45f78ca07c75a0e82ff637e85dc41fba84d48280123c0cf4ccfac63b54d23bab"
+        ],
+        "semanticKey": "Woodcutting:6"
+      },
+      {
+        "id": "b3882712c45568ad5b35a4a5434f5e397dff51b132237f31d7fc2f9f12637416",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "45f78ca07c75a0e82ff637e85dc41fba84d48280123c0cf4ccfac63b54d23bab"
+        ],
+        "semanticKey": "Woodcutting:7"
+      },
+      {
+        "id": "77ce5f34910e7855dc1eefba1edf41d37ba201336bb0ba99a4419ad3dd19c715",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:2"
+      },
+      {
+        "id": "9dc8d4e706bf4f27f27ee9f197193b0de73d015bcbb6991ee6f65109cac61fd9",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:3"
+      },
+      {
+        "id": "f53f106f13b5ebf6e6b8a9f6c1dd07cad8d4e96f18be8be5a2c0e5da95565062",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:4"
+      },
+      {
+        "id": "bf1a5eb463cf68f393ebd39df424face07292a5306e0b2191031d56a3c320eec",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:5"
+      },
+      {
+        "id": "bcd786925a7dabeec0f84938043fb788c6fe6a22a9391ba871eb8dcf37a34c4b",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:6"
+      },
+      {
+        "id": "7461ac39a7b95ec7666808911505e523302a692cd049b7d449a0145232419d01",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:7"
+      },
+      {
+        "id": "841f8f849a13fc8abaabe9d18a77990a245b30a9b311709e7db625b8d273f50e",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:8"
+      },
+      {
+        "id": "ef5519b53193f6e20cb8e819aeaf9096aaa70fe683431d0ef271a2390fc20eb6",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:9"
+      },
+      {
+        "id": "8e13987d228baca9779a6fc1c33c5c2bcbbfced253184fe01d6adb7948843576",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "61054f00492caa56e8cf5d91d6b276d0179477b0840f2462847207c92891a25a"
+        ],
+        "semanticKey": "Firemaking:10"
+      },
+      {
+        "id": "c3f1c37dd318c08ed706b48a2b487416f67bd6e1cd25779b0c159f253a4784cd",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "aaf76466ea8259257009a858fb84e77b6786b8e898aad67bd1b896774f3c3ac4"
+        ],
+        "semanticKey": "Woodcutting:8"
+      },
+      {
+        "id": "b998969ed38ff4ddd2960f8b081edb2b4cb86761374e0ebbc331e0a5ffa46bce",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "aaf76466ea8259257009a858fb84e77b6786b8e898aad67bd1b896774f3c3ac4"
+        ],
+        "semanticKey": "Woodcutting:9"
+      },
+      {
+        "id": "904d5c4a41e27e48db52091f6de103be5e4affd2f0712943193ce2da65896239",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "aaf76466ea8259257009a858fb84e77b6786b8e898aad67bd1b896774f3c3ac4"
+        ],
+        "semanticKey": "Woodcutting:10"
+      },
+      {
+        "id": "3258929d897d1faa1477bf3ad6205dcd3c8238b2c3c76ea00d710719484aa556",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "aaf76466ea8259257009a858fb84e77b6786b8e898aad67bd1b896774f3c3ac4"
+        ],
+        "semanticKey": "Woodcutting:11"
+      },
+      {
+        "id": "a2a0c8eb43a1e1bc0e6cd96ec0c898f7cbe783199622717e5cd4eacb7169c4ed",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c1b5bee8c506afb0130cd1a3d09333898e34efc4265651117b8fd2b10bd3f2aa"
+        ],
+        "semanticKey": "Firemaking:11"
+      },
+      {
+        "id": "b562fa007fd400c5400385d8d4874a6c5e64ac3335046af988437876f84b132a",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c1b5bee8c506afb0130cd1a3d09333898e34efc4265651117b8fd2b10bd3f2aa"
+        ],
+        "semanticKey": "Firemaking:12"
+      },
+      {
+        "id": "ca652306800a4b6855cba4ed0a54ad6139fc3daf3f1de00d246abf3f3ed2136e",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c1b5bee8c506afb0130cd1a3d09333898e34efc4265651117b8fd2b10bd3f2aa"
+        ],
+        "semanticKey": "Firemaking:13"
+      },
+      {
+        "id": "c062be8f3fb9d3f01bbfb012cf57b010401ba69b1e4ad26559f7747b6f177c8a",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c1b5bee8c506afb0130cd1a3d09333898e34efc4265651117b8fd2b10bd3f2aa"
+        ],
+        "semanticKey": "Firemaking:14"
+      },
+      {
+        "id": "a805b43ae723f81cca3feb614980cf77ecba00bd6568e62f8456cf5a4e068f25",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c1b5bee8c506afb0130cd1a3d09333898e34efc4265651117b8fd2b10bd3f2aa"
+        ],
+        "semanticKey": "Firemaking:15"
+      },
+      {
+        "id": "7376d496d1544547c1cc90e81074a4a8070c073cb88713b374c8f430e8bfdd9b",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "02603240801fb35f3c5eaf131065df7914bf8d8c64cd4804debc47b2421994cd"
+        ],
+        "semanticKey": "Woodcutting:12"
+      },
+      {
+        "id": "5d287a04a785880a71a338728895b51f35a41cd44398f365cd3eedf30403eda7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "02603240801fb35f3c5eaf131065df7914bf8d8c64cd4804debc47b2421994cd"
+        ],
+        "semanticKey": "Woodcutting:13"
+      },
+      {
+        "id": "d2ff1abc7e9cb7249c7897fd4959eaa314a73cdc768bc262559ae08446509b6f",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "02603240801fb35f3c5eaf131065df7914bf8d8c64cd4804debc47b2421994cd"
+        ],
+        "semanticKey": "Woodcutting:14"
+      },
+      {
+        "id": "f8759a570c07450c63d9daa8b6eafee003e9ae18cb0483bfd78e7a1d059a5a5e",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "02603240801fb35f3c5eaf131065df7914bf8d8c64cd4804debc47b2421994cd"
+        ],
+        "semanticKey": "Woodcutting:15"
+      },
+      {
+        "id": "596a3ec27c700940181fa52442de61f69bd0d0093f28ec1843f9baf2f95c463d",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "43d6b333cfcd016ce43229ed9955089fa70b36a24a630fc9a61d033eb9697ae8"
+        ],
+        "semanticKey": "Firemaking:16"
+      },
+      {
+        "id": "8a76eb0595e1b0b5acf0dbc13c55d180924652e3c74bdc9ab875082428d48750",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "43d6b333cfcd016ce43229ed9955089fa70b36a24a630fc9a61d033eb9697ae8"
+        ],
+        "semanticKey": "Firemaking:17"
+      },
+      {
+        "id": "2aa5b48ada573be8ce708fa474467c337dd7370fe99265eac9346bcdfcab5445",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "43d6b333cfcd016ce43229ed9955089fa70b36a24a630fc9a61d033eb9697ae8"
+        ],
+        "semanticKey": "Firemaking:18"
+      },
+      {
+        "id": "1441a25a349b081260ecb34b562d18a8bb3cacbc05968267eb7edb11749d9fc0",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "43d6b333cfcd016ce43229ed9955089fa70b36a24a630fc9a61d033eb9697ae8"
+        ],
+        "semanticKey": "Firemaking:19"
+      },
+      {
+        "id": "cb1b57ba5a9b474b25fbf41058690b97032cde36d9720a4dbb153213fe46daef",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a6b86cad5c83ba42843242b10e2576c80ee969b49658eabd6e28b7bf04a68c1b"
+        ],
+        "semanticKey": "Woodcutting:16"
+      },
+      {
+        "id": "4398fbf0c6c510cfe6845fa8726a801587ac9b62112f3a728ced454bd8f0830f",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a6b86cad5c83ba42843242b10e2576c80ee969b49658eabd6e28b7bf04a68c1b"
+        ],
+        "semanticKey": "Woodcutting:17"
+      },
+      {
+        "id": "ac1f8fc620cc03a269fca5f52285e2dc5bd14dd35cbf775e9e71a2554b9b9c66",
+        "kind": "award",
+        "rule": "procedure",
+        "points": 100,
+        "sourceReferenceSha256": [
+          "dfcfc88c34603e1215f0d25b45a2254d0bf00494fd369fb399fc99170ed87ae1",
+          "c52c7836c18e78190724d26e94fba2c76fc7a7a3c39c1dc2477d2d14aa8a741b"
+        ]
+      },
+      {
+        "id": "197584239149e3ff6ad7412ed419e3f73cbf5dd8eb1f4864e23a0235bc4059c5",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a20aa79ec1b65fa4fde3c2a2862dbd0bff952aa2eef034665a1ade2ef20a3d50"
+        ],
+        "semanticKey": "Firemaking:20"
+      },
+      {
+        "id": "9a416bd83ae3179ecd83f99878370c24945737b320aea935e564c738165364f6",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a20aa79ec1b65fa4fde3c2a2862dbd0bff952aa2eef034665a1ade2ef20a3d50"
+        ],
+        "semanticKey": "Firemaking:21"
+      },
+      {
+        "id": "7133fe13720206c5553fc498c3d758c11b0ef40d8f5d3f8b0a63885d72d7dcac",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a20aa79ec1b65fa4fde3c2a2862dbd0bff952aa2eef034665a1ade2ef20a3d50"
+        ],
+        "semanticKey": "Firemaking:22"
+      },
+      {
+        "id": "52a9663a5c45d6145b16a69ab8e5dc18f264c0cc8e69f78f0b82e81c318ced62",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "16a4d811e9ee5b120f65d7e7bb102c69a66107ea80ff77947ef8ef7aef0ea30a"
+        ],
+        "semanticKey": "Woodcutting:18"
+      },
+      {
+        "id": "74ae313cf3339992fea96e38d7c85860f4ebe7c0f25aa1f5ae36c9eacf20086a",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "16a4d811e9ee5b120f65d7e7bb102c69a66107ea80ff77947ef8ef7aef0ea30a"
+        ],
+        "semanticKey": "Woodcutting:19"
+      },
+      {
+        "id": "077d215fa90fa34614d5ff684303b421dfe3d485c1f7fb53d4c7dd94b3064d02",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "16a4d811e9ee5b120f65d7e7bb102c69a66107ea80ff77947ef8ef7aef0ea30a"
+        ],
+        "semanticKey": "Woodcutting:20"
+      },
+      {
+        "id": "8d89777b1b74ab222c0bfa5a3551768086aa7a4f2ab8cf8f6c01182c787497ea",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "24aebb6efcbe5ed58715114af8e6186871f3817ca9c5b4d4193f27be177b38ac"
+        ],
+        "semanticKey": "Firemaking:23"
+      },
+      {
+        "id": "81ffe93f6e4a63516c521aa2d8d4dae2a2f17d8c5fc5a446c4ce99e16fa96ce9",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "24aebb6efcbe5ed58715114af8e6186871f3817ca9c5b4d4193f27be177b38ac"
+        ],
+        "semanticKey": "Firemaking:24"
+      },
+      {
+        "id": "7910842f80191ebe0733fd00b9cb71201acdea0da3efb9ed7f4f3ed3e9477988",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "24aebb6efcbe5ed58715114af8e6186871f3817ca9c5b4d4193f27be177b38ac"
+        ],
+        "semanticKey": "Firemaking:25"
+      },
+      {
+        "id": "c33bd21a6cfa2e78acffca523464d68f2874ae27b9ae4dfdd5cdb7e83984f3a4",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "4b71444384bbd47fa570ee5660038f3ff1e3b817131824432b507d143e8d4dfa"
+        ],
+        "semanticKey": "Woodcutting:21"
+      },
+      {
+        "id": "46e480c77b45218266f2e0860d551e28d5a55a538ecd68ead321f2a3d80164c2",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "4b71444384bbd47fa570ee5660038f3ff1e3b817131824432b507d143e8d4dfa"
+        ],
+        "semanticKey": "Woodcutting:22"
+      },
+      {
+        "id": "257234dc6fae78824686329a28e07edb780fbf2be76ad2d9144e6e242241b07b",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "bf6385aae26a8d2a005b00eaaf81c2439aec44d796191e5dc7a154d1d2ffe8c3"
+        ],
+        "semanticKey": "Firemaking:26"
+      },
+      {
+        "id": "56e49e2c4a94f0c426b8ceda0022252da7b19aed03a378de1eab80ae39cd3068",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "bf6385aae26a8d2a005b00eaaf81c2439aec44d796191e5dc7a154d1d2ffe8c3"
+        ],
+        "semanticKey": "Firemaking:27"
+      },
+      {
+        "id": "bc12e5cb024ffc08db6755f27899d3ee77fc4f8ee5b2f744e93705bb75276ce2",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "5cc68d44a0710506674da1c40ff835e9fda3a1ae6fba3fb2cfe7d857d64a70f8"
+        ],
+        "semanticKey": "Woodcutting:23"
+      },
+      {
+        "id": "9e3b4a0f4dd5731f1f99214c4b62331b4dabe05676df39c1eb098101c6d196f7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c78abf22f32a40f12c46118bfcbe699f99cb8522aa04d3d09c3468d9e6ca3084"
+        ],
+        "semanticKey": "Woodcutting:24"
+      },
+      {
+        "id": "b0944900715e2c0ce9af948e5dbe37797d7062ca3790b86bdc37bbee43d127bc",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c78abf22f32a40f12c46118bfcbe699f99cb8522aa04d3d09c3468d9e6ca3084"
+        ],
+        "semanticKey": "Woodcutting:25"
+      },
+      {
+        "id": "e4db94dad66385ec93ea04bdb36d9e63780463c22246caf3e08a18490e3e3259",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "6a76a057cb6a8cba6168b46838cdb9910f0a827dabe7aa5cf29e708ecff59413"
+        ],
+        "semanticKey": "Woodcutting:26"
+      },
+      {
+        "id": "620551444c7e10cd7a7e90057ad938668c9d14ec6088441d7e5436dfb22e16f9",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "f33adeee01cdb60800b2da41843839971dbe82e4673e987d7ef4a33e82e168ef"
+        ],
+        "semanticKey": "Firemaking:28"
+      },
+      {
+        "id": "f046960a8b1077ed13e0730adfab1ecbb591904fc88893b3c22fbc6551cc59f0",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "f33adeee01cdb60800b2da41843839971dbe82e4673e987d7ef4a33e82e168ef"
+        ],
+        "semanticKey": "Firemaking:29"
+      },
+      {
+        "id": "12b71bed4f757af780438741aa163e5f29cd661afd6df549b06f79d5747e4d26",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "228ac1a30373fcff70fd00bc7cea725eaa6657c07c262998428ef3983fef9178"
+        ],
+        "semanticKey": "Firemaking:30"
+      },
+      {
+        "id": "57ff062faa17e2d32c3d57b57c4c7889a0c52fc1c88cdc27c83fca773821c3e7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "228ac1a30373fcff70fd00bc7cea725eaa6657c07c262998428ef3983fef9178"
+        ],
+        "semanticKey": "Firemaking:31"
+      },
+      {
+        "id": "4cc928b224a53709405768fd129f0a194f9f5b7fc4d3cb0f06ee338dbd34d64b",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "fc1002bc8bf0f4a7157249510490eea429d2b38302514444d1151c338260455a"
+        ],
+        "semanticKey": "Firemaking:32"
+      },
+      {
+        "id": "1fb5b5bccf3447a4b356496be903503650ff0068b6ae804bd653c8723744c8fa",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "2692882f14e338b0197347d221bb1cc9025c72b9f5b14db9ac452e6b3775964f"
+        ],
+        "semanticKey": "Woodcutting:27"
+      },
+      {
+        "id": "a52b3d188dd9740f08d1f1ff745f1b5345034c53f9432f83967f8acfa228f8a9",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "2692882f14e338b0197347d221bb1cc9025c72b9f5b14db9ac452e6b3775964f"
+        ],
+        "semanticKey": "Woodcutting:28"
+      },
+      {
+        "id": "9752a62721f12e7ae1d1d621a4ebddc58504ac5f697f54d7eddee9724bf193ee",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "8bc1b64b3650325b55b0b3312f8aec0547fe73070add1c6fe86a91ab30fc8fd9"
+        ],
+        "semanticKey": "Firemaking:33"
+      },
+      {
+        "id": "d21dfbb61644f1ad3733c12ec34f7164a516942730834e38dbc0cc25d1c751bd",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "f18880fa30f240e11347503b0981649100caf43d7d741de91d522da76015cb06"
+        ],
+        "semanticKey": "Woodcutting:29"
+      },
+      {
+        "id": "1799c14250184f82f8fcc593a6a34ba47486344c84897a2bc0e2c8db0fdb11ae",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "8cc78d868cdfcde8c71f78490c7fc2abb9d12561b761d8fa277ec3fc269b9d03"
+        ],
+        "semanticKey": "Firemaking:34"
+      },
+      {
+        "id": "1243d682a403efde07663b2198df355e401659c88c037b71b660655725d78bd7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "8cc78d868cdfcde8c71f78490c7fc2abb9d12561b761d8fa277ec3fc269b9d03"
+        ],
+        "semanticKey": "Firemaking:35"
+      },
+      {
+        "id": "580c41a6c088f413f3bc9a4aa7a2023a2d4d2c4cf209d04ce9d81c59f04a5b73",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "9837b7b49f5ec2d47dfe2540f3ead2fb13699a89c9df17f9f49a6e978ab7f6c5"
+        ],
+        "semanticKey": "Woodcutting:30"
+      },
+      {
+        "id": "766dc3e7cab37e25cb70b8785c5bd0ea71b7631bc876f50cd9541f865c348aae",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "5e81a8795424c96cec6e7a2f22af685d9b28a447fd3bb159f9aa7706489673af"
+        ],
+        "semanticKey": "Firemaking:36"
+      },
+      {
+        "id": "aba98a2c5e33c1d08fb6991e5a0353b02fc24949fea43e2cca24963d95a0ef93",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "174585a59c3b30c8f0e1ae43032f531f62a40b54372e5846b3c00e76f75f3a1c"
+        ],
+        "semanticKey": "Woodcutting:31"
+      },
+      {
+        "id": "ce9d740b43c2537a5cf5affbc6bc9653b6195ad515074b2c11de01b625f1a837",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "9fe2b8db4f7c2bf60347c96aa0bcdba5bc2fc213516d34deacdece5fc27188c3"
+        ],
+        "semanticKey": "Firemaking:37"
+      },
+      {
+        "id": "26fd7fb964c4873225783ee0f2e1d53060c146a0043b31eeaadc4febfb2d2839",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "564e4731be302b287786c941cc7c3ab67f0857e83923623071152ac7c2baf5d2"
+        ],
+        "semanticKey": "Woodcutting:32"
+      },
+      {
+        "id": "3299acb21adacd06e7c2a4458118eb66e056e81af327efa37e2aec93762aadc6",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "282451d2040be414a475331a95e82f797ad62dd6874409fe1c360c8711082948"
+        ],
+        "semanticKey": "Firemaking:38"
+      },
+      {
+        "id": "91b7b31e75a3dac0a58a0fcf63ff4f50ac9ddcbbdad6433eed596938a1b63348",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "768ab7dc1911675c89fe15d71f964807a1333b103b8a6f3ee82bb319b414c02a"
+        ],
+        "semanticKey": "Woodcutting:33"
+      },
+      {
+        "id": "48f383c2933daafb71f265b833f51cbc54c5016746ee49c293cbada7bd5de789",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "d9a222b22fc410166d65622cb11d1510deb8dad63cdb7d2d85737b189b792852"
+        ],
+        "semanticKey": "Firemaking:39"
+      },
+      {
+        "id": "c004c9b16cf4358abcd59db5c96aa1be6a30a8197b4fa00a9942e322b4f0d58c",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "1f52f42f09fc64103f37304169eb8649cb2d8910b1f826c06e6302121c75ba16"
+        ],
+        "semanticKey": "Firemaking:40"
+      },
+      {
+        "id": "566f0147e47fd481aac94cf910968dc704c995f03758b5d5cde2531138facbc1",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "670d9e86e7d08b865f95f415947c310569726116864ae811566fb1388251d157"
+        ],
+        "semanticKey": "Woodcutting:34"
+      },
+      {
+        "id": "c4aa283fcc666306699a344317eb819f37ea9ed60ed59ec7c8f0d03e8052337d",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "4f91585026c1a6e15ddf8340330e635379ca6fe22bf84e1ba5e06c9fb98827ae"
+        ],
+        "semanticKey": "Firemaking:41"
+      },
+      {
+        "id": "ce6bf61ed33e4c3e0fd2fb676adb35e85124dff56cddb22c77c09d4ae5378fe7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "518cfe7a7440904f8f622c6416a545c23d75b6c273ed45f35914823928d9dd40"
+        ],
+        "semanticKey": "Woodcutting:35"
+      },
+      {
+        "id": "472b0748eba1b3ffd5df96a95380348f054ddb629e4423c8324d65c4bff284b1",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "2861aa8b87a942a73e3f5612496b56df3f5067689338d34236eaa4bb19411c1b"
+        ],
+        "semanticKey": "Woodcutting:36"
+      },
+      {
+        "id": "35f2290f370d7dafa9fb9548576c0b5a47a83e1d97895454cd0a0ecd66bf9be7",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "13b922574c0260beeeae68c90a5c2182230d000c8525e78a9717d5ee6039d000"
+        ],
+        "semanticKey": "Firemaking:42"
+      },
+      {
+        "id": "ad34f24d95f65dd000195842f25c71e8d1f70de941e825c87b66d97243be977b",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "55a2021836313ce0821dc73198c6265b4b6915c23807dda21e023bd8b19aa56f"
+        ],
+        "semanticKey": "Firemaking:43"
+      },
+      {
+        "id": "3731dc9c8b014dd7fe14107568f14d572d39e139edee4407f3dcbf8a944767b6",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "2f6619074d610020535d9d5080bc46128b129473301de25f46e5621b3801717f"
+        ],
+        "semanticKey": "Woodcutting:37"
+      },
+      {
+        "id": "e8906b68222220dc888bc470d94058334adeceb01ff442df29176c03a5b21c58",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "f6742fabd6c52b46f0431bcd119fdd0a0cef852e73cf7ced485cc0e2006eddf3"
+        ],
+        "semanticKey": "Woodcutting:38"
+      },
+      {
+        "id": "647a0aa2f380249199e29ea79c3968579ebfede2608c200b792d2770edeb7a94",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "5807e37c749759befc2f69eaddc62c2f2b9c258e70a6cff465a41b14abdfb651"
+        ],
+        "semanticKey": "Firemaking:44"
+      },
+      {
+        "id": "5c29f0a377638ad8acc128e120da5df79c1e54cc20c7ea693c36fb7ef8838060",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "51e57183a81a3c7dedc39a576142f8731280435f7f5bb429767e683e9230546e"
+        ],
+        "semanticKey": "Firemaking:45"
+      },
+      {
+        "id": "2ed0ed0b9044995e88c5573fffbc2150c15a6a8d9f6a4875b76889b62863d8e0",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a193e29a23a2ae29e7d9ab0a98459d5742110560217d1feccd459bc3bbc28b1a"
+        ],
+        "semanticKey": "Woodcutting:39"
+      },
+      {
+        "id": "b6d199f591f2faa73aed3c7ed141c5536a3d148d492b8d82fe4aa6355c0b6471",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "3e1bc3b561a4bf8b668d5cecaac90993acd101d14d1668711a2726367b22743f"
+        ],
+        "semanticKey": "Firemaking:46"
+      },
+      {
+        "id": "3bb9aa8cd5fb554236665070be20f5d29a53c8bbb21b2895a895bc8cd2a89117",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "c3cdafc0e6abad82db1575772d902bb7cf787f24b310f799202725bb9dc98ae3"
+        ],
+        "semanticKey": "Woodcutting:40"
+      },
+      {
+        "id": "c7c4ca2e3e9aa0dbb1b0d086d3189b82f40efe07bcbf80eed44c05206216f14a",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "ef9e09bc6a94120fe4b32379ba2c4c9cda59dfdc61e994bf10030b6703e722ae"
+        ],
+        "semanticKey": "Woodcutting:41"
+      },
+      {
+        "id": "9722e11698b62b285d227c3db6708bbd4d1f1f4669f9b91082b2c8c9ed85db93",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "1760a4fbfab5686c0b63ff74a2ebee900fbd692993df5b8ef8e5ced5338f4e84"
+        ],
+        "semanticKey": "Firemaking:47"
+      },
+      {
+        "id": "2d8dcf235d0e3990d4e13f5816001eeff02851e52a1a612e1c52dba794a0fa88",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "7ad47166140a9ba98e430e5a07497b454cab6cbc2cec5a667a70bc257b483c2b"
+        ],
+        "semanticKey": "Firemaking:48"
+      },
+      {
+        "id": "4e55f69372cdd8226b88fa4cef8c98ba59ee6f816329af8cf003c4db73c7761b",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "cab61b5e65a99c6c2b6385ba3dd7932119e9d68a2477fecd2bc7a92db9da6776"
+        ],
+        "semanticKey": "Woodcutting:42"
+      },
+      {
+        "id": "95962f5d5e8c05539b358d469de5fb5fec7afd988c456194db83917e1b1ff315",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "4ee0f8c5d5a68e8100bdf2f0d96d3df3712a488fe7848e9c94c99c8a7ee23c90"
+        ],
+        "semanticKey": "Firemaking:49"
+      },
+      {
+        "id": "b7c46ee4ba8b5e80c981a08c5768ce710fcfc9521c478d613fc8fc333c256ca1",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "6a2a0c85802570296339523b27807871af0bb0a4cf0528a897551b40c9535453"
+        ],
+        "semanticKey": "Woodcutting:43"
+      },
+      {
+        "id": "67bca9cf8aab6506857c7583e5eea704988080dd49d6391c1ce07eaaea720238",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "98b5ee66e9062a6a73a045a924997bcec1e6eb7c7db2d6884eb2b9a0ed08125e"
+        ],
+        "semanticKey": "Firemaking:50"
+      },
+      {
+        "id": "bc76ddd042c0c8356cfae59a9e17a0299cc7de9e4c66c48f5f72155455b46a79",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "fefb5c31271ed358039c1d57a2c8c06ada7f858beb3eeb6203c6c3f3254f9156"
+        ],
+        "semanticKey": "Woodcutting:44"
+      },
+      {
+        "id": "22f75b0a0609ad990674eae937b101ef753ef3ff1525fb015a319929964ed066",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "19fa0a9779ba7f2e593983f4b1e300197275b905f48aa818fd0444a8fcbd1c6a"
+        ],
+        "semanticKey": "Firemaking:51"
+      },
+      {
+        "id": "861f5304b21a803c2a6425969795db4f345a6dacb0ffbb6b33e594cc67e1014e",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "ab29616146271df1d6aa0fc1e7c6cd5e62ef16762a2b21ed604f5b669ce44937"
+        ],
+        "semanticKey": "Woodcutting:45"
+      },
+      {
+        "id": "4326170e7eeb5957c9a48fa95c0495e2e9d9a0406b1e2136a0033366cd94d004",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "b390be071d9922200efa632df677980e489a3e454a6534c6a6ebbfbf80893671"
+        ],
+        "semanticKey": "Firemaking:52"
+      },
+      {
+        "id": "5798353a1f39bb0b157ca3f4158b3afa6b9fcf0f2dfc8f14dabc53c675ad421c",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "b4c02e720f15b7cf993423b26f3b01ed5732586ec28d2a27732884a1924dac9d"
+        ],
+        "semanticKey": "Woodcutting:46"
+      },
+      {
+        "id": "1d47c8536fb6f63114907d809b5fc5be327da57796d0e517713a18a348e77b60",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "16f8a675e518eca10172a0d4bcd5a5ed4c55a7022d7bbe2ff7e2cb0b5c9fbccd"
+        ],
+        "semanticKey": "Firemaking:53"
+      },
+      {
+        "id": "266d94ab83a26a310e36f517300b92e3e0fe494a87a6224afced057c4d3280b6",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "a58c540a89540e85ba3a62cbfca3402140d03d25962ee1d800af723dee3b0276"
+        ],
+        "semanticKey": "Woodcutting:47"
+      },
+      {
+        "id": "bad37f75cb8296f69b01b2bfb813dffc0945f414a29a95bb2c48fef4dc88e3da",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "8df790d546f8c3668ebe8ac3153e2d1a3b5d8031d9f614ff8bc42a09c3816484"
+        ],
+        "semanticKey": "Firemaking:54"
+      },
+      {
+        "id": "74751d076f1e716519e280a41bbf10f85fb74864d251cfd77a87636466563a33",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "95d3c8c2089a0e19cfc94f42e9ea08c260a0b3c0214e21568a500c888b36eca6"
+        ],
+        "semanticKey": "Woodcutting:48"
+      },
+      {
+        "id": "f72c914f214e60dd2756e44b46eb30a187f7d5b98e12b325fcd1007c280cba0f",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "cb99faec141e0031f16c6fb12c6310ab7d45039746351af445e2c75fa29521b7"
+        ],
+        "semanticKey": "Firemaking:55"
+      },
+      {
+        "id": "811a6f325c7db3dce0c65fe9d9ac73aece911262003e34e7aaac5a5b2c9d9b57",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "f489ecfaaf757c3793fdc8a9f43eafe7860b80caeec09022abf3cbfbcb572ec4"
+        ],
+        "semanticKey": "Woodcutting:49"
+      },
+      {
+        "id": "6e891df1430d0d217997e7f9add9012f8a813a6530d335f7b30dd79685d1fdf1",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "d5f3070d7163baf02249a7359579831314ba04142973933aaf5dc43b72c5bba2"
+        ],
+        "semanticKey": "Firemaking:56"
+      },
+      {
+        "id": "52d9049cb4e9437bbd5220dcdbc58d1305233b859346d1bde52c19f20a830113",
+        "kind": "award",
+        "rule": "xp_record",
+        "points": 100,
+        "sourceReferenceSha256": [
+          "3c953d094c11ed4fc7c0880cfd7c724aa660ced3b2e5babebecd85b7301d1c76",
+          "cabe22afc3a2eb5b97ea285f61558f7225e8a4adc15e332d44a19802176b337a"
+        ]
+      },
+      {
+        "id": "f4a9028ba992b4e180fdae02616ae41f7fc85e7f1d3ec43fbaffbb65be61e187",
+        "kind": "award",
+        "rule": "xp_record",
+        "points": 100,
+        "sourceReferenceSha256": [
+          "3c953d094c11ed4fc7c0880cfd7c724aa660ced3b2e5babebecd85b7301d1c76",
+          "cabe22afc3a2eb5b97ea285f61558f7225e8a4adc15e332d44a19802176b337a"
+        ]
+      },
+      {
+        "id": "84e50fdefe8644039798995d940b41071bff58333e43dad636e0e825bbd57bfa",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "829b0a31538b0ba9b281de18e62d89f86dcf9ab922bc3013b66c6a66157d14ff"
+        ],
+        "semanticKey": "Woodcutting:50"
+      },
+      {
+        "id": "34ed6509a97db1d024a092700a048e40edef936f826b2c00e1256d4e7e92973f",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "ee79b06876312f725ca2a32f7247de9d8d7eaa240d70ec6f834246949aefdf94"
+        ],
+        "semanticKey": "Firemaking:57"
+      },
+      {
+        "id": "b35b57d8b15448847afd05cbada6997dfcf51484127d95e6dd47bfcb0a5c17e5",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "ae9ba7f637249432bf7c5542e03d7386ca731b352184b3980e38090cd3cfd067"
+        ],
+        "semanticKey": "Woodcutting:51"
+      },
+      {
+        "id": "9c73a2f6687c3e4cedfaf6eee7883f542ee8d4bf53cc98eff14ca67fe18b5d2c",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "25b656a1a365d487a57bb0f7e60400751c4f41b008246de9e2ea086e35769508"
+        ],
+        "semanticKey": "Firemaking:58"
+      },
+      {
+        "id": "1dfc06475ea08a3585b5fa53e61da3d19f2d38e7e53669082938438b0c46f3ba",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "e397e092bacb166147110a934b370d91edd49d78e824a3b9cf6202d219de620c"
+        ],
+        "semanticKey": "Woodcutting:52"
+      },
+      {
+        "id": "1b14a7641504e4641c40fc58e2f1ddfbfea8b1ba4c911f26e1562ec76fbcbe1a",
+        "kind": "award",
+        "rule": "skill_level",
+        "points": 5,
+        "sourceReferenceSha256": [
+          "6a7d59c05feca521901508088f22350452b77b1731c5773dbe4ac2aec61271cc"
+        ],
+        "semanticKey": "Firemaking:59"
+      }
+    ],
+    "checkpoints": {
+      "eligibleTotal": 8,
+      "unacknowledged": 0,
+      "semantics": {
+        "step": 100,
+        "basis": "Cumulative positive proven awards since this fresh ready baseline; deductions affect net score, not checkpoint high-water. Each threshold has a durable identity; reports are batched and explicit ack prevents presentation as new after restart.",
+        "automaticMessagesOrSchedules": false
+      }
+    },
+    "pending": [],
+    "unavailableRules": [
+      {
+        "rule": "social_productive",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 1
+      },
+      {
+        "rule": "player_trade",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 5
+      },
+      {
+        "rule": "clan_recruit",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 25
+      },
+      {
+        "rule": "clan_meeting",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 25
+      },
+      {
+        "rule": "wild_own_kill",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 1
+      },
+      {
+        "rule": "clan_enemy_kill",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 4
+      },
+      {
+        "rule": "pvp_loot",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 1
+      },
+      {
+        "rule": "pvp_escape",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 1
+      },
+      {
+        "rule": "kill_streak",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 25
+      },
+      {
+        "rule": "clan_pk_trip",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 50
+      },
+      {
+        "rule": "clan_pk_member",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 10
+      },
+      {
+        "rule": "travel_speed",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 50
+      },
+      {
+        "rule": "greatest_weakness",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 75
+      },
+      {
+        "rule": "avoidable_idle_improved",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 10
+      },
+      {
+        "rule": "decision_idle_improved",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 75
+      },
+      {
+        "rule": "inventory_improved",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 10
+      },
+      {
+        "rule": "monitoring_improved",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": 100
+      },
+      {
+        "rule": "idle_tick",
+        "status": "PENDING_TRUSTED_EVIDENCE",
+        "points": -1
+      }
+    ],
+    "gaps": 0,
+    "xpWindows": [
+      {
+        "skill": "Woodcutting",
+        "start": 1794891882345,
+        "end": 1794892182488,
+        "durationMs": 300143,
+        "startLevel": 1,
+        "endLevel": 38,
+        "activity": "woodcut_firemake:Tree:Logs",
+        "equipmentKey": "[]",
+        "xpRegime": "rs-sdk-289-observed-xp-units",
+        "xp": 14375,
+        "xpPerHour": 172417.81417524314,
+        "comparisonKey": "65ed55163722bff5afa4834ba3442af3a924cefc5740270f99f043e0f8d3e496",
+        "completeCoverage": true,
+        "baseline": true,
+        "recordBeaten": false
+      },
+      {
+        "skill": "Firemaking",
+        "start": 1794891882345,
+        "end": 1794892182488,
+        "durationMs": 300143,
+        "startLevel": 1,
+        "endLevel": 45,
+        "activity": "woodcut_firemake:Tree:Logs",
+        "equipmentKey": "[]",
+        "xpRegime": "rs-sdk-289-observed-xp-units",
+        "xp": 23000,
+        "xpPerHour": 275868.50268038904,
+        "comparisonKey": "dd7e2338d00f844b769b0f15af98977e3337fadec60b03283d38ce43c6861c07",
+        "completeCoverage": true,
+        "baseline": true,
+        "recordBeaten": false
+      },
+      {
+        "skill": "Woodcutting",
+        "start": 1794892182488,
+        "end": 1794892482576,
+        "durationMs": 300088,
+        "startLevel": 38,
+        "endLevel": 49,
+        "activity": "woodcut_firemake:Tree:Logs",
+        "equipmentKey": "[]",
+        "xpRegime": "rs-sdk-289-observed-xp-units",
+        "xp": 18125,
+        "xpPerHour": 217436.21870917865,
+        "comparisonKey": "65ed55163722bff5afa4834ba3442af3a924cefc5740270f99f043e0f8d3e496",
+        "completeCoverage": true,
+        "baseline": false,
+        "recordBeaten": true
+      },
+      {
+        "skill": "Firemaking",
+        "start": 1794892182488,
+        "end": 1794892482576,
+        "durationMs": 300088,
+        "startLevel": 45,
+        "endLevel": 56,
+        "activity": "woodcut_firemake:Tree:Logs",
+        "equipmentKey": "[]",
+        "xpRegime": "rs-sdk-289-observed-xp-units",
+        "xp": 29000,
+        "xpPerHour": 347897.94993468584,
+        "comparisonKey": "dd7e2338d00f844b769b0f15af98977e3337fadec60b03283d38ce43c6861c07",
+        "completeCoverage": true,
+        "baseline": false,
+        "recordBeaten": true
+      }
+    ],
+    "xpRecordCount": 2,
+    "idlePenalty": {
+      "provenPenalizedTicks": 0,
+      "automaticSdkAbilityProof": "NOT_ESTABLISHED_BY_PASSIVE_IDLE_FLAGS",
+      "meaning": "Visible idle, a helper promise, a pause label, or missing observations cannot prove unnecessary eligible idle."
+    },
+    "rangeXpBreaches": [],
+    "liveEvidenceCoverage": {
+      "liveValidated": [
+        "skill_level",
+        "xp_record",
+        "procedure"
+      ],
+      "fixtureOnlyAutomaticAdapters": [
+        "death",
+        "runite_mined",
+        "runite_banked"
+      ],
+      "notProvenByThisLiveRun": "Social/clan/PvP, all six improvements and eligible unnecessary idle require unavailable trusted evidence; no awards from cloud-development work."
+    }
+  },
+  "scorer": {
+    "execution": "Separate Node process,96MiB V8 old-space limit (not total RSS cap),bounded256 waiting/32 in-flight fact slots,128MiB journal limit",
+    "workerCpuDeltaMs": 2466.384,
+    "rssBytesAtEnd": 41439232,
+    "processedDelta": 2209,
+    "workerErrors": 0,
+    "workerJournalBytes": 2901277,
+    "capture": {
+      "captured": 2294,
+      "dropped": 0,
+      "maxQueue": 1,
+      "callbackMs": 23.83831499848202,
+      "maxCallbackMs": 0.37250999998650514,
+      "workerFailures": 0,
+      "batches": 2294,
+      "maxProcessingMs": 79.85556400002679,
+      "observationCallbacks": 2184,
+      "observeMs": 118.25590600163378,
+      "maxObserveMs": 1.8817439999984344,
+      "sendMs": 83.08646899714404,
+      "maxSendMs": 2.224368999945,
+      "queued": 0,
+      "inFlightFacts": 0,
+      "failed": false,
+      "lastError": null,
+      "sealed": true,
+      "coverageUnknown": false
+    },
+    "beforeCapture": {
+      "captured": 85,
+      "dropped": 0,
+      "maxQueue": 1,
+      "callbackMs": 0.9944110000087676,
+      "maxCallbackMs": 0.06558299999960582,
+      "workerFailures": 0,
+      "batches": 85,
+      "maxProcessingMs": 5.733546999999817,
+      "observationCallbacks": 85,
+      "observeMs": 9.24173999996674,
+      "maxObserveMs": 1.8817439999984344,
+      "sendMs": 4.639566999956514,
+      "maxSendMs": 0.2746129999977711,
+      "queued": 0,
+      "inFlightFacts": 0,
+      "failed": false,
+      "lastError": null,
+      "sealed": false,
+      "coverageUnknown": false
+    },
+    "sealedAtMeasurementEnd": true,
+    "flushComplete": true,
+    "toolLatencyMs": {
+      "score_status": {
+        "n": 11,
+        "p50": 38.65639300000001,
+        "p95": 56.70179199999998,
+        "p99": 56.70179199999998,
+        "min": 31.697258000000005,
+        "max": 56.70179199999998
+      },
+      "score_flush": {
+        "n": 3,
+        "p50": 49.30439199999999,
+        "p95": 68.729942,
+        "p99": 68.729942,
+        "min": 15.480108000000001,
+        "max": 68.729942
+      },
+      "score_ledger": {
+        "n": 2,
+        "p50": 10.954814999999996,
+        "p95": 14.411410999999987,
+        "p99": 14.411410999999987,
+        "min": 10.954814999999996,
+        "max": 14.411410999999987
+      },
+      "score_ack": {
+        "n": 4,
+        "p50": 11.48135099999999,
+        "p95": 14.746869000000004,
+        "p99": 14.746869000000004,
+        "min": 9.525126999999998,
+        "max": 14.746869000000004
+      }
+    },
+    "captureDelta": {
+      "captured": 2209,
+      "dropped": 0,
+      "callbackMs": 22.84390399847325,
+      "batches": 2209,
+      "observationCallbacks": 2099,
+      "observeMs": 109.01416600166704,
+      "sendMs": 78.44690199718752,
+      "workerFailures": 0
+    },
+    "overheadMeaning": "Worker CPU and additive capture counters span the immediately pre-window flushed snapshot through the post-window sealed flush. Maxima/RSS/journal size are cumulative snapshots including preparation. observeMs includes nested capture callbackMs: do not add them. IPC sendMs is separate wall time, not isolated CPU. Flush/ledger queries after cutoff do not gate actions.",
+    "toolLatencyWithinWindowMs": {
+      "score_status": {
+        "n": 11,
+        "p50": 38.65639300000001,
+        "p95": 56.70179199999998,
+        "p99": 56.70179199999998,
+        "min": 31.697258000000005,
+        "max": 56.70179199999998
+      },
+      "score_ack": {
+        "n": 4,
+        "p50": 11.48135099999999,
+        "p95": 14.746869000000004,
+        "p99": 14.746869000000004,
+        "min": 9.525126999999998,
+        "max": 14.746869000000004
+      },
+      "score_flush": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "min": null,
+        "max": null
+      },
+      "score_ledger": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "min": null,
+        "max": null
+      }
+    },
+    "toolLatencyAllPhasesMeaning": "toolLatencyMs includes preparation and post-window queries; toolLatencyWithinWindowMs restricts timestamps to the fixed window. No score_flush or score_ledger call occurred in the timed gameplay window."
+  },
+  "actionTimingLegacyPlannerFieldsMeaning": "actionTiming plannerRequestMs/plannerTurnaroundMs both measure automatic request lifetime in the retained runtime telemetry. Use planningLatency.actualClaimToCompletionMs for actual agent/tool claims; neither isolates inference.",
+  "knowledgeAndLearning": {
+    "knowledgeRecords": [
+      {
+        "id": "src-caa22e00945b1e736f19",
+        "title": "Firemaking — Firemaking",
+        "revision": "274",
+        "sourceUrl": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_firemaking/scripts/firemaking.rs2#L1",
+        "contentSha256": "966bdc838a872f73bc9c58d34e0a6210703e5e965c9116e9463aefb5f7b7cf88"
+      },
+      {
+        "id": "src-be06780c8d1764f6ae29",
+        "title": "Firemaking — Opobj4, Category 22",
+        "revision": "274",
+        "sourceUrl": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_firemaking/scripts/firemaking.rs2#L2-L3",
+        "contentSha256": "61a60cec3c6ad2a8acbae381f989e3bcf52a6a7282390a7e523447e5b6c6cd5a"
+      },
+      {
+        "id": "src-288254dce68707ddfe7b",
+        "title": "Firemaking — Opobju, Category 22",
+        "revision": "274",
+        "sourceUrl": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/skill_firemaking/scripts/firemaking.rs2#L4-L10",
+        "contentSha256": "143df1fa9855bdb1b2cd9d3952ac18c8c8b3af9fbd9d0229e07356de3cf80b8f"
+      },
+      {
+        "id": "src-951c82560bbd48753b30",
+        "title": "Levelup — Advancestat,Firemaking",
+        "revision": "274",
+        "sourceUrl": "https://github.com/LostCityRS/Content/blob/65b754f768b79b941b21b2a1eb3b0d1ecae3cdfe/scripts/levelup/scripts/levelup.rs2#L19",
+        "contentSha256": "0fc1842a016e030792d4230b3d3daa376bdc932f61096a27fba23b5f11c38281"
+      }
+    ],
+    "initialOverSpecificQueryHadNoResults": true,
+    "learnedProcedure": "chop ordinary Tree for verified Logs and Woodcutting XP",
+    "learnedEpisodeReferenceSha256": "c52c7836c18e78190724d26e94fba2c76fc7a7a3c39c1dc2477d2d14aa8a741b",
+    "replayedEpisodeReferenceSha256": "150cf6f51637708c5a3da8c659d34cfc55d112d8413aed80471f8284eb358f13",
+    "replayVerified": true,
+    "replayActions": [
+      {
+        "action": "chop",
+        "status": "verified"
+      }
+    ],
+    "procedureAwardCount": 1,
+    "renamingReplayAwardsExtra": false
+  },
+  "rangeTank": {
+    "starting": {
+      "enabled": true,
+      "observedMeleeXp": {
+        "Attack": 0,
+        "Strength": 0
+      },
+      "breach": null,
+      "limit": "Fresh owned packet guard; already-sent/server-side actions cannot be undone."
+    },
+    "ending": {
+      "enabled": true,
+      "observedMeleeXp": {
+        "Attack": 0,
+        "Strength": 0
+      },
+      "breach": null,
+      "limit": "Fresh owned packet guard; already-sent/server-side actions cannot be undone."
+    },
+    "enabled": true,
+    "liveCombatSmoke": false,
+    "limits": "No live combat needed; actual SDK fixtures cover generic/typed Attack, late weapon/style changes, stale callbacks and unknown/melee gear. Server-side already-sent attacks/auto-retaliation cannot be absolutely prevented or undone."
+  },
+  "replayBenchmark": {
+    "schemaVersion": 1,
+    "kind": "DETERMINISTIC_REPLAY_NOT_LIVE_LATENCY",
+    "input": {
+      "tickRows": 3000,
+      "episodeEvents": 332,
+      "retainedTraceSha256": "a91cbfc24db9b0a803041b57e6ceddb3b463050528a93b190c023baf5e07d771",
+      "paceMs": 5
+    },
+    "intentOutputEquivalent": true,
+    "passes": [
+      {
+        "scoring": false,
+        "callbacks": 3000,
+        "recordedIntents": 333,
+        "intentSha256": "e40a3480ee2ead357202644157a08bc60e36fe6ff582c63998b7a0f793c7bd97",
+        "mainCallbackMs": {
+          "n": 3000,
+          "p50": 0.000600000000304135,
+          "p95": 0.01856000000043423,
+          "p99": 0.03518399999984467,
+          "min": 0.00012599999899975955,
+          "max": 1.2964889999984734
+        },
+        "mainCpuMs": 196.684,
+        "wallMs": 15485.48533,
+        "scorer": null
+      },
+      {
+        "scoring": true,
+        "callbacks": 3000,
+        "recordedIntents": 333,
+        "intentSha256": "e40a3480ee2ead357202644157a08bc60e36fe6ff582c63998b7a0f793c7bd97",
+        "mainCallbackMs": {
+          "n": 3000,
+          "p50": 0.012370000000373693,
+          "p95": 0.035708000001250184,
+          "p99": 0.1212390000000596,
+          "min": 0.004005000002507586,
+          "max": 1.595091000002867
+        },
+        "mainCpuMs": 1098.678,
+        "wallMs": 15545.755242000001,
+        "scorer": {
+          "workerCpuMs": 1980.571,
+          "rssBytes": 46325760,
+          "processed": 3332,
+          "workerErrors": 0,
+          "journalBytes": 3811688,
+          "capture": {
+            "captured": 3332,
+            "dropped": 0,
+            "maxQueue": 2,
+            "callbackMs": 20.313000000045577,
+            "maxCallbackMs": 1.5096020000019053,
+            "workerFailures": 0,
+            "batches": 3000,
+            "maxProcessingMs": 6.69293800000014,
+            "sendMs": 138.55475499996464,
+            "maxSendMs": 1.4596849999979895,
+            "queued": 0,
+            "inFlightFacts": 0,
+            "failed": false,
+            "lastError": null,
+            "sealed": false,
+            "coverageUnknown": false
+          }
+        }
+      }
+    ],
+    "limits": "Replays recorded intents through an independent passive off/on pipeline; does not rerun the executor or prove identical live scheduling. Skill snapshots are held from retained episodes between observations; replay scoring is a load fixture, not an awarded live balance. Pacing is fixture-only, never model thinking. Separate temporary ledger; original account/ledger untouched.",
+    "replayBalanceExcludedFromLive": true,
+    "sourceCommit": "6f5d481149bd89516eb10a3df5952a6efb19d880",
+    "exactPinNote": "Retained replay benchmark predates the final death-cycle fix; it was not rerun or attributed to the live pin."
+  },
+  "privateEvidence": {
+    "tickTraceSha256": "a0d35ede7edddb8c980f6287a66351776262dee28ea23322962e1902cf4cd560",
+    "eventTraceSha256": "e88f7ee8da868531a934e2b42931af222cde1198dc1dde06df0023f6f37022ba",
+    "toolTraceSha256": "a3e786618855bfd8d90a3d3329f6ef7375d9607ee6fd182464dfed92d3defa83",
+    "rawPublished": false
+  }
+}

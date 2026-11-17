@@ -2,7 +2,9 @@
 
 # Wartime · 2004Scape controller
 
-**New implementation:** [Wartime v2: persistent host and current-agent bridge](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [latest standing-goal live report](v2/standing-run-report.md) records a fixed20-minute online run:2.47% visible idle,328 verified helper completions and4/332 failed attempts, with37.70% ambiguous helper ticks retained. The [previous reliability report](v2/reliability-run-report.md) remains unchanged. The [original v2 validation](v2/validation-report.json) remains historical. The v1 implementation and historical report below remain intact.
+**Fresh agent handoff:** [FRESH-WARTIME.txt](v2/FRESH-WARTIME.txt): new generated game character, range-tank, score0, and the already-running agent as planner. The [new12-minute live scoring report](v2/scoring-validation-report.md) ([JSON](v2/scoring-validation-report.json)) records845 evidence-backed test points,132 verified helpers,zero scorer drops and owned-process cleanup. Test balance/credentials never enter the future production character; historical timing is not a causal no-slowdown claim.
+
+**Implementation:** [Wartime v2: persistent host and current-agent bridge](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [historical standing-goal live report](v2/standing-run-report.md) records a fixed20-minute online run:2.47% visible idle,328 verified helper completions and4/332 failed attempts, with37.70% ambiguous helper ticks retained. The [previous reliability report](v2/reliability-run-report.md) remains unchanged. The [original v2 validation](v2/validation-report.json) remains historical. The v1 implementation and historical report below remain intact.
 
 This project combines cited 2004Scape knowledge with a model-driven RS-SDK controller. Current v2 runs use an explicitly configured world/gateway; the legacy target was https://rs-sdk-demo.fly.dev/. It provides:
 - the model supplies Voyager-style curriculum, planning and critique;
@@ -13,7 +15,7 @@ It is an original adaptation of Voyager's design, not the upstream Minecraft run
 
 ## Current agent-first online workflow
 
-**Wartime is already the planner.** From this repository it can run `node wartime/v2/agent.mjs ensure --world https://rs-sdk.maxbittker.com --gateway wss://rs-sdk.maxbittker.com/gateway` using its existing tools. The helper prepares its private pinned SDK/client workspace and knowledge, discovers/verifies an active run or starts/resumes the correct one. No second provider, API key, Codex login, billing or human SDK-directory assembly is required. Status is read-only and reports computed source/build identity.
+**Wartime is already the planner.** For the requested fresh range-tank/score0 profile, from this repository run `node wartime/v2/fresh-wartime.mjs ensure --world https://rs-sdk.maxbittker.com --gateway wss://rs-sdk.maxbittker.com/gateway` using its existing tools. The helper prepares its private pinned SDK/client workspace and knowledge, discovers/verifies an active run or starts/resumes the correct one. No second provider, API key, Codex login, billing or human SDK-directory assembly is required. Status is read-only and reports computed source/build identity.
 
 Use [the online agent instructions](v2/README.md), [handoff](v2/HANDOFF.txt) and [prompt](v2/NEW-RUN-PROMPT.txt). A deliberately new top-level run gets fresh private account credentials; normal tools/ticks/planning retain the run, and bounded old-character replacement remains available. Approved routines and explicitly approved standing resource goals keep running while the current agent thinks or remains unserved, without timed goal renewals. The host cannot wake an inactive chat or invent new reasoning. An unattended provider is optional, not a readiness dependency.
 

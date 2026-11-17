@@ -69,5 +69,7 @@
     }
   ],
   "limits": "Replays recorded intents through an independent passive off/on pipeline; does not rerun the executor or prove identical live scheduling. Skill snapshots are held from retained episodes between observations; replay scoring is a load fixture, not an awarded live balance. Pacing is fixture-only, never model thinking. Separate temporary ledger; original account/ledger untouched.",
-  "replayBalanceExcludedFromLive": true
+  "replayBalanceExcludedFromLive": true,
+  "sourceCommit": "6f5d481149bd89516eb10a3df5952a6efb19d880",
+  "sourceNote": "Retained benchmark predates final sequential death-cycle fix af7ca208; no new replay or altered result is implied."
 }

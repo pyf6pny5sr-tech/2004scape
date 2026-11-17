@@ -31,3 +31,21 @@ test('mismatched inventory chain invalidates known lots; mixed bank splits prese
 test('experience-not-reduced is required only for monitoring, not the other five genuine improvements',()=>{const e=new ScoreEngine(scope);for(const rule of ['travel_speed','greatest_weakness','avoidable_idle_improved','decision_idle_improved','inventory_improved'])e.ingest(proof(rule,{comparable:true,beforeEvidence:'before',afterEvidence:'after',completeCoverage:true,measuredImprovement:true,greatestWeaknessConfirmed:true}));assert.equal(e.score,220);e.ingest(proof('monitoring_improved',{comparable:true,beforeEvidence:'before',afterEvidence:'after',completeCoverage:true,measuredImprovement:true}));assert.equal(e.score,220);e.ingest(proof('monitoring_improved',{comparable:true,beforeEvidence:'before',afterEvidence:'after',completeCoverage:true,measuredImprovement:true,gameplayExperienceNotReduced:true}));assert.equal(e.score,320);});
 test('fallback dead evidence then delayed respawn metadata is one death; full metadata also dedups',()=>{for(const initialTick of [null,2]){const e=new ScoreEngine(scope);e.ingest(obs(1,0,0,1,{respawnCount:0,lastDeathTick:null}));e.ingest(obs(2,400,0,1,{dead:true,hp:0,respawnCount:0,lastDeathTick:initialTick}));assert.equal(e.score,-25);e.ingest(obs(3,800,0,1,{life:2,respawnCount:1,lastDeathTick:2}));assert.equal(e.score,-25);e.ingest(obs(4,1200,0,1,{life:2,respawnCount:1,lastDeathTick:2}));assert.equal(e.score,-25);}});
 test('confirmed publication/client reset cannot reuse old death aliases or invent an uncertain death',()=>{for(const resetTick of [null,1]){const e=new ScoreEngine(scope);e.ingest(obs(10,0,0,1,{stream:'one',respawnCount:0,lastDeathTick:null}));e.ingest(obs(11,400,0,1,{stream:'one',dead:true,hp:0,respawnCount:0,lastDeathTick:11}));assert.equal(e.score,-25);e.ingest(obs(1,800,0,1,{stream:'two',dead:true,hp:0,respawnCount:0,lastDeathTick:resetTick}));assert.equal(e.score,-25);e.ingest(obs(2,1200,0,1,{stream:'two',life:2,respawnCount:1,lastDeathTick:1}));assert.equal(e.score,-25);e.ingest(obs(3,1600,0,1,{stream:'two',life:2,dead:true,hp:0,respawnCount:1,lastDeathTick:3}));assert.equal(e.score,-50);}});
+
+
+test('respawn-only prior death cannot absorb the next alive-to-dead transition; later respawn dedups',()=>{
+ for(const secondTick of [4,null]){
+  const e=new ScoreEngine(scope);
+  e.ingest(obs(1,0,0,1,{life:1,respawnCount:0,lastDeathTick:null}));
+  e.ingest(obs(2,400,0,1,{life:2,respawnCount:1,lastDeathTick:1}));
+  assert.equal(e.score,-25);
+  e.ingest(obs(3,800,0,1,{life:2,respawnCount:1,lastDeathTick:1}));
+  e.ingest(obs(4,1200,0,1,{dead:true,hp:0,life:2,respawnCount:1,lastDeathTick:secondTick}));
+  assert.equal(e.score,-50,'a second explicit death has its own prior-life cycle');
+  e.ingest(obs(5,1600,0,1,{dead:true,hp:0,life:2,respawnCount:1,lastDeathTick:4}));
+  e.ingest(obs(6,2000,0,1,{life:3,respawnCount:2,lastDeathTick:4}));
+  e.ingest(obs(7,2400,0,1,{life:3,respawnCount:2,lastDeathTick:4}));
+  assert.equal(e.score,-50,'delayed metadata and later respawn cannot deduct again');
+  assert.equal(e.awards.filter(a=>a.rule==='death').length,2);
+ }
+});

@@ -24,7 +24,8 @@
     "initialFailuresAndFixes": [
       "First range guard used Proxy-handler this instead of captured adapter flag;6/10 new packet fixtures failed. Fixed actual binding; final10/10 pass.",
       "First XP fixture input accidentally made first window faster; corrected the fixture rate sequence, not award expectations.",
-      "Prepared-home ownership guard correctly refused our prematurely created capture subdirectory; moved only our metadata outside the new runtime home. No account was created."
+      "Prepared-home ownership guard correctly refused our prematurely created capture subdirectory; moved only our metadata outside the new runtime home. No account was created.",
+      "Sequential respawn-only death then a fresh alive-to-dead transition reproduced -25 instead of -50 before the final focused fix; prior-life cycle aliases and independent new death metadata now preserve both deductions and later respawn dedup."
     ],
     "lastBroadSuitePin": "5b9f4baa36ff067a5a6481a64c85c5d27b42b63f",
     "broadNodeBeforeReview": {
@@ -38,12 +39,12 @@
       "files": 16
     },
     "finalFocusedNode": {
-      "passed": 29,
+      "passed": 30,
       "failed": 0,
       "files": 3
     },
     "finalFocusedBun": {
-      "passed": 40,
+      "passed": 41,
       "failed": 0,
       "files": 5
     }
@@ -52,7 +53,7 @@
     "state": "PREPARED_NO_ACCOUNT_OR_TIMER",
     "guardAndScorerFilesCopied": true,
     "computedIdentityMatchesPrivatePreparedCopy": true,
-    "buildSha256": "ccf9fecab78008b791e05cbd11e5141207d362578bff2af90541bd1bb2b5fc35",
+    "buildSha256": "7627cdc2652e08a6461222e0b1646c11c97495c7e2fd54bd3e58ff29b7ae261c",
     "identityFileCount": 29,
     "reportReplayToolsExcludedFromRuntimeIdentity": true
   },
@@ -70,7 +71,7 @@
     "adapter.ts": "37a30ae3227794e84d6c942a739832fcaa5171829889c4dc91b09948d090b600",
     "range-tank.mjs": "7781a154d2921b17a5e8b35f466ca657803a5d65492addfd5e942e2f6039370c",
     "scoring/client.mjs": "5272352577e54484629505d0882272dde8f6f66a9acabda942435d5d9254d36a",
-    "scoring/engine.mjs": "b037ac43666c24219d540c55d6e1557550fa697768a948052298b37b72eb0f45",
+    "scoring/engine.mjs": "7eb13561278b66ba31dae5ccba0550c06adb5c2808b21e0caee308021029a523",
     "scoring/worker.mjs": "d2fbcc836f40146436ef5791f1cf03e1f43706b24fafe96a095dfa47dc86cb4e",
     "scoring/rules.json": "06a17cd5031104436717d78d800bd4bc55d5912d1d04cabd6155839904b35dc9",
     "resource-actions.ts": "5e2dad285ff487c3248a223bcb16a7843035398199a1df956ffdd96bad8e6305",
@@ -97,12 +98,13 @@
     "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
     "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
   },
-  "supersedesPin": "5b9f4baa36ff067a5a6481a64c85c5d27b42b63f",
+  "supersedesPin": "6f5d481149bd89516eb10a3df5952a6efb19d880",
   "reviewCorrections": [
     "Non-bank losses retire known mined units using a proven lower bound; mixed bank splits and mismatched before-inventory chains preserve pending uncertainty and consistent lot totals.",
     "gameplayExperienceNotReduced is additional eligibility only for monitoring, not the other five genuine improvements.",
     "Fallback death and delayed metadata/respawn share one durable alias; confirmed stream/publication reset uses separate context and uncertain reset death is not invented as another deduction.",
     "Procedure scoring journals immutable proof from the completed durable skill write; scorer delay, same-name later episode and restart retain historical award identity. Reproduced EVIDENCE_HASH_CHANGED before fix.",
-    "Kill-streak text matches conservative once-per-life policy, longer-streak eligibility explicitly unresolved."
+    "Kill-streak text matches conservative once-per-life policy, longer-streak eligibility explicitly unresolved.",
+    "Respawn proof is bound to the prior life/cycle, and a fresh alive-to-dead transition with new death metadata cannot supplement an earlier pending death. Sequential two-death fixtures with immediate/delayed second metadata and later respawn total exactly -50."
   ]
 }

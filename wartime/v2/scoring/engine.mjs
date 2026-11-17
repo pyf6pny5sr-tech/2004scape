@@ -18,18 +18,21 @@ export class ScoreEngine {
   if(!f.fresh||!Number.isSafeInteger(f.life))return;
   const tickFresh=Number.isFinite(f.lastDeathTick)&&f.lastDeathTick>=p.tick&&f.lastDeathTick<=f.tick&&f.lastDeathTick>(p.lastDeathTick??-1);
   const tickAlias=Number.isFinite(f.lastDeathTick)?this.deathEpoch+':tick:'+f.lastDeathTick:null;
-  const lifeAlias=this.deathEpoch+':life:'+f.life+':respawn:'+(f.respawnCount??'unknown');
   const explicit=f.dead===true&&f.hp===0&&p.dead!==true;
   const respawn=f.life>p.life&&f.respawnCount>p.respawnCount;
+  // Respawn proves a death in the preceding cycle, never in the surviving life.
+  const deathLife=respawn?p.life:f.life,deathRespawn=respawn?p.respawnCount:f.respawnCount;
+  const lifeAlias=this.deathEpoch+':life:'+deathLife+':respawn:'+(deathRespawn??'unknown');
   const pending=this.pendingDeath;
-  // Delayed metadata attaches to the already counted death before any new deduction.
-  if(tickFresh&&pending&&pending.epoch===this.deathEpoch&&(p.dead===true||pending.life===f.life&&f.dead===true||respawn&&pending.life===p.life)){
+  // Only the same dead/respawning cycle can supplement a fallback death. A new
+  // alive-to-dead transition is independent evidence, not delayed old metadata.
+  if(!explicit&&tickFresh&&pending&&pending.epoch===this.deathEpoch&&pending.life===p.life&&(p.dead===true||respawn)&&(pending.tick===null||pending.tick===f.lastDeathTick)){
    if(pending.tick===null){pending.tick=f.lastDeathTick;this.deathAliases.set(tickAlias,pending);}return;
   }
   if(!pending&&p.dead===true&&respawn&&tickFresh){this.claim('death',[f.id,'RESET_OR_UNSCORED_DEATH_METADATA_UNCERTAIN']);return;}
   if(!explicit&&!(respawn&&tickFresh))return;
-  let record=this.deathAliases.get(lifeAlias)||(tickFresh?this.deathAliases.get(tickAlias):null);
-  if(!record){record={key:this.deathEpoch+':death:'+(++this.deathSequence),epoch:this.deathEpoch,life:f.life,tick:tickFresh?f.lastDeathTick:null};this.deathAliases.set(lifeAlias,record);if(tickFresh)this.deathAliases.set(tickAlias,record);this.deaths.add(record.key);this.award('death',record.key,[f.id]);this.kills.clear();}
+  let record=tickFresh?this.deathAliases.get(tickAlias):this.deathAliases.get(lifeAlias);
+  if(!record){record={key:this.deathEpoch+':death:'+(++this.deathSequence),epoch:this.deathEpoch,life:deathLife,tick:tickFresh?f.lastDeathTick:null};this.deathAliases.set(lifeAlias,record);if(tickFresh)this.deathAliases.set(tickAlias,record);this.deaths.add(record.key);this.award('death',record.key,[f.id]);this.kills.clear();}
   this.pendingDeath=record;this.window=null;
  }
  observe(f){

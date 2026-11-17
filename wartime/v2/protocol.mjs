@@ -24,6 +24,9 @@ export function validateCommand(c) {
   if(c?.target?.exact!==undefined&&typeof c.target.exact!=="boolean")throw Error("INVALID_EXACT_TARGET");
   if(c?.target?.exact){bounded(c.target.x,0,16383,"TARGET_X");bounded(c.target.z,0,16383,"TARGET_Z");}
   if (!c || typeof c !== "object") throw new Error("INVALID_COMMAND");
+  if(c.resourceFireMove!==undefined&&c.resourceFireMove!==true)throw Error('INVALID_RESOURCE_MOVE');
+  if(c.avoidTiles!==undefined){if(!Array.isArray(c.avoidTiles)||c.avoidTiles.length>64)throw Error('INVALID_AVOID_TILES');for(const t of c.avoidTiles){bounded(t.x,0,16383,'AVOID_X');bounded(t.z,0,16383,'AVOID_Z');}}
+  if(c.action==='burn_logs'&&(!c.item||(!c.item.name&&c.item.id===undefined)))throw Error('BURN_ITEM_SELECTOR_REQUIRED');
   if (!extras.has(c.action)) validateStep(c);
   else {
     if (!Array.isArray(c.expect) || !c.expect.length || c.expect.length > 5)

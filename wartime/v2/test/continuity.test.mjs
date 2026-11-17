@@ -178,3 +178,53 @@ for (const transition of ['life', 'clock', 'life_and_clock']) test('manual cance
   assert.equal(f.executor.events.filter(e => e.type === 'planner_requested').length, requests);
   assert.equal(f.calls.length, calls);
 });
+
+const standingGrant=state=>({...grant(state),mode:'standing',expiresAt:undefined,maxActions:2});
+test('standing approved goal works past old180s boundary through bounded chunks with one unserved planner',async t=>{
+ const f=await fixture(t);resources(f);
+ // Deterministic virtual wall-clock test, not live/model latency. Publications drive each dispatch.
+ f.adapter.execute=async c=>{f.calls.push(c);if(c.action==='chop'){f.state.inventory.push({id:1511,name:'Logs',count:1});f.state.skills[0].experience+=25;}else{f.state.inventory=f.state.inventory.filter(i=>i.name!=='Logs');f.state.skills[1].experience+=40;}f.emit(false);return {success:true};};
+ f.executor.submit(f.proposal([chop],{continuation:standingGrant(f.state)}));await flush();
+ const pending=f.executor.plannerRequests()[0].id,realNow=Date.now;let now=realNow()+181000;
+ try {Date.now=()=>now;for(let i=0;i<12;i++){now+=400;f.emit();await flush();}}finally{Date.now=realNow;}
+ assert.ok(f.calls.length>=10);assert.ok(f.executor.metrics.counts.standingChunksStarted>=3);
+ assert.ok(f.executor.planning.has(pending));assert.equal(f.executor.continuation.mode,'standing');assert.equal(f.executor.continuation.expiresAt,null);
+ assert.ok(f.calls.every(c=>['chop','burn_logs'].includes(c.action)));assert.equal(f.executor.metrics.counts.continuationExpirations,undefined);
+ await f.executor.stop();
+});
+test('rejected completion preserves request, standing authority, active routine and queue; correction succeeds',async t=>{
+ const f=await fixture(t);resources(f);f.state.player.animId=888;f.emit();
+ f.executor.submit(f.proposal([chop],{continuation:standingGrant(f.state)}));f.executor.submit(f.proposal([chop]));
+ const req=f.executor.plannerRequests()[0],g=f.executor.continuation,r=f.executor.routine,q=[...f.executor.queue],ids=f.executor.proposalIds.size;
+ const bad=f.proposal([{action:'burn_logs',log:{name:'Logs'},expect:[{type:'xp_gain',skill:'Firemaking',amount:1}]}]);
+ assert.throws(()=>f.executor.completePlan(req.id,bad),/BURN_ITEM_SELECTOR_REQUIRED/);
+ assert.ok(f.executor.planning.has(req.id));assert.equal(f.executor.continuation,g);assert.equal(f.executor.routine,r);assert.deepEqual(f.executor.queue,q);assert.equal(f.executor.proposalIds.size,ids);
+ const good=f.proposal([chop]);f.executor.completePlan(req.id,good,'current_agent_tools');assert.ok(!f.executor.planning.has(req.id));assert.equal(f.executor.continuation,g);assert.equal(f.executor.queue.length,q.length+1);
+ assert.throws(()=>f.executor.completePlan(req.id,good),/STALE_PLANNER_REQUEST/);
+});
+test('stale supplied generation, duplicate ID and full queue never consume pending completion',async t=>{
+ const f=await fixture(t);resources(f);f.state.player.animId=888;f.emit();const original=f.proposal([chop],{continuation:standingGrant(f.state)});f.executor.submit(original);
+ const req=f.executor.plannerRequests()[0],g=f.executor.continuation;
+ assert.throws(()=>f.executor.completePlan(req.id,{...f.proposal([chop]),token:{...f.executor.token(),life:99}}),/STALE_PLAN/);assert.ok(f.executor.planning.has(req.id));
+ assert.throws(()=>f.executor.completePlan(req.id,original),/DUPLICATE_PROPOSAL/);assert.ok(f.executor.planning.has(req.id));
+ while(f.executor.queue.length<4)f.executor.submit(f.proposal([chop]));const ids=f.executor.proposalIds.size;
+ assert.throws(()=>f.executor.completePlan(req.id,f.proposal([chop])),/BOUNDED_QUEUE_REQUIRED/);assert.equal(f.executor.queue.length,4);assert.equal(f.executor.proposalIds.size,ids);assert.equal(f.executor.continuation,g);assert.ok(f.executor.planning.has(req.id));
+ const out=f.executor.completePlan(req.id,null);assert.equal(out.declined,true);assert.ok(!f.executor.planning.has(req.id));assert.equal(f.executor.queue.length,4);assert.equal(f.executor.continuation,g);
+});
+test('dedup capacity rejection is atomic and corrected completion can reuse pending request',async t=>{
+ const f=await fixture(t);resources(f);f.state.player.animId=888;f.emit();const req=f.executor.requestPlan();for(let i=0;i<1000;i++)f.executor.proposalIds.set('occupied'+i,Date.now()+60000);
+ assert.throws(()=>f.executor.completePlan(req.id,f.proposal([chop])),/DEDUPLICATION_CAPACITY/);assert.ok(f.executor.planning.has(req.id));assert.equal(f.executor.queue.length,0);
+ f.executor.proposalIds.delete('occupied0');f.executor.completePlan(req.id,f.proposal([chop]));assert.ok(!f.executor.planning.has(req.id));
+});
+for(const revoke of ['cancel','stop','goal','disconnect'])test('standing authority cannot revive after '+revoke+' then life/clock transition',async t=>{
+ const f=await fixture(t);resources(f);f.state.player.animId=888;f.emit();f.executor.submit(f.proposal([chop],{continuation:standingGrant(f.state)}));
+ if(revoke==='goal')f.executor.setGoal({description:'New task without resource permission'});else if(revoke==='disconnect')f.disconnect();else await f.executor[revoke]();
+ const n=f.calls.length;f.state.player.lifeId++;f.state.tick=-2;f.state.revision=-2;f.state.player.animId=-1;for(let i=0;i<5;i++){f.emit();await flush();}
+ assert.equal(f.calls.length,n);assert.equal(f.executor.continuation,null);assert.equal(f.executor.pendingResourceResume,null);
+ if(revoke==='cancel'){assert.equal(f.executor.phase,'PAUSED');assert.equal(f.executor.blockReason,'MANUAL_CANCEL');assert.equal(f.executor.plannerRequests().length,0);}
+});
+test('fire relocation is a checked moved-to empty tile, not an occupied position acknowledgement',async t=>{
+ const f=await fixture(t);const command={action:'walk',x:3245,z:3208,level:0,tolerance:1,resourceFireMove:true,expect:[{type:'position',x:3245,z:3208,level:0,tolerance:1}]};const before=structuredClone(f.state);
+ f.state.player.worldX=3244;f.state.nearbyLocs.push({id:2732,name:'Fire',x:3244,z:3208,level:0});assert.equal(f.executor.effectsMatch(command,before,f.state),false);
+ f.state.nearbyLocs=[];assert.equal(f.executor.effectsMatch(command,before,f.state),true);assert.equal(f.executor.effectsMatch(command,f.state,f.state),false);
+});

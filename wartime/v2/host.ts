@@ -148,12 +148,14 @@ export async function createBridge(executor: any, config: any) {
           break;
         case "planner_complete":
           evidence?.mark("completion_submission", { id:a.id });
-          measurement?.complete(a.id);
-          result = executor.completePlan(
-            a.id,
-            a.proposal,
-            "current_agent_tools",
-          );
+          try {
+            result=executor.completePlan(a.id,a.proposal,"current_agent_tools");
+            measurement?.complete(a.id);
+            evidence?.mark(a.proposal===null?"completion_declined":"completion_accepted",{id:a.id});
+          } catch(e:any) {
+            evidence?.mark("completion_rejected",{id:a.id,reason:/^[A-Z0-9_]+$/.test(e.message)?e.message:'INVALID_PROPOSAL'});
+            throw e;
+          }
           break;
         case "search":
         case "record":

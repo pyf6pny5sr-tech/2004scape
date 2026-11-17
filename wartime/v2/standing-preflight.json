@@ -1,0 +1,85 @@
+{
+  "scope": "Standing ordinary-resource authority, atomic correctable planner completion, fresh fire refusal/verified alternate placement; online-only product",
+  "baseCommit": "3ea2bc65ee01452c5933a3ee1377cb75e2efd9e0",
+  "sourcePin": "Containing implementation commit, exact runtime hashes below",
+  "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+  "runtimes": {
+    "node": "24.22.1",
+    "bun": "1.4.4"
+  },
+  "diagnosis": {
+    "retainedPriorReport": "reliability-run-report.md/json and private traces unchanged",
+    "longPause": "Finite goal expired around421s; unserved planner plus malformed completion consumed its request, causing stale correction and107.541s whole idle",
+    "burns": "Four of five prior burn-timeout episode baselines contained fire-location failure messages; prior custom helper did not inspect fresh server message cursor. Historical message presence is not proof of exact cause of every burn failure.",
+    "movement": "Exact-position relocation used long SDK route helper; new short sendWalk + fresh moved-to empty-tile proof uses tolerance1, rejects unchanged/occupied/refused/wrong-plane locations. No acknowledgement becomes success."
+  },
+  "tests": {
+    "initialRelevantNode": {
+      "passed": 51,
+      "failed": 0
+    },
+    "initialRelevantBun": {
+      "passed": 83,
+      "failed": 1,
+      "note": "New fresh-refusal predicate test found undefined rather than boolean false when no dialog exists. Predicate now explicitly coerces dialog-open to boolean; stale messages still ignored."
+    },
+    "finalRelevantNode": {
+      "passed": 58,
+      "failed": 0,
+      "files": [
+        "executor.test.mjs",
+        "continuity.test.mjs",
+        "continuity-capture.test.mjs",
+        "long-run.test.mjs",
+        "long-analysis.test.mjs",
+        "standing-report.test.mjs"
+      ]
+    },
+    "finalRelevantBun": {
+      "passed": 91,
+      "failed": 0,
+      "files": [
+        "executor.test.mjs",
+        "continuity.test.mjs",
+        "resource-actions.test.ts",
+        "adapter.test.ts",
+        "agent-bridge.test.ts",
+        "continuity-capture.test.mjs",
+        "continuity-capture-bridge.test.ts",
+        "long-run.test.mjs",
+        "long-analysis.test.mjs",
+        "standing-report.test.mjs"
+      ]
+    },
+    "overlap": "Node/Bun overlap; do not sum into one unique suite.",
+    "virtualClock": "Standing >180s boundary regression advances Date.now deterministically while actual executor publications/pending request continue; supplemental unit validation, not live/model timing."
+  },
+  "captureChange": "Unchanged passive classifier/overlap definitions. Host now closes claim only after accepted proposal or explicit null decline, recording submissions/rejections separately. Previous reliability report ended at attempted submission before validation; comparison must disclose this difference.",
+  "buildSha256": "248da75942f6f55e7cdf31b04f039ba2d450757e31e334f746f9092b8c609bd3",
+  "moduleSha256": {
+    "adapter.ts": "ee8ff1675e8179dee0014136250f7af3629c0d97fcc3ba525e55c01ae84d87ac",
+    "resource-actions.ts": "5e2dad285ff487c3248a223bcb16a7843035398199a1df956ffdd96bad8e6305",
+    "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+    "continuity-capture.mjs": "a43431eab44f9a70d32265f1a006fa28fad8994f8b3bbdac3de8f82150386ae3",
+    "executor.mjs": "c191d38ea7e6059beacc21b424897c97729b9595bb57b9eaf970f55d369c9df0",
+    "continuity.mjs": "83f80584d5eb62b2bc4ff751d6c85e1ab4dee1ddd5ecebdf094aecc56647ec74",
+    "host.ts": "7b946592bd1d6928ae1e82dfbdd2aafd5e9ec1d778aec53ce4c3d3363828ed35",
+    "identity.mjs": "d85ccda7a1ac8ab78964d2a1220ba334ce8e5003c5266692f8055b731d6d3f96",
+    "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+    "long-run.mjs": "e485c01e0031cf672173d72b72d415ba7dc9807d7f9900d6cf906e1d3107150d",
+    "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+    "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+    "protocol.mjs": "3d918ce42a4c54ad79e055f7230e62dd8bca0ba2e363d95af6e34ed5bfd7eaf0",
+    "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+    "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+    "run-store.mjs": "571f21995c321fbfe35eee78af1b6da3f9b96d65b55425f199b81755c81d2d14",
+    "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+    "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+    "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+    "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+    "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+    "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+    "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+    "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+  }
+}

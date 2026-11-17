@@ -121,7 +121,7 @@ export class SDKAdapter {
         throw new Error("ESCAPE_PLANE_MISMATCH");
       if (c.action === "escape")
         return bot.walkTo(c.x, c.z, 0, { timeout: 15000 });
-      if(['chop','burn_logs'].includes(c.action))return resourceAction(guarded,bot,c,valid);
+      if(['chop','burn_logs'].includes(c.action)||(c.action==='walk'&&c.resourceFireMove===true))return resourceAction(guarded,bot,c,valid);
       // Reuse v1's reviewed exact item/loc resolution and SDK call signatures only.
       return WartimeController.prototype.dispatch.call(
         { bot, sdk: guarded, resolve: WartimeController.prototype.resolve },

@@ -12,6 +12,7 @@ export function safeContinuation(value) {
   const numeric = key => Number.isFinite(value[key]) ? value[key] : undefined;
   return {
     recipe: value.recipe === 'woodcut_firemake' ? value.recipe : undefined,
+    mode: value.mode === 'standing' ? 'standing' : 'bounded', chunk: numeric('chunk'),
     remainingActions: numeric('remainingActions'), runwayMs: numeric('runwayMs'),
     expiresAt: numeric('expiresAt'), failures: numeric('failures'), backoffTicks: numeric('backoffTicks'),
     area: value.area ? Object.fromEntries(['x','z','level','radius'].filter(key => Number.isFinite(value.area[key])).map(key => [key,value.area[key]])) : null,
@@ -136,11 +137,16 @@ export async function captureCommand(command,options={},deps={}) {
   if(command==='complete') {
     const {request}=JSON.parse(await readFile(file('current-request.json'),'utf8'));
     const proposal=options.proposal;
-    if(!proposal||typeof proposal!=='object')throw Error('EXPLICIT_AGENT_PROPOSAL_REQUIRED');
-    proposal.id??=randomUUID();proposal.expiresAt??=Date.now()+120000;
-    const result=await tool({operation:'planner_complete',id:request.id,proposal});
-    await appendFile(file('submission-ledger.jsonl'),JSON.stringify({at:Date.now(),requestId:request.id,proposal,result})+'\n',{mode:0o600});
-    return result;
+    if(proposal!==null&&(!proposal||typeof proposal!=='object'))throw Error('EXPLICIT_AGENT_PROPOSAL_REQUIRED');
+    if(proposal){proposal.id??=randomUUID();proposal.expiresAt??=Date.now()+120000;}
+    try {
+      const result=await tool({operation:'planner_complete',id:request.id,proposal});
+      await appendFile(file('submission-ledger.jsonl'),JSON.stringify({at:Date.now(),requestId:request.id,proposal,result,outcome:proposal===null?'declined':'accepted'})+'\n',{mode:0o600});
+      return result;
+    } catch(e) {
+      await appendFile(file('submission-ledger.jsonl'),JSON.stringify({at:Date.now(),requestId:request.id,proposal,outcome:'rejected',reason:/^[A-Z0-9_]+$/.test(e.message)?e.message:'INVALID_PROPOSAL'})+'\n',{mode:0o600});
+      throw e;
+    }
   }
   if(command==='watch') {
     let m=await tool({operation:'measurement_status'});

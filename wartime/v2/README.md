@@ -16,7 +16,7 @@ The [new fixed 20-minute online report](continuity-run-report.md) tests pinned i
 
 ## Approved resource goal while the current agent plans
 
-You are already the planner. For an ordinary woodcutting/Firemaking goal, use a short proposal plus a finite resource continuation. Do not reset goals just to refill; service an existing pending request while work continues. No second provider/key or nested login is needed.
+You are already the planner. For an ordinary woodcutting/Firemaking goal, use a short proposal plus an explicitly approved standing resource goal. Do not reset goals just to refill; service an existing pending request while work continues. No second provider/key or nested login is needed.
 
 ```js
 {
@@ -25,21 +25,25 @@ You are already the planner. For an ordinary woodcutting/Firemaking goal, use a 
     {type:"xp_gain",skill:"Woodcutting",amount:1}
   ]}],
   continuation: {
-    recipe:"woodcut_firemake", target:{name:"Tree"}, log:{name:"Logs"},
-    maxActions:80, expiresAt:Date.now()+170000
+    recipe:"woodcut_firemake", mode:"standing", target:{name:"Tree"}, log:{name:"Logs"},
+    maxActions:80
   }
 }
 ```
 
-This is a tool-contract illustration: compute timestamps in your current tools. Only Tree/Logs or Oak/Oak logs resource goals are accepted. There is no region, HP or combat pause toggle to configure. Each grant is at most **80 generated attempts/180 seconds**; remaining budget/expiry/runway and backoff are visible in status. Refill proactively before runway is low. A proposal without continuation retires future reserve work; manual cancel/stop and changed goals revoke old authority. Renewals never extend an already-active action's original expiry.
+This is the standard current-agent path. Approve this existing ordinary-resource goal once: `mode:"standing"` executes checked chunks of at most80 generated attempts, then starts another chunk for the same goal. It has **no wall-clock renewal deadline**; a slow/unserved planner does not end already-approved work. Each action retains its own finite deadline, fresh-state/owner/generation checks, cooldown and bounded backoff. Only Tree/Logs or Oak/Oak logs tasks are accepted; it never invents a new goal or automatically repeats combat/chat/trade.
+
+`continuation.mode`, current chunk, remaining chunk attempts and failures are visible in status. New plan proposals still expire within120seconds; their expiry is separate from standing-goal authority. A valid ordinary-resource proposal omitting `continuation` preserves a standing goal. Explicit `continuation:null`, manual cancel/stop or a changed goal revokes it. Real connection/ownership/session failure invalidates it; life/clock transitions invalidate old callbacks, and a canceled goal cannot revive. Optional legacy `mode:"bounded"` retains its finite80-attempt/180-second grant; this is not the default play-loop recommendation. No gameplay-risk toggles or church detours exist.
+
+Planner completion validates everything synchronously **before consuming the request or changing work**. On `BURN_ITEM_SELECTOR_REQUIRED`, `STALE_PLAN`, `DUPLICATE_PROPOSAL`, `BOUNDED_QUEUE_REQUIRED` or another actionable rejection, inspect/correct the proposal using the **same pending request ID**. No rejected input discards the active routine, queue, standing goal or dedup slot. A successful correction consumes it exactly once; explicit `null` declines it without changing approved work. A supplied stale token is rejected, not silently replaced. Example: burn uses `item:{name:"Logs"}`, not `log`. Do not reset the goal just to correct a proposal.
 
 Resource targets are freshly resolved after UI handling, at dispatch. A remembered coordinate is a preference; `target.exact:true` with explicit x/z is available when a real exact target is intended. Actual dispatched target/plane anchors the gathering lease. Tree disappearance gets three observed ticks for late log/XP publication; a short read-only reconciliation can prove original effects after an ambiguous helper outcome. No effect means failure, never fake success or verified learning.
 
-Ordinary failures preserve independent approved queued work and the finite resource goal. Target/depletion waits use bounded tick backoff (2,4,8 ticks), reselect live alternatives, and do not clear useful work or demand a model resume. Failed attempts consume grant budget; backoff never runs past its expiry. Full inventory uses approved burnable logs if available; unavailable work waits without no-op packets. Fire placement uses current empty neighboring tiles or optional explicit `fireTiles` preferences, only when needed for that resource task. Automatic combat/chat/trade or unrelated goals are never generated.
+Ordinary failures preserve independent approved queued work and the approved resource goal. Target/depletion waits use bounded tick backoff (2,4,8 ticks), reselect live alternatives, and do not clear useful work or demand a model resume. Failed attempts consume bounded chunk budget; standing execution starts the next chunk without a model renewal. Unavailable targets/full inventory wait on fresh observations with backoff and send no fake actions. Full inventory uses approved burnable logs if available; unavailable work waits without no-op packets. Fresh fire-location refusal messages use the pinned SDK observation/tick cursor and trigger alternate placement without waiting for a full timeout. Fire placement uses current empty neighboring tiles or optional explicit `fireTiles` preferences, only when needed for that resource task. Short relocation sends one SDK walk, then requires fresh movement on the same plane to a currently empty tile within one tile of the selected destination; unchanged/occupied/refused tiles never prove success. Automatic combat/chat/trade or unrelated goals are never generated.
 
-HP/combat changes and walking outside an old region do not cancel the goal. Death/life changes invalidate old action callbacks and plan tokens; the still-valid finite resource goal can be regenerated from fresh respawn state. Invalid/stale/unknown owner/session state cannot dispatch or reconnect into a takeover fight. Unexpected/auth/network/protocol errors are preserved, not called resource timeouts. `cancel` is a deliberate manual hold until a new approved goal/resume; `stop` shuts down the owned run/client.
+HP/combat changes and walking outside an old region do not cancel the goal. Death/life changes invalidate old action callbacks and plan tokens; the still-approved resource goal can be regenerated from fresh respawn state. Invalid/stale/unknown owner/session state cannot dispatch or reconnect into a takeover fight. Unexpected/auth/network/protocol errors are preserved, not called resource timeouts. `cancel` is a deliberate manual hold until a new approved goal/resume; `stop` shuts down the owned run/client.
 
-The capture CLI [continuity-capture.mjs](continuity-capture.mjs) is prepared before play: `init/begin/context/claim/complete/watch/stop`, private `--directory`, existing run `--home`. Claims include reasoning/tools/scheduling/status commentary, not isolated inference. Observation waits are outside open claims. The unchanged passive classifier and overlap math are used by [reliability-report.mjs](reliability-report.mjs) to compare against the previous continuity run, including failures/rates, ambiguity and long idle stretches. No code/report/ledger authoring belongs inside a timed gameplay claim.
+The capture CLI [continuity-capture.mjs](continuity-capture.mjs) is prepared before play: `init/begin/context/claim/complete/watch/stop`, private `--directory`, existing run `--home`. A claim stays open through rejected submissions/corrections until an accepted proposal or explicit null decline. Historical reports ended claims at submission before validation; keep this distinction when comparing. Claims include reasoning/tools/scheduling/status commentary, not isolated inference. Observation waits are outside open claims. The unchanged passive classifier and overlap math are used by [reliability-report.mjs](reliability-report.mjs) to compare against the previous continuity run, including failures/rates, ambiguity and long idle stretches. No code/report/ledger authoring belongs inside a timed gameplay claim.
 
 ## Twenty-minute online idle baseline
 
@@ -86,7 +90,7 @@ While you reason or retrieve, the executor keeps running already-approved valid 
 
 Planner telemetry records **agent/tool request-to-response turnaround**, including execution, retrieval and scheduling overhead. It is not isolated model inference time. `current_agent_tools` describes the submission route, not proof of a frontier model identity; fixtures are labeled controlled observations. Optional provider-backed unattended planning remains available only when deliberately supplied via an authorized provider callback.
 
-The autonomy boundary is finite: the host executes approved routines while your agent is active or thinking. It cannot wake an inactive chat, invent new model reasoning, or turn a finite routine into unlimited autonomy. Genuinely unattended reasoning requires an already-supported persistent agent runtime or an explicitly configured optional provider. Neither is a readiness prerequisite for ordinary agent-driven gameplay.
+The host executes approved routines and standing ordinary-resource goals while your agent thinks or remains unserved. A standing goal does not expire merely because a planning turn is slow, but the host cannot wake an inactive chat or invent new model reasoning. Genuinely unattended reasoning requires an already-supported persistent agent runtime or an explicitly configured optional provider. Neither is a readiness prerequisite for ordinary agent-driven gameplay.
 
 ### Approved online networking
 

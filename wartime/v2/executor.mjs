@@ -1,4 +1,4 @@
-import { validateContinuation, nextContinuation, ordinaryResourceFailure } from "./continuity.mjs";
+import { validateContinuation, nextContinuation, ordinaryResourceFailure, continuationLive } from "./continuity.mjs";
 import { Memory } from "../memory.mjs";
 import { Telemetry } from "./telemetry.mjs";
 import {
@@ -201,7 +201,7 @@ export class Executor {
     this.event("goal");
     return this.token();
   }
-  submit(proposal) {
+  prepareProposal(proposal) {
     if (this.phase !== "PLAYING")
       throw new Error("NOT_ACCEPTING_PLANS");
     if (!proposal || !this.same(proposal.token)) throw new Error("STALE_PLAN");
@@ -224,10 +224,11 @@ export class Executor {
     )
       throw new Error("PROPOSAL_ID_REQUIRED");
     const key = JSON.stringify([this.token(), proposal.id]);
-    if (this.proposalIds.has(key)) throw new Error("DUPLICATE_PROPOSAL");
+    if ((this.proposalIds.get(key)??0)>=Date.now()) throw new Error("DUPLICATE_PROPOSAL");
     const steps = proposal.steps.map(validateCommand);
+    if(proposal.recordIds!==undefined&&!Array.isArray(proposal.recordIds))throw Error("INVALID_RECORD_IDS");
     const repeat = bounded(proposal.repeat ?? 1, 1, 20, "REPEAT");
-    const continuation = proposal.continuation ? validateContinuation(proposal.continuation, this.state, this.token()) : null;
+    const continuation = proposal.continuation ? validateContinuation(proposal.continuation, this.state, this.token()) : !Object.hasOwn(proposal,'continuation')&&this.continuation?.mode==='standing'?this.continuation:null;
     if(continuation && steps.some(c=>!(['chop','burn_logs','walk'].includes(c.action))||(c.action==='chop'&&c.target.name!==continuation.target.name)||(c.action==='burn_logs'&&c.item.name!==continuation.log.name)))throw Error('CONTINUATION_INCOMPATIBLE_STEP');
     const routine = {
       id: randomUUID(),
@@ -242,19 +243,23 @@ export class Executor {
         .filter((x) => typeof x === "string")
         .slice(0, 30),
     };
+    const unexpired=[...this.proposalIds.values()].filter(expiry=>expiry>=Date.now()).length;
+    if(unexpired>=1000)throw Error('DEDUPLICATION_CAPACITY');
+    return {routine,continuation,key,expiresAt:proposal.expiresAt,continuationApproved:!!proposal.continuation};
+  }
+  commitProposal({routine,continuation,key,expiresAt,continuationApproved}) {
     for (const [id, expiry] of this.proposalIds)
       if (expiry < Date.now()) this.proposalIds.delete(id);
-    if (this.proposalIds.size >= 1000)
-      throw new Error("DEDUPLICATION_CAPACITY");
-    this.proposalIds.set(key, proposal.expiresAt);
+    this.proposalIds.set(key, expiresAt);
     this.continuation = continuation;
-    if (continuation) this.metrics.count("continuationApprovals");
+    if (continuation&&continuationApproved) this.metrics.count("continuationApprovals");
     this.blockReason = null;
     this.queue.push(routine);
     this.event("plan_accepted", { id: routine.id });
     this.schedule();
     return { id: routine.id };
   }
+  submit(proposal) { return this.commitProposal(this.prepareProposal(proposal)); }
   requestPlan(context = {}) {
     if (this.requests.length >= 2) throw new Error("PLANNER_QUEUE_FULL");
     const id = randomUUID();
@@ -275,23 +280,27 @@ export class Executor {
   completePlan(id, proposal, source = "unspecified_caller") {
     const p = this.planning.get(id);
     if (!p) throw new Error("STALE_PLANNER_REQUEST");
-    const turnaroundMs = performance.now() - p.started;
-    this.metrics.add("plannerRequestMs", turnaroundMs);
-    this.metrics.add("plannerTurnaroundMs", turnaroundMs);
-    this.event("planner_response", {
-      id,
-      source,
-      turnaroundMs,
-      isolatedInferenceTime: false,
-    });
-    this.planning.delete(id);
-    this.requests = this.requests.filter((r) => r.id !== id);
     if (!this.same(p.token)) throw new Error("STALE_PLANNER_REQUEST");
-    const result = proposal
-      ? this.submit({ ...proposal, token: p.token })
-      : { accepted: false };
-    if (proposal && source === "current_agent_tools")
-      this.metrics.count("currentAgentToolPlansAccepted");
+    let prepared;
+    try {
+      if(proposal!==null) {
+        if(!proposal||typeof proposal!=='object')throw Error('EXPLICIT_PROPOSAL_OR_NULL_REQUIRED');
+        if(proposal.token!==undefined&&!this.same(proposal.token))throw Error('STALE_PLAN');
+        prepared=this.prepareProposal({...proposal,token:p.token});
+      }
+    } catch(e) {
+      const reason=/^[A-Z0-9_]+$/.test(e.message)?e.message:'INVALID_PROPOSAL';
+      this.metrics.count('plannerProposalsRejected');this.event('planner_rejected',{id,reason});
+      throw Error(reason);
+    }
+    // Validation and commit are synchronous: queue/goal/request cannot interleave here.
+    this.planning.delete(id);this.requests=this.requests.filter(r=>r.id!==id);
+    const turnaroundMs=performance.now()-p.started;
+    this.metrics.add('plannerRequestMs',turnaroundMs);this.metrics.add('plannerTurnaroundMs',turnaroundMs);
+    this.event('planner_response',{id,source,turnaroundMs,isolatedInferenceTime:false,declined:proposal===null});
+    const result=prepared?this.commitProposal(prepared):{accepted:false,declined:true};
+    this.metrics.count(prepared?'plannerPlansAccepted':'plannerDeclines');
+    if(prepared&&source==='current_agent_tools')this.metrics.count('currentAgentToolPlansAccepted');
     return result;
   }
   async planWith(provider, context) {
@@ -300,8 +309,7 @@ export class Executor {
       const proposal = await provider(r);
       return this.completePlan(r.id, proposal, "optional_provider");
     } catch (e) {
-      this.planning.delete(r.id);
-      this.requests = this.requests.filter((x) => x.id !== r.id);
+      // Provider/validation failure does not revoke a correctable pending request or approved work.
       this.metrics.count("plannerFailures");
       throw e;
     }
@@ -424,10 +432,10 @@ export class Executor {
       return;
     }
     this.lastFreshAt = now;
-    if(this.pendingResourceResume&&this.phase!=="BLOCKED"){const g=this.pendingResourceResume;this.pendingResourceResume=null;if(g.expiresAt>Date.now()&&g.remaining>0)this.continuation={...g,token:this.token()};}
+    if(this.pendingResourceResume&&this.phase!=="BLOCKED"){const g=this.pendingResourceResume;this.pendingResourceResume=null;if(continuationLive(g))this.continuation={...g,token:this.token()};}
     if(this.phase==="PAUSED"&&this.blockReason==="STALE_OR_DISCONNECTED"){this.phase="PLAYING";this.blockReason=null;}
     if(this.active?.continuation&&Date.now()>=this.active.expiresAt)this.cancelActive('CONTINUATION_ACTION_EXPIRED');
-    if(this.continuation?.expiresAt<=Date.now()){this.continuation=null;this.metrics.count('continuationExpirations');}
+    if(this.continuation&&this.continuation.mode!=='standing'&&this.continuation.expiresAt<=Date.now()){this.continuation=null;this.metrics.count('continuationExpirations');}
     if(['BLOCKED','PAUSED'].includes(this.phase))return;
     if (newTick) {
       if (this.active) this.metrics.count("ongoingActionTicks");
@@ -447,6 +455,9 @@ export class Executor {
           this.metrics.count("avoidableIdleTicks");
       } catch {}
     }
+  }
+  effectsMatch(c,b,s) {
+    return c.expect.every(e=>expected(e,b,s))&&(!c.resourceFireMove||(s.player.level===b.player.level&&(s.player.worldX!==b.player.worldX||s.player.worldZ!==b.player.worldZ)&&!(s.nearbyLocs??[]).some(l=>l.level===s.player.level&&l.x===s.player.worldX&&l.z===s.player.worldZ)&&!(c.avoidTiles??[]).some(t=>t.x===s.player.worldX&&t.z===s.player.worldZ)));
   }
   gatherMatches(c) {
     const g = this.gatherLease;
@@ -478,7 +489,7 @@ export class Executor {
     const g = this.gatherLease;
     if (
       c.expect.some((e) => e.type === "inventory_gain") &&
-      c.expect.every(
+      !c.resourceFireMove && c.expect.every(
         (e) =>
           ["inventory_gain", "xp_gain"].includes(e.type) &&
           expected(e, g.baseline, this.state),
@@ -619,18 +630,20 @@ export class Executor {
   }
   continuationStatus() {
     const g=this.continuation;
-    return g?{recipe:g.recipe,remainingActions:g.remaining,expiresAt:g.expiresAt,runwayMs:Math.max(0,g.expiresAt-Date.now()),failures:g.failures,backoffTicks:Math.max(0,(g.retryAt??0)-this.tickSerial)}:null;
+    return g?{recipe:g.recipe,mode:g.mode,chunk:g.chunk,remainingActions:g.remaining,expiresAt:g.expiresAt,runwayMs:g.mode==='standing'?null:Math.max(0,g.expiresAt-Date.now()),failures:g.failures,backoffTicks:Math.max(0,(g.retryAt??0)-this.tickSerial)}:null;
   }
   refillContinuation() {
     const g=this.continuation;
-    if(!g||!this.same(g.token)||g.expiresAt<=Date.now()||g.remaining<=0){this.continuation=null;return;}
+    if(!g||!this.same(g.token)||!continuationLive(g)){this.continuation=null;return;}
+    if(g.mode==='standing'&&g.remaining<=0){g.remaining=g.maxActions;g.chunk++;this.metrics.count('standingChunksStarted');this.event('standing_chunk',{chunk:g.chunk,maxActions:g.maxActions});}
+    g.blockedTargets=g.blockedTargets.filter(b=>b.until>this.tickSerial).slice(-64);g.blockedTiles=g.blockedTiles.filter(b=>b.until>this.tickSerial).slice(-64);
     if(!this.planning.size)this.ensureRefillRequest();
     if(this.tickSerial<(g.retryAt??0))return;
     const choice=nextContinuation(g,this.state,this.tickSerial);
     if(choice.reason){g.retryAt=this.tickSerial+Math.min(8,2**Math.min(3,(g.waitRounds??0)+1));g.waitRounds=(g.waitRounds??0)+1;this.blockReason=choice.reason;this.metrics.count('resourceWaitRounds');this.event('resource_wait',{reason:choice.reason,backoffTicks:g.retryAt-this.tickSerial});return;}
     g.waitRounds=0;
     const command=validateCommand(choice.command);g.remaining--;
-    this.routine={id:randomUUID(),token:this.token(),expiresAt:g.expiresAt,steps:[command],repeat:1,index:0,cycle:0,results:[],recordIds:[],continuation:true,continuationId:g.id};
+    this.routine={id:randomUUID(),token:this.token(),expiresAt:g.mode==='standing'?Date.now()+command.timeoutMs+2000:g.expiresAt,steps:[command],repeat:1,index:0,cycle:0,results:[],recordIds:[],continuation:true,continuationId:g.id};
     this.metrics.count('continuationActionsGenerated');
   }
   launch(c, r, kind) {
@@ -689,9 +702,9 @@ export class Executor {
         if (result?.success === false && ['chop','mine','burn_logs','walk'].includes(c.action)) {
           this.metrics.count('helperReportedFailures');
           ordinaryRecoverable=ordinaryResourceFailure(result.reason,result.message);
-          const cause=['resource_unavailable','resource_depleted','resource_timeout','fire_blocked'].includes(result.reason)?result.reason.toUpperCase():ordinaryRecoverable?'RESOURCE_HELPER_DELAY':'SDK_ACTION_FAILED';
+          const cause=['resource_unavailable','resource_depleted','resource_timeout','fire_blocked','path_incomplete'].includes(result.reason)?result.reason.toUpperCase():ordinaryRecoverable?'RESOURCE_HELPER_DELAY':'SDK_ACTION_FAILED';
           if(ordinaryRecoverable){
-            try {await this.adapter.verify(s=>this.fresh()&&this.same(token)&&s.player?.lifeId===before.player.lifeId&&(!r||r.expiresAt>Date.now())&&this.adapter.receivedAt()>received&&c.expect.every(e=>expected(e,before,s)),1200,abort.signal);this.metrics.count('helperFailuresReconciledByFreshEffect');this.event('effect_reconciled',{action:c.action,cause});}
+            try {await this.adapter.verify(s=>this.fresh()&&this.same(token)&&s.player?.lifeId===before.player.lifeId&&(!r||r.expiresAt>Date.now())&&this.adapter.receivedAt()>received&&this.effectsMatch(c,before,s),1200,abort.signal);this.metrics.count('helperFailuresReconciledByFreshEffect');this.event('effect_reconciled',{action:c.action,cause});}
             catch(error){if(error?.message!=='waitForCondition timed out')throw error;this.event('resource_failure',{action:c.action,cause});throw Error(cause);}
           }else throw Error(cause);
         } else if (result?.success === false) {
@@ -716,7 +729,7 @@ export class Executor {
             s.player?.lifeId === before.player.lifeId &&
             (!r || r.expiresAt>Date.now()) &&
             this.adapter.receivedAt() > received &&
-            c.expect.every((e) => expected(e, before, s)),
+            this.effectsMatch(c,before,s),
           c.timeoutMs ?? 15000,
           abort.signal,
         );
@@ -753,7 +766,7 @@ export class Executor {
         if(r&&r.expiresAt<=Date.now())reason="ACTION_APPROVAL_EXPIRED";
         ordinaryRecoverable ||= ordinaryResourceFailure(reason);
         const observed=this.adapter.state();
-        if(ordinaryRecoverable&&!abort.signal.aborted&&this.same(token)&&(!r||r.expiresAt>Date.now())&&this.fresh()&&['chop','mine','burn_logs','walk'].includes(c.action)&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&c.expect.every(x=>expected(x,before,observed))) {
+        if(ordinaryRecoverable&&!abort.signal.aborted&&this.same(token)&&(!r||r.expiresAt>Date.now())&&this.fresh()&&['chop','mine','burn_logs','walk'].includes(c.action)&&this.adapter.receivedAt()>received&&observed.player?.lifeId===before.player.lifeId&&this.effectsMatch(c,before,observed)) {
           after=copy(observed);status='verified';reason=null;
           this.cooldownUntil=Math.max(this.cooldownUntil,this.tickSerial+Math.max(c.cooldownTicks??1,this.policy.minCooldownTicks));
           this.metrics.count('verifiedActions');this.metrics.count('helperVerifiedCompletions');this.metrics.count('helperFailuresReconciledByFreshEffect');this.metrics.add('actionToEffectMs',performance.now()-started);
@@ -809,13 +822,13 @@ export class Executor {
     this.routine=null;this.blockReason=reason;
     const g=this.continuation,c=r?.steps[r.index];
     this.event('routine_failed',{reason});if(r)this.recordRoutine(r).catch(()=>{});
-    if(ordinaryRecoverable&&g&&this.same(g.token)&&g.expiresAt>Date.now()&&g.remaining>0){
+    if(ordinaryRecoverable&&g&&this.same(g.token)&&continuationLive(g)){
       if(r.continuation&&r.continuationId!==g.id){this.event('retired_continuation_yielded');return;}
       g.failures++;g.consecutiveFailures++;
       g.retryAt=this.tickSerial+Math.min(8,2**Math.min(3,g.consecutiveFailures));
-      if(c?.action==='burn_logs'&&(reason==='FIRE_BLOCKED'||(reason==='RESOURCE_TIMEOUT'&&g.consecutiveFailures>=2)))g.relocate=true;
+      if(c?.action==='burn_logs'&&(reason==='FIRE_BLOCKED'||['RESOURCE_TIMEOUT','RESOURCE_EFFECT_TIMEOUT'].includes(reason))){g.relocate=true;g.blockedTiles.push({x:this.state.player.worldX,z:this.state.player.worldZ,until:this.tickSerial+80});}
       if(c?.action==='chop'&&c.target.x!==undefined)g.blockedTargets.push({x:c.target.x,z:c.target.z,until:this.tickSerial+8});
-      if(c?.action==='walk')g.blockedTiles.push({x:c.x,z:c.z});
+      if(c?.action==='walk')g.blockedTiles.push({x:c.x,z:c.z,until:this.tickSerial+80});
       this.gatherLease=null;this.metrics.count('boundedContinuationRecoveries');
       this.event('continuation_recovery',{action:c?.action,reason,backoffTicks:g.retryAt-this.tickSerial});this.ensureRefillRequest();
       // A bounded attempt failed; independent approved queued work is retained.

@@ -15,3 +15,20 @@ f.sdk.sendClickDialog=async(index:any)=>{clicked=index;return {success:true};};f
 for(const action of ['chop','burn_logs'])for(const message of ['ABORTED_BY_CALLER','NETWORK_POLICY_DENIED','AUTH_FAILED','PROTOCOL_ERROR','unexpected implementation error'])test(action+' preserves '+message+' from observation waits',async()=>{const f=fixture();f.state.inventory.push({id:1511,name:'Logs',slot:7,count:1});const original=Error(message);f.sdk.waitForCondition=async()=>{throw original;};await expect(resourceAction(f.sdk,f.bot,{action,target:{name:'Tree'},item:{name:'Logs'}},()=>true)).rejects.toBe(original);expect(f.packets.length).toBe(1);});
 test('dialog transport failure propagates instead of becoming fire placement failure',async()=>{const f=fixture();f.state.inventory.push({id:1511,name:'Logs',slot:7,count:1});f.sdk.waitForCondition=async fn=>{f.state.tick+=3;f.state.dialog={isOpen:true,options:[{text:'Continue',index:3}]};expect(fn(f.state)).toBeTrue();return f.state;};f.sdk.sendClickDialog=async()=>{throw Error('NETWORK_LOST');};await expect(resourceAction(f.sdk,f.bot,{action:'burn_logs',item:{name:'Logs'}},()=>true)).rejects.toThrow('NETWORK_LOST');});
 test('only the pinned actual condition timeout is categorized as resource timeout',async()=>{const f=fixture();f.sdk.waitForCondition=async()=>{throw Error('waitForCondition timed out');};const r=await resourceAction(f.sdk,f.bot,{action:'chop',target:{name:'Tree'}},()=>true);expect(r.success).toBeFalse();expect(r.reason).toBe('resource_timeout');});
+test('fresh server fire refusal fails promptly; stale refusal is not replayed',async()=>{
+ const f=fixture();f.state.inventory.push({id:1511,name:'Logs',slot:7,count:1});f.state.gameMessages=[{tick:1,observationId:10,text:"You can't light a fire here."}];let waits=0;
+ f.sdk.waitForCondition=async fn=>{waits++;expect(fn(f.state)).toBeFalse();f.state.gameMessages.push({tick:2,observationId:11,text:"You can't light a fire here."});expect(fn(f.state)).toBeTrue();return f.state;};
+ const r=await resourceAction(f.sdk,f.bot,{action:'burn_logs',item:{name:'Logs'}},()=>true);expect(r.success).toBeFalse();expect(r.reason).toBe('fire_blocked');expect(waits).toBe(1);expect(f.packets.length).toBe(1);
+});
+test('fire relocation accepts observed moved empty tile within tolerance, sends once',async()=>{
+ const f=fixture();f.sdk.sendWalk=async(...args)=>{f.packets.push(args);return {success:true};};f.sdk.waitForCondition=async fn=>{expect(fn(f.state)).toBeFalse();f.state.player.worldX=3202;f.state.tick++;expect(fn(f.state)).toBeTrue();return f.state;};
+ const r=await resourceAction(f.sdk,f.bot,{action:'walk',resourceFireMove:true,x:3203,z:3200,level:0,tolerance:1},()=>true);expect(r.success).toBeTrue();expect(f.packets).toEqual([[3203,3200,true]]);
+});
+for(const blocked of ['occupied','previously_refused','wrong_plane'])test('fire relocation cannot verify '+blocked+' tile or invent a position',async()=>{
+ const f=fixture();f.sdk.sendWalk=async()=>({success:true});const c:any={action:'walk',resourceFireMove:true,x:3203,z:3200,level:0,tolerance:1,avoidTiles:blocked==='previously_refused'?[{x:3202,z:3200}]:[]};
+ f.sdk.waitForCondition=async fn=>{f.state.player.worldX=3202;if(blocked==='occupied')f.state.nearbyLocs.push({id:2732,name:'Fire',x:3202,z:3200,level:0});if(blocked==='wrong_plane')f.state.player.level=1;expect(fn(f.state)).toBeFalse();throw Error('waitForCondition timed out');};
+ const r=await resourceAction(f.sdk,f.bot,c,()=>true);expect(r.success).toBeFalse();expect(r.reason).toBe('path_incomplete');
+});
+for(const error of ['NETWORK_LOST','ABORTED_BY_CALLER'])test('fire move preserves '+error+' instead of retryable position failure',async()=>{
+ const f=fixture();f.sdk.sendWalk=async()=>({success:true});const original=Error(error);f.sdk.waitForCondition=async()=>{throw original;};await expect(resourceAction(f.sdk,f.bot,{action:'walk',resourceFireMove:true,x:3203,z:3200,level:0},()=>true)).rejects.toBe(original);
+});

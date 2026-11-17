@@ -38,6 +38,8 @@ export function runConfig(input) {
     input.handoff !== undefined
   )
     fail("NEW_RUN_CONFIG_MUST_OMIT_CHARACTER_PASSWORD_HANDOFF");
+  if(input.rangeTank!==undefined&&typeof input.rangeTank!=="boolean")fail("INVALID_RANGE_TANK_CONFIG");
+  if(input.scoring!==undefined&&(typeof input.scoring!=="object"||typeof input.scoring.enabled!=="boolean"))fail("INVALID_SCORING_CONFIG");
   const id = identity({ ...input, character: "validation" });
   const c = {
     ...input,

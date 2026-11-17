@@ -1,3 +1,4 @@
+import {rangePacketGuard} from './range-tank.mjs';
 import { resourceAction } from "./resource-actions";
 import { copy } from "./protocol.mjs";
 import { BotActions } from "../../sdk/actions";
@@ -66,6 +67,7 @@ export class SDKAdapter {
   }
   async execute(c: any, state: any, signal: AbortSignal, valid: () => boolean) {
     const base = this.sdk,
+      rangeTank=(this as any).rangeTank===true,
       metrics = this.metrics;
     const guarded = new Proxy(base, {
       get(target, key, receiver) {
@@ -79,6 +81,7 @@ export class SDKAdapter {
             if (signal.aborted || !valid())
               throw new Error("STALE_DISPATCH_GENERATION");
           }
+          if(rangeTank){const a=key==='sendAction'?args[0]:key==='send'&&args[0]?.type==='sdk_action'?args[0].action:null;if(a)rangePacketGuard(base.getState(),a,c);}
           const start = performance.now();
           const result = value.apply(receiver, args);
           if (key === "send" && args[0]?.type === "sdk_action")

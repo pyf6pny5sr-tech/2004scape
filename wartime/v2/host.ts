@@ -1,3 +1,6 @@
+import {Scorer} from './scoring/client.mjs';
+import {registry as scoreRules} from './scoring/engine.mjs';
+import path from 'node:path';
 // Persistent owner. Never run inside execute_code. Short bridge calls update it.
 import { ContinuityEvidence } from "./continuity-capture.mjs";
 import { LiveMeasure } from "./long-run.mjs";
@@ -22,8 +25,9 @@ export async function startInjected({ sdk, config }: any) {
     sdk.getConnectionMode() !== "control"
   )
     throw new Error("ATTACHED_CONTROL_OWNER_WITH_AUTORECONNECT_OFF_REQUIRED");
+  const adapter=new SDKAdapter(sdk);(adapter as any).rangeTank=config.rangeTank===true;
   const executor = new Executor({
-    adapter: new SDKAdapter(sdk),
+    adapter,
     config,
     policies,
   });
@@ -37,6 +41,14 @@ export async function startInjected({ sdk, config }: any) {
 }
 export async function createBridge(executor: any, config: any) {
   const implementation = await runtimeIdentity();
+  let scorer:any=null,scoreOff:any=null;
+  if(config.scoring?.enabled===true){
+    if(!config.runId)throw Error('SCORING_RUN_ID_REQUIRED');
+    scorer=new Scorer({directory:path.join(executor.memory.directory,'scoring',config.runId),memoryDirectory:executor.memory.directory,scope:{world:executor.identity.world,character:executor.identity.character,runId:config.runId}});try{await scorer.start();}catch{/* Score startup failure is visible and cannot become a gameplay owner/pause. */}
+    const observe=(s:any)=>{const started=performance.now();const g=executor.continuation;scorer.observe(s,{fresh:executor.adapter.connected()&&executor.adapter.controlled()&&executor.adapter.bound(executor.identity)&&s.inGame&&executor.adapter.age()<=executor.config.maxAgeMs,activity:g?g.recipe+':'+g.target.name+':'+g.log.name:null,equipmentKey:JSON.stringify((s.equipment??[]).map((x:any)=>[x.slot,x.id]))});const ms=performance.now()-started;scorer.metrics.observationCallbacks=(scorer.metrics.observationCallbacks??0)+1;scorer.metrics.observeMs=(scorer.metrics.observeMs??0)+ms;scorer.metrics.maxObserveMs=Math.max(scorer.metrics.maxObserveMs??0,ms);};
+    observe(executor.state);if(!scorer.failed)try{await scorer.flush();}catch{/* Cache exposes incomplete scoring; game dispatch never awaits scoring. */}scoreOff=executor.adapter.subscribe(observe);
+  }
+
   const measurement = config.measurementFile ? new LiveMeasure(executor, config.measurementFile) : null;
   const measurementOff = measurement ? executor.adapter.subscribe((s: any) => { const start=performance.now(); measurement.observe(s); const ms=performance.now()-start; const o=measurement.overhead??={callbacks:0,totalMs:0,maxMs:0}; o.callbacks++; o.totalMs+=ms; o.maxMs=Math.max(o.maxMs,ms); }) : null;
   const identity = () => ({
@@ -47,6 +59,8 @@ export async function createBridge(executor: any, config: any) {
     gateway: executor.identity.gateway,
     controllerVersion: executor.policy.id,
     owner: executor.owner,
+    rangeTank:config.rangeTank===true,
+    scoring:scorer?{enabled:true,execution:"SEPARATE_PROCESS",scopeHash:scorer.status().scopeHash}:null,
     planner: {
       mode: "current_agent",
       providerRequired: false,
@@ -57,9 +71,8 @@ export async function createBridge(executor: any, config: any) {
   });
   // Optional private evidence augments capture only; baseline tick classification is unchanged.
   const evidence = measurement ? new ContinuityEvidence(executor, config.measurementFile + ".evidence.jsonl", identity) : null;
+  if(scorer||evidence){const originalEvent=executor.event.bind(executor);executor.event=(type:any,details:any={})=>{originalEvent(type,details);evidence?.event(executor.events.at(-1));if(type==='episode')scorer?.capture({kind:'episode',ref:details.id,id:'episode:'+details.id});if(type==='skill_verified')scorer?.capture({kind:'procedure',name:details.name,id:'procedure:'+details.name+':'+details.episodeId});};}
   if (measurement && evidence) {
-    const originalEvent = executor.event.bind(executor);
-    executor.event = (type: any, details: any = {}) => { originalEvent(type, details); evidence.event(executor.events.at(-1)); };
     const begin = measurement.begin.bind(measurement), end = measurement.end.bind(measurement);
     measurement.begin = async (durationMs: any) => {
       // Create evidence before the timed window; begin() then captures the exact start.
@@ -72,6 +85,7 @@ export async function createBridge(executor: any, config: any) {
       // end() sets its boundary synchronously before awaiting writes; snapshot now,
       // before another game callback can interleave, then drain both private streams.
       const result = end();
+      if(config.scoring?.sealAtMeasurementEnd===true)scorer?.seal();
       await evidence.end(measurement.ended);
       return await result;
     };
@@ -121,6 +135,11 @@ export async function createBridge(executor: any, config: any) {
           result = await measurement.end(); break;
         case "measurement_status":
           result = measurement?.summary(); break;
+        case "score_status":result=scorer?.status()??{enabled:false};break;
+        case "score_ledger":if(!scorer)throw Error("SCORING_DISABLED");result=await scorer.page(a.cursor,a.limit);break;
+        case "score_flush":if(!scorer)throw Error('SCORING_DISABLED');result=await scorer.flush();break;
+        case "score_claim":if(!scorer)throw Error('SCORING_DISABLED');if(!scoreRules.rules.some((r:any)=>r.id===a.rule))throw Error('UNKNOWN_SCORE_RULE');result={queued:scorer.capture({kind:'claim',rule:a.rule,refs:(Array.isArray(a.refs)?a.refs:[]).filter((x:any)=>typeof x==='string'&&x.length<=128).slice(0,8)}),status:'PENDING_UNVERIFIED',awarded:0};break;
+        case "score_ack":if(!scorer)throw Error('SCORING_DISABLED');if(!Number.isSafeInteger(a.threshold)||a.threshold<100||a.threshold%100)throw Error('INVALID_CHECKPOINT');result={queued:scorer.capture({kind:'ack',threshold:a.threshold})};break;
         case "identity":
           result = identity();
           break;
@@ -161,6 +180,7 @@ export async function createBridge(executor: any, config: any) {
         case "record":
           result = await retrieve({ operation, ...a });
           break;
+        case "episode":result=await executor.memory.episode(a.id);break;
         case "skills":
           result = await executor.memory.listSkills();
           break;
@@ -210,6 +230,7 @@ export async function createBridge(executor: any, config: any) {
       measurementOff?.();
       if (measurement?.running) await measurement.end();
       await executor.stop();
+      scoreOff?.();await scorer?.close();
       await new Promise<void>((r) => server.close(() => r()));
     },
   };

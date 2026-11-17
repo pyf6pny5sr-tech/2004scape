@@ -4,6 +4,12 @@ Start here for the new implementation. v1 and its historical report remain uncha
 
 **Current contract:** church maintenance and automatic HP/combat/region gameplay pauses are retired at the user's request. Manual `cancel`/`stop` remain authoritative; stale/disconnected/auth/ownership state still cannot dispatch. Historical maintenance and prior live reports below preserve what those older versions exercised, not current requirements. No church detour or staged in-game policy update is part of startup or play.
 
+## Fresh Wartime: new range-tank character and score0
+
+Use [FRESH-WARTIME.txt](FRESH-WARTIME.txt) for the new agent handoff and [scoring contract](scoring/README.md) / [exact rules](scoring/rules.json). `node wartime/v2/fresh-wartime.mjs ensure` prepares one private online range-tank/scoring profile and automatically generates a unique game identity; Wartime is the agent name, not a required username. Default production home is separate from cloud test homes. First ready baseline is score0 with Attack/Strength XP0; resuming the same run preserves its earned ledger. No test balance, previous1379, old account or credentials is packaged.
+
+The same current agent supplies plans. Scoring runs in a separate process with bounded passive capture, explicit pending/dropped coverage and durable semantic dedup. It is not weight training or an action approval gate. Range restrictions apply at attack packet boundaries—including generic NPC Attack and late gear/style changes—without restoring blanket HP/combat/region/church pauses. Unknown social/PvP/improvement evidence stays pending, and visible idle is not automatically penalizable. Read `score_status`, paged `score_ledger`, and100-point checkpoint reports; acknowledge reported thresholds explicitly. There is no schedule or separate model key.
+
 ## Latest standing-goal live validation
 
 The [new fixed20-minute online report](standing-run-report.md) measured **7181b7a** on the same owned account, with18 actual agent/tool planning intervals and the resource goal approved only once. Whole visible idle fell **459/3000 (15.30%)→74/3000 (2.47%)**, an **83.88% relative reduction**. All-claim idle fell **188/624 (30.13%)→39/672 (5.80%)**; all18 current claims are gameplay service, with no filtered window. The longest visible-idle stretch fell **107.541s→28.809s**, entirely at measured startup; no ≥30s or ≥50s visible-idle pause occurred.
@@ -231,7 +237,7 @@ The already-running agent is the default planner; an external provider is option
 
 - `planner_requests`: inspect automatically prefetched pending requests. `planner_request` can request one explicitly with bounded contextual data.
 - Reason through your existing agent/tools outside the executor; deliberately configured optional providers can use `executor.planWith(provider, context)`. The provider receives a request/token and returns a bounded proposal, never SDK access. No provider is bundled or billed.
-- `planner_complete: {id, proposal}` supplies the reply (`proposal` can be omitted to decline). The saved token is checked again. Request duration is measured; a local pending bridge request is not reported as a real model duration.
+- `planner_complete: {id, proposal}` supplies the reply (`proposal` must be explicit `null` to decline). The saved token is checked again. Request duration is measured; a local pending bridge request is not reported as a real model duration.
 - `search: {query,limit?,category?}` and `record: {id}` run the real SQLite library in bounded separate worker processes, outside the scheduler. Preserve citations and distinguish historical revision 274 from modified live state.
 - `skills`, `remember: {name,episodeId,description}`, `replay: {name}` use world/character-scoped private memory. Only complete episodes with observed verified steps become skills. Replay rechecks fresh targets and prerequisites.
 - `resume` requires fresh owned state after a deliberate pause and returns a new task token. It cannot unblock lost ownership. `stop` stops owned execution; terminate the host with its process signal to close its socket/standalone SDK.

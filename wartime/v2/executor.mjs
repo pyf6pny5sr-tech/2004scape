@@ -1,3 +1,4 @@
+import {combatXp,requireZeroMeleeXp,rangeAttackReady} from './range-tank.mjs';
 import { validateContinuation, nextContinuation, ordinaryResourceFailure, continuationLive } from "./continuity.mjs";
 import { Memory } from "../memory.mjs";
 import { Telemetry } from "./telemetry.mjs";
@@ -89,6 +90,7 @@ export class Executor {
   }
   async start() {
     if (this.phase !== "STOPPED") throw new Error("ALREADY_STARTED");
+    if(this.config.rangeTank===true)requireZeroMeleeXp(this.adapter.state());
     await this.memory.initialize();
     // Separate host lease; memory transactions keep their own short-lived lock.
     this.leasePath = this.memory.directory + "/host.lock";
@@ -362,6 +364,7 @@ export class Executor {
     this.lastTick = tick;
     this.lastRevision = revision ?? null;
     this.state = s;
+    if(this.config.rangeTank===true&&Object.values(combatXp(s)).some(x=>x>0)&&!this.rangeBreach){this.rangeBreach={tick:s.tick,xp:combatXp(s)};this.event("range_tank_breach",this.rangeBreach);if(this.active?.combat)this.cancelActive("RANGE_TANK_XP_BREACH");}
     this.observedAt = now;
     let observedProgress = false;
     if (previous) {
@@ -513,6 +516,7 @@ export class Executor {
   }
   eligibility(c) {
     const s = this.state;
+    if(this.config.rangeTank===true&&(c.action.startsWith('attack_')||c.action==='combat_style'||c.action==='interact_npc'&&/^attack$/i.test(c.option))){if(this.rangeBreach)throw Error('RANGE_TANK_XP_BREACH');rangeAttackReady(s,c.action==='combat_style'?c.style:undefined);}
     if (this.gatherMatches(c)) {
       if (!this.gatherPresent()) this.gatherLease = null;
       else if (s.player.animId !== -1) {
@@ -657,6 +661,7 @@ export class Executor {
       abort,
       kind,
       gathering: ["chop", "mine"].includes(c.action),
+      combat:c.action.startsWith("attack_")||c.action==="interact_npc"&&/^attack$/i.test(c.option),
       continuation: !!r?.continuation,
       grant: grantAtLaunch,
       expiresAt: r?.expiresAt ?? Infinity,
@@ -832,7 +837,7 @@ export class Executor {
       this.gatherLease=null;this.metrics.count('boundedContinuationRecoveries');
       this.event('continuation_recovery',{action:c?.action,reason,backoffTicks:g.retryAt-this.tickSerial});this.ensureRefillRequest();
       // A bounded attempt failed; independent approved queued work is retained.
-    }else if(!ordinaryRecoverable&&!['PRECONDITION_FAILED','COMBAT_TARGET_ONLY_IS_NOT_SERVER_ACCEPTANCE'].includes(reason)){this.block(reason);}
+    }else if(!ordinaryRecoverable&&!reason?.startsWith('RANGE_TANK_')&&!['PRECONDITION_FAILED','COMBAT_TARGET_ONLY_IS_NOT_SERVER_ACCEPTANCE'].includes(reason)){this.block(reason);}
     else this.ensureRefillRequest();
   }
   advanceRoutine(r, result) {
@@ -898,12 +903,13 @@ export class Executor {
     });
   }
   async remember(name, id, description) {
-    return this.memory.remember(name, id, description);
+    const skill=await this.memory.remember(name,id,description);this.event("skill_verified",{name,episodeId:id});return skill;
   }
   status() {
     const s = this.state;
     return {
       identity: this.identity,
+      rangeTank:this.config.rangeTank===true?{enabled:true,observedMeleeXp:combatXp(this.state),breach:this.rangeBreach??null,limit:"Fresh owned packet guard; already-sent/server-side actions cannot be undone."}:null,
       token: this.token(),
       phase: this.phase,
       reason: this.blockReason,

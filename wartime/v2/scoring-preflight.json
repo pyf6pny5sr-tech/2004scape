@@ -1,0 +1,89 @@
+{
+  "scope": "Fresh score0 range-tank profile; separate passive scoring worker; all existing low-idle/runtime protections retained",
+  "baseCommit": "06d90e95a1da88dfb6fcf38c984c3beb9c082f56",
+  "runtimePin": "Containing implementation commit; computed hashes below",
+  "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+  "runtimes": {
+    "node": "24.22.1",
+    "bun": "1.4.4"
+  },
+  "tests": {
+    "finalNode": {
+      "passed": 109,
+      "failed": 0,
+      "files": 10
+    },
+    "finalBun": {
+      "passed": 153,
+      "failed": 0,
+      "files": 16
+    },
+    "overlap": "Do not add Node/Bun counts as unique tests.",
+    "focusedCoverage": [
+      "Every scoring family has positive/negative trusted fixtures, not live social/clan/PvP validation",
+      "BaseLevel/XP progress, boost/drain/restore, delayed XP, duplicate/reordered/same-tick revisions; fresh ready baseline excluded",
+      ">=5min first XP baseline/record, method/tool/level progression context, complete/reset-free/nonoverlap rules",
+      "Ore mining/bank provenance, withdraw/redeposit/rename/replay protection, corrections and checkpoint ack",
+      "Confirmed death/life/lastDeathTick/respawn versus disconnect; no live death",
+      "Separate real scorer process lease/restart/replay/tail recovery/saturation/gaps/failure",
+      "Approved game work/manual cancel continue while scorer suspended or failed",
+      "Actual persistent SDK/Unix bridge score0, verified learning, pending fake claim and breach/death reporting fixtures",
+      "Typed/generic NPC Attack, player/style alternatives, fresh gear/style change at packet boundary, melee/unknown/ammo rejection, noncombat talk",
+      "Existing executor/continuation/adapter/bridge/run-start/recovery and source identity regressions"
+    ],
+    "initialFailuresAndFixes": [
+      "First range guard used Proxy-handler this instead of captured adapter flag;6/10 new packet fixtures failed. Fixed actual binding; final10/10 pass.",
+      "First XP fixture input accidentally made first window faster; corrected the fixture rate sequence, not award expectations.",
+      "Prepared-home ownership guard correctly refused our prematurely created capture subdirectory; moved only our metadata outside the new runtime home. No account was created."
+    ]
+  },
+  "preparedRuntime": {
+    "state": "PREPARED_NO_ACCOUNT_OR_TIMER",
+    "guardAndScorerFilesCopied": true,
+    "computedIdentityMatchesPrivatePreparedCopy": true,
+    "buildSha256": "ff0c4954b950a6597f2f337801d3602556d3bbe99362c242842ce13dcd2aab7c",
+    "identityFileCount": 29,
+    "reportReplayToolsExcludedFromRuntimeIdentity": true
+  },
+  "replay": {
+    "artifact": "scoring-replay-preflight.json",
+    "recordedIntentsEqual": true,
+    "noDrops": true,
+    "onMainCpuMs": 1000.34,
+    "offMainCpuMs": 373.402,
+    "workerCpuMs": 1851.157,
+    "limits": "Replays recorded intents through an independent passive off/on pipeline; does not rerun the executor or prove identical live scheduling. Skill snapshots are held from retained episodes between observations; replay scoring is a load fixture, not an awarded live balance. Pacing is fixture-only, never model thinking. Separate temporary ledger; original account/ledger untouched."
+  },
+  "scoreSemantics": "Exact amounts in scoring/rules.json. Unsupported evidence pending; model text cannot award. XP methods/levels context, not separate baselines. Passive visible idle is not penalizable proof. No old1379/test balance is imported.",
+  "sourceModuleSha256": {
+    "adapter.ts": "37a30ae3227794e84d6c942a739832fcaa5171829889c4dc91b09948d090b600",
+    "range-tank.mjs": "7781a154d2921b17a5e8b35f466ca657803a5d65492addfd5e942e2f6039370c",
+    "scoring/client.mjs": "fd0266a927b21b1e5acd48fb525979ce0b47643dddba0c6a720580b7fbda820a",
+    "scoring/engine.mjs": "4b2c4c0c56b9ff4c6ce77d63e6b22f75010b1fddfc40d15217c0a33033bc0f4a",
+    "scoring/worker.mjs": "2be13688dfc79aa496d7f918629558de5c55197c4f7176348b5d89e42e4cd938",
+    "scoring/rules.json": "4a293d068e0661151dec81ec943e7e7875394b1d414ee6fd06b5053ec5adbe96",
+    "resource-actions.ts": "5e2dad285ff487c3248a223bcb16a7843035398199a1df956ffdd96bad8e6305",
+    "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+    "continuity-capture.mjs": "a43431eab44f9a70d32265f1a006fa28fad8994f8b3bbdac3de8f82150386ae3",
+    "executor.mjs": "cc20e42ccfb831cce645fc24184f0d284a32f53854e2a0da4561a2642d15ca49",
+    "continuity.mjs": "83f80584d5eb62b2bc4ff751d6c85e1ab4dee1ddd5ecebdf094aecc56647ec74",
+    "host.ts": "7f50bc330b4a3026c5703d273760abf9e17796d64492d83eb89ed82fb6cf3412",
+    "identity.mjs": "c18c8247e27157b6039366dcf53733dbe4e249de5376478a597aa857e1efc7a0",
+    "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+    "long-run.mjs": "e485c01e0031cf672173d72b72d415ba7dc9807d7f9900d6cf906e1d3107150d",
+    "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+    "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+    "protocol.mjs": "3d918ce42a4c54ad79e055f7230e62dd8bca0ba2e363d95af6e34ed5bfd7eaf0",
+    "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+    "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+    "run-store.mjs": "cf6a476255e3a2c05b4efab7b8523109b9b76c6bcdcea5d02fe03355d35475e9",
+    "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+    "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+    "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+    "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+    "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+    "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+    "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+    "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+  }
+}

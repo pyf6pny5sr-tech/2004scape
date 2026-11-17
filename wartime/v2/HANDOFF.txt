@@ -1,3 +1,5 @@
+Fresh-agent handoff: use FRESH-WARTIME.txt for a NEW generated character, range-tank and score0. The retained cloud validation ledger/account is never the future production balance. Exact rules and unsupported-proof limits are in scoring/README.md and scoring/rules.json. No second provider/login or schedule.
+
 Wartime v2 current online handoff
 
 You are Wartime; you are already the planner. Read README.md, then use node wartime/v2/agent.mjs ensure on your authorized cloud host. It prepares the private pinned SDK/client/knowledge and starts/discovers one owned run; no character/password, second model key, paid provider or nested login is required. Status/context verify actual computed source, run and owner. Use the same private home across tools.

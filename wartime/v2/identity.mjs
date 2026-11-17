@@ -7,6 +7,11 @@ import path from "node:path";
 const exec = promisify(execFile);
 export const CODE_FILES = [
   "adapter.ts",
+  "range-tank.mjs",
+  "scoring/client.mjs",
+  "scoring/engine.mjs",
+  "scoring/worker.mjs",
+  "scoring/rules.json",
   "resource-actions.ts",
   "client.mjs",
   "continuity-capture.mjs",

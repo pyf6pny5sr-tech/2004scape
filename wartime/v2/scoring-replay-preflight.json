@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "kind": "DETERMINISTIC_REPLAY_NOT_LIVE_LATENCY",
+  "input": {
+    "tickRows": 3000,
+    "episodeEvents": 332,
+    "retainedTraceSha256": "a91cbfc24db9b0a803041b57e6ceddb3b463050528a93b190c023baf5e07d771",
+    "paceMs": 5
+  },
+  "intentOutputEquivalent": true,
+  "passes": [
+    {
+      "scoring": false,
+      "callbacks": 3000,
+      "recordedIntents": 333,
+      "intentSha256": "e40a3480ee2ead357202644157a08bc60e36fe6ff582c63998b7a0f793c7bd97",
+      "mainCallbackMs": {
+        "n": 3000,
+        "p50": 0.0009050000007846393,
+        "p95": 0.034254000000146334,
+        "p99": 0.08742100000017672,
+        "min": 0.00014899999996487168,
+        "max": 2.3480819999986124
+      },
+      "mainCpuMs": 373.402,
+      "wallMs": 15962.634033,
+      "scorer": null
+    },
+    {
+      "scoring": true,
+      "callbacks": 3000,
+      "recordedIntents": 333,
+      "intentSha256": "e40a3480ee2ead357202644157a08bc60e36fe6ff582c63998b7a0f793c7bd97",
+      "mainCallbackMs": {
+        "n": 3000,
+        "p50": 0.012330000001384178,
+        "p95": 0.029955000001791632,
+        "p99": 0.0789249999979802,
+        "min": 0.008831999999529216,
+        "max": 1.853302999999869
+      },
+      "mainCpuMs": 1000.34,
+      "wallMs": 15476.815239,
+      "scorer": {
+        "workerCpuMs": 1851.157,
+        "rssBytes": 43675648,
+        "processed": 3332,
+        "workerErrors": 0,
+        "journalBytes": 3811688,
+        "capture": {
+          "captured": 3332,
+          "dropped": 0,
+          "maxQueue": 5,
+          "callbackMs": 18.867828999980702,
+          "maxCallbackMs": 1.8417049999989104,
+          "workerFailures": 0,
+          "batches": 2996,
+          "maxProcessingMs": 33.98500199999944,
+          "sendMs": 121.04568000007202,
+          "maxSendMs": 1.2317839999996067,
+          "queued": 0,
+          "inFlightFacts": 0,
+          "failed": false,
+          "lastError": null,
+          "sealed": false,
+          "coverageUnknown": false
+        }
+      }
+    }
+  ],
+  "limits": "Replays recorded intents through an independent passive off/on pipeline; does not rerun the executor or prove identical live scheduling. Skill snapshots are held from retained episodes between observations; replay scoring is a load fixture, not an awarded live balance. Pacing is fixture-only, never model thinking. Separate temporary ledger; original account/ledger untouched.",
+  "replayBalanceExcludedFromLive": true
+}

@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "startingScore": 0,
+  "modelWeightTraining": false,
+  "rules": [
+    {
+      "id": "skill_level",
+      "points": 5,
+      "evidence": "Each base skill level above ready baseline, once per skill/level. Starting/tutorial levels excluded.",
+      "sdkAutomation": true
+    },
+    {
+      "id": "xp_record",
+      "points": 100,
+      "evidence": "Comparable nonoverlapping complete XP windows >=300000ms. First window per comparability key is baseline, not reward.",
+      "sdkAutomation": true
+    },
+    {
+      "id": "procedure",
+      "points": 100,
+      "evidence": "Distinct canonical durable verified skill+episode; rename/replay gives no new award.",
+      "sdkAutomation": true
+    },
+    {
+      "id": "runite_mined",
+      "points": 25,
+      "evidence": "Each verified mined Runite ore with mining XP and provenance, not inventory gain alone.",
+      "sdkAutomation": true
+    },
+    {
+      "id": "runite_banked",
+      "points": 25,
+      "evidence": "Each previously mined provenance unit verified deposited into bank once; withdrawal/redeposit excluded.",
+      "sdkAutomation": true
+    },
+    {
+      "id": "social_productive",
+      "points": 1,
+      "evidence": "Productive ally/sale/conversation/cooperative drop party needs independently confirmed outcome; text claim insufficient.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "player_trade",
+      "points": 5,
+      "evidence": "Completed player trade, server transaction identity.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "clan_recruit",
+      "points": 25,
+      "evidence": "Confirmed join after in-person meeting+gift and later private message from that confirmed friend.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "clan_meeting",
+      "points": 25,
+      "evidence": "Confirmed clan meeting identity/participation, not chat claim.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "wild_own_kill",
+      "points": 1,
+      "evidence": "Confirmed own enemy kill in Wilderness.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "clan_enemy_kill",
+      "points": 4,
+      "evidence": "Confirmed clanmate enemy kill.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "pvp_loot",
+      "points": 1,
+      "evidence": "Proven looting from confirmed PvP kill.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "pvp_escape",
+      "points": 1,
+      "evidence": "Proven escape with that same provenance loot.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "kill_streak",
+      "points": 25,
+      "evidence": "Three own confirmed kills without confirmed death, once per distinct three-kill streak segment.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "clan_pk_trip",
+      "points": 50,
+      "evidence": "Successful trip with confirmed own/clan enemy kill; base50 plus10 per verified participating clan member.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "clan_pk_member",
+      "points": 10,
+      "evidence": "Per participating clan member in successful confirmed clan PK trip.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "death",
+      "points": -25,
+      "evidence": "Confirmed death only; disconnect is not death.",
+      "sdkAutomation": true
+    },
+    {
+      "id": "travel_speed",
+      "points": 50,
+      "evidence": "Comparable proven gameplay speed improvement.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "greatest_weakness",
+      "points": 75,
+      "evidence": "Verified greatest current gameplay weakness improved; unsupported rankings pending.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "avoidable_idle_improved",
+      "points": 10,
+      "evidence": "Comparable reduction in proven unnecessary eligible idle, not visible-idle counters alone.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "decision_idle_improved",
+      "points": 75,
+      "evidence": "Comparable proven reduction of idle between decisions, with uncertainty retained.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "inventory_improved",
+      "points": 10,
+      "evidence": "Comparable proven inventory management improvement.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "monitoring_improved",
+      "points": 100,
+      "evidence": "Proven monitoring improvement only with gameplay experience not reduced.",
+      "sdkAutomation": false
+    },
+    {
+      "id": "idle_tick",
+      "points": -1,
+      "evidence": "Each positively proven unnecessary idle tick while actually able to act; lag/travel/animation/cooldown/agreed stops excluded. Missing/helper uncertainty never penalized.",
+      "sdkAutomation": false
+    }
+  ],
+  "eligibilityNotes": [
+    "Ambiguous social/clan/PvP/improvement eligibility is pending until a trusted verifier supplies complete structured proof. Model text and score_claim never award points.",
+    "Only baseLevel changes score; temporary boosts do not. XP comparisons require same skill/world/XP-rate regime, complete reset-free coverage and non-overlapping >=5min windows. Starting levels, tools and methods are context, not separate record baselines; credible progression or method improvement may earn100. Complete windows are restarted when their active method/equipment changes, then compared with the existing same-skill record.",
+    "PK participants must be clan members confirmed in trip evidence, each counted once; base and participant awards are separate exact user amounts.",
+    "Improvement facts require comparable before/after evidence, meaningful metric decrease/increase and gameplay throughput/experience not reduced; no automatic award from scheduler counters.",
+    "Unclear ordinal/eligibility interpretations stay pending, not silently awarded.",
+    "Three-kill streak is conservatively awarded once upon reaching three distinct own kills in a confirmed life; no extra awards for a longer streak without explicit eligibility clarification."
+  ],
+  "checkpoints": {
+    "step": 100,
+    "basis": "Cumulative positive proven awards since this fresh ready baseline; deductions affect net score, not checkpoint high-water. Each threshold has a durable identity; reports are batched and explicit ack prevents presentation as new after restart.",
+    "automaticMessagesOrSchedules": false
+  }
+}

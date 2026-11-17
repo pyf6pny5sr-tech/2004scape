@@ -1,0 +1,2288 @@
+{
+  "schemaVersion": 1,
+  "scope": "Explicit standing ordinary-resource goal; this authorized cloud agent supplies live plans through existing tools, online only.",
+  "sourceCommit": "7181b7a69458d70e7d5df75ebb72b5d0f081f260",
+  "sourceIdentity": {
+    "implementation": "wartime-v2",
+    "identityProtocol": 1,
+    "buildSha256": "248da75942f6f55e7cdf31b04f039ba2d450757e31e334f746f9092b8c609bd3",
+    "moduleSha256": {
+      "adapter.ts": "ee8ff1675e8179dee0014136250f7af3629c0d97fcc3ba525e55c01ae84d87ac",
+      "resource-actions.ts": "5e2dad285ff487c3248a223bcb16a7843035398199a1df956ffdd96bad8e6305",
+      "client.mjs": "fccbacc2c49e13e201202882ad30adc775f4efb6db2339942910351eb3885b23",
+      "continuity-capture.mjs": "a43431eab44f9a70d32265f1a006fa28fad8994f8b3bbdac3de8f82150386ae3",
+      "executor.mjs": "c191d38ea7e6059beacc21b424897c97729b9595bb57b9eaf970f55d369c9df0",
+      "continuity.mjs": "83f80584d5eb62b2bc4ff751d6c85e1ab4dee1ddd5ecebdf094aecc56647ec74",
+      "host.ts": "7b946592bd1d6928ae1e82dfbdd2aafd5e9ec1d778aec53ce4c3d3363828ed35",
+      "identity.mjs": "d85ccda7a1ac8ab78964d2a1220ba334ce8e5003c5266692f8055b731d6d3f96",
+      "knowledge-worker.mjs": "b61b2a3602f6909330094f1dec09eee22d088728d7ed57ea109903b363f948c6",
+      "long-run.mjs": "e485c01e0031cf672173d72b72d415ba7dc9807d7f9900d6cf906e1d3107150d",
+      "knowledge.mjs": "74f5241f71e564db211d980d80354694a343a8d4f4426416a1919b90918752af",
+      "managed-websocket.mjs": "68705b5c3c72b5dd025ac61c3b8dadd350c88e24d1df415c978e6f60ca9c253e",
+      "protocol.mjs": "3d918ce42a4c54ad79e055f7230e62dd8bca0ba2e363d95af6e34ed5bfd7eaf0",
+      "ownership.mjs": "bb7f4113e97f8a1204d00ae5cf4966f6ccaa44af469b2b23d569338833d1e9d9",
+      "run.ts": "4e767b281aa4d9bef7da7a149087ab740d1e20508c41670e4820086a8ec322a0",
+      "run-store.mjs": "571f21995c321fbfe35eee78af1b6da3f9b96d65b55425f199b81755c81d2d14",
+      "run-manager.mjs": "04026b26c8530282608cf5931def071b2a0c5c208c2fd4c9a127b890277efde2",
+      "run-runtime.ts": "fcfa7da4e010a02c75291c7df581891113870eda07676fb7408d3648a5de9710",
+      "run-client.ts": "81703bfb1cf040de80c70e2430aff5fa27a902cb0aafb3eb4039e983c6398a17",
+      "versions/steady.mjs": "96ed350d605a7ae61a5cb1dec6535f3913cf501276deab2b98ecf389adbaa841",
+      "versions/cautious.mjs": "c7d92dab6f3b0d8ee1d2d623dde88957dc2f7a7ee5de786690419bc0e5edaa28",
+      "../memory.mjs": "f276973161ecdc862b22a36631573560271dc725c48f9eec14a32fd0cbf7a44d",
+      "../knowledge.mjs": "c6cdf6544ae6d6d0659240b9bdb3dd47b6d1dafda9ed8e292cbd78ef856436d1",
+      "../controller.mjs": "4d46983b3af9a7efc5e2933141bbf1f04c97be37f8cc5576b40df38824e3a434"
+    },
+    "sdkCommit": "3aa493c3d26680df5bae2b475cc1805e3db05ae3",
+    "sdkModuleSha256": {
+      "sdk/index.ts": "ae769e45bdb56e27b075f7b50d71d1b796ae55927406a675a0f59deae9726fe8",
+      "sdk/actions.ts": "4b1ea5b2ba2237ce4bf40c9f4df2175f6e8ff6ed6648f8a1ad26ccfb1b030e97",
+      "sdk/execution-context.ts": "aedaea42e299445ad5f1622338a583168529e9792019b57289d3d5db76cb902b",
+      "server/webclient/src/lite/session.ts": "d68c811f6498b97792a1b2eb85704dad417bb0ac61be6f353097e0b2fcedfc49",
+      "server/webclient/src/lite/net/GameConnection.ts": "fc82aa5a1589f47d128c13e085ffce07a213ca6220c78f7e959a6400bc8f9f77"
+    },
+    "capturedAt": "2026-11-17T00:54:27.396Z",
+    "meaning": "Computed from runtime module files at startup, not a configurable label. Local file/build identity, not remote cryptographic attestation."
+  },
+  "baselineSourceCommit": "01e6ad76f3b6becd1eb432a90c3ac39e2c6c9ee7",
+  "window": {
+    "startUtc": "2026-11-17T01:06:32.823Z",
+    "endUtc": "2026-11-17T01:26:32.828Z",
+    "durationMs": 1200005,
+    "preparationIncluded": false,
+    "fixedDeadline": true,
+    "targetEndUtc": "2026-11-17T01:26:32.823Z"
+  },
+  "environment": {
+    "world": "https://rs-sdk.maxbittker.com",
+    "gateway": "wss://rs-sdk.maxbittker.com/gateway",
+    "node": "24.22.1",
+    "bun": "1.4.4",
+    "location": "Authorized Codex Cloud; online only",
+    "route": "Existing inherited approved proxy/TLS/NO_PROXY route; no endpoint substitution"
+  },
+  "run": {
+    "runId": "r1b5df6a2aa91658548e866fd80ec4d68",
+    "sameRecordedRunAsBaseline": true,
+    "ownerSha256": "c84c585fd732adf732c4a5046149827a53187716a7197ec01e0d650502ce32d6",
+    "ownerUnchangedWithinWindow": true,
+    "newAccounts": 0,
+    "replacements": 0,
+    "cleanup": {
+      "stopped": true,
+      "ownerProcessRunning": false,
+      "ownedClientGone": true,
+      "processIdentityChecked": true
+    }
+  },
+  "measurement": {
+    "classifier": "Unchanged long-run.mjs flags and analyze-long-run.mjs reportBucket/overlap accounting",
+    "tickCountSource": "Passive owned SDK tick transitions, not polling iterations",
+    "rawStateChatCredentialsPublic": false,
+    "seconds": "Estimated from observed timestamp intervals; missing ticks are not idle; animation/helper evidence is not proven productivity"
+  },
+  "analysis": {
+    "durationMs": 1200005,
+    "whole": {
+      "observedTicks": 3000,
+      "buckets": {
+        "unknown": 1,
+        "no_approved_work_idle": 74,
+        "cooldown": 331,
+        "pending_helper_possible_idle": 1131,
+        "observed_progress": 1060,
+        "busy_without_proven_progress": 403
+      },
+      "estimatedObservationIntervalSeconds": {
+        "unknown": 0.362,
+        "no_approved_work_idle": 29.489000000000004,
+        "cooldown": 129.882,
+        "pending_helper_possible_idle": 456.4709999999999,
+        "observed_progress": 420.8269999999997,
+        "busy_without_proven_progress": 162.78099999999992
+      },
+      "physicallyStationaryTicks": 2408,
+      "visibleIdleLowerBoundTicks": 74,
+      "visibleIdleLowerBoundPercent": 2.466666666666667,
+      "possibleAdditionalIdleTicks": 1131,
+      "busyOrProgressTicks": 1463,
+      "longestVisibleIdleStreakTicks": 72,
+      "longestVisibleIdleStreakEstimatedSeconds": 28.809,
+      "coveredObservationSeconds": 1199.812
+    },
+    "claimedAgentToolIntervals": {
+      "observedTicks": 672,
+      "buckets": {
+        "no_approved_work_idle": 39,
+        "cooldown": 72,
+        "busy_without_proven_progress": 89,
+        "observed_progress": 227,
+        "pending_helper_possible_idle": 245
+      },
+      "estimatedObservationIntervalSeconds": {
+        "no_approved_work_idle": 15.472999999999999,
+        "cooldown": 27.996999999999996,
+        "busy_without_proven_progress": 34.187,
+        "observed_progress": 87.52000000000002,
+        "pending_helper_possible_idle": 97.06700000000006
+      },
+      "physicallyStationaryTicks": 543,
+      "visibleIdleLowerBoundTicks": 39,
+      "visibleIdleLowerBoundPercent": 5.803571428571429,
+      "possibleAdditionalIdleTicks": 245,
+      "busyOrProgressTicks": 316,
+      "longestVisibleIdleStreakTicks": 39,
+      "longestVisibleIdleStreakEstimatedSeconds": 15.473,
+      "coveredObservationSeconds": 262.244
+    },
+    "planningWindows": [
+      {
+        "index": 1,
+        "startSeconds": 13.891,
+        "endSeconds": 29.632,
+        "turnaroundMs": 15741,
+        "incomplete": false,
+        "observedTicks": 40,
+        "buckets": {
+          "no_approved_work_idle": 39,
+          "cooldown": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 15.472999999999999,
+          "cooldown": 0.268
+        },
+        "physicallyStationaryTicks": 40,
+        "visibleIdleLowerBoundTicks": 39,
+        "visibleIdleLowerBoundPercent": 97.5,
+        "possibleAdditionalIdleTicks": 0,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 39,
+        "longestVisibleIdleStreakEstimatedSeconds": 15.473,
+        "coveredObservationSeconds": 15.741,
+        "automaticRequestLifetimeMs": 755071,
+        "unclaimedPrefetchMs": 739330
+      },
+      {
+        "index": 2,
+        "startSeconds": 90.605,
+        "endSeconds": 107.789,
+        "turnaroundMs": 17184,
+        "incomplete": false,
+        "observedTicks": 45,
+        "buckets": {
+          "busy_without_proven_progress": 5,
+          "observed_progress": 22,
+          "pending_helper_possible_idle": 13,
+          "cooldown": 5
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 1.737,
+          "observed_progress": 8.679999999999998,
+          "pending_helper_possible_idle": 4.768,
+          "cooldown": 1.999
+        },
+        "physicallyStationaryTicks": 31,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 13,
+        "busyOrProgressTicks": 27,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 17.184,
+        "automaticRequestLifetimeMs": 78162,
+        "unclaimedPrefetchMs": 60978
+      },
+      {
+        "index": 3,
+        "startSeconds": 153.925,
+        "endSeconds": 165.243,
+        "turnaroundMs": 11318,
+        "incomplete": false,
+        "observedTicks": 29,
+        "buckets": {
+          "pending_helper_possible_idle": 10,
+          "observed_progress": 13,
+          "cooldown": 3,
+          "busy_without_proven_progress": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 3.9480000000000004,
+          "observed_progress": 5.018999999999999,
+          "cooldown": 1.0899999999999999,
+          "busy_without_proven_progress": 1.2610000000000001
+        },
+        "physicallyStationaryTicks": 21,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 10,
+        "busyOrProgressTicks": 16,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 11.318,
+        "automaticRequestLifetimeMs": 54681,
+        "unclaimedPrefetchMs": 43363
+      },
+      {
+        "index": 4,
+        "startSeconds": 215.794,
+        "endSeconds": 227.686,
+        "turnaroundMs": 11892,
+        "incomplete": false,
+        "observedTicks": 30,
+        "buckets": {
+          "observed_progress": 14,
+          "pending_helper_possible_idle": 9,
+          "busy_without_proven_progress": 4,
+          "cooldown": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 5.431,
+          "pending_helper_possible_idle": 3.6260000000000003,
+          "busy_without_proven_progress": 1.665,
+          "cooldown": 1.17
+        },
+        "physicallyStationaryTicks": 21,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 9,
+        "busyOrProgressTicks": 18,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 11.892,
+        "automaticRequestLifetimeMs": 62236,
+        "unclaimedPrefetchMs": 50344
+      },
+      {
+        "index": 5,
+        "startSeconds": 285.822,
+        "endSeconds": 299.417,
+        "turnaroundMs": 13595,
+        "incomplete": false,
+        "observedTicks": 35,
+        "buckets": {
+          "pending_helper_possible_idle": 13,
+          "observed_progress": 13,
+          "cooldown": 4,
+          "busy_without_proven_progress": 5
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 5.13,
+          "observed_progress": 4.893000000000001,
+          "cooldown": 1.6010000000000002,
+          "busy_without_proven_progress": 1.9709999999999999
+        },
+        "physicallyStationaryTicks": 28,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 13,
+        "busyOrProgressTicks": 18,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 13.595,
+        "automaticRequestLifetimeMs": 70804,
+        "unclaimedPrefetchMs": 57209
+      },
+      {
+        "index": 6,
+        "startSeconds": 349.977,
+        "endSeconds": 367.982,
+        "turnaroundMs": 18005,
+        "incomplete": false,
+        "observedTicks": 46,
+        "buckets": {
+          "pending_helper_possible_idle": 26,
+          "busy_without_proven_progress": 9,
+          "observed_progress": 8,
+          "cooldown": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 10.373000000000001,
+          "busy_without_proven_progress": 3.324,
+          "observed_progress": 3.0690000000000004,
+          "cooldown": 1.239
+        },
+        "physicallyStationaryTicks": 42,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 26,
+        "busyOrProgressTicks": 17,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 18.005,
+        "automaticRequestLifetimeMs": 66982,
+        "unclaimedPrefetchMs": 48977
+      },
+      {
+        "index": 7,
+        "startSeconds": 415.387,
+        "endSeconds": 430.027,
+        "turnaroundMs": 14640,
+        "incomplete": false,
+        "observedTicks": 37,
+        "buckets": {
+          "pending_helper_possible_idle": 15,
+          "observed_progress": 13,
+          "cooldown": 5,
+          "busy_without_proven_progress": 4
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 6.050000000000001,
+          "observed_progress": 4.917000000000001,
+          "cooldown": 1.896,
+          "busy_without_proven_progress": 1.7770000000000001
+        },
+        "physicallyStationaryTicks": 29,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 15,
+        "busyOrProgressTicks": 17,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.64,
+        "automaticRequestLifetimeMs": 60252,
+        "unclaimedPrefetchMs": 45612
+      },
+      {
+        "index": 8,
+        "startSeconds": 504.397,
+        "endSeconds": 518.409,
+        "turnaroundMs": 14012,
+        "incomplete": false,
+        "observedTicks": 36,
+        "buckets": {
+          "observed_progress": 8,
+          "cooldown": 3,
+          "pending_helper_possible_idle": 18,
+          "busy_without_proven_progress": 7
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 3.039,
+          "cooldown": 1.168,
+          "pending_helper_possible_idle": 7.027000000000001,
+          "busy_without_proven_progress": 2.778
+        },
+        "physicallyStationaryTicks": 32,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 18,
+        "busyOrProgressTicks": 15,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.012,
+        "automaticRequestLifetimeMs": 86209,
+        "unclaimedPrefetchMs": 72197
+      },
+      {
+        "index": 9,
+        "startSeconds": 566.5,
+        "endSeconds": 584.514,
+        "turnaroundMs": 18014,
+        "incomplete": false,
+        "observedTicks": 46,
+        "buckets": {
+          "busy_without_proven_progress": 7,
+          "observed_progress": 15,
+          "pending_helper_possible_idle": 18,
+          "cooldown": 6
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 2.7409999999999997,
+          "observed_progress": 5.542999999999999,
+          "pending_helper_possible_idle": 7.456,
+          "cooldown": 2.274
+        },
+        "physicallyStationaryTicks": 40,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 18,
+        "busyOrProgressTicks": 22,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 18.014,
+        "automaticRequestLifetimeMs": 65084,
+        "unclaimedPrefetchMs": 47070
+      },
+      {
+        "index": 10,
+        "startSeconds": 639.665,
+        "endSeconds": 655.028,
+        "turnaroundMs": 15363,
+        "incomplete": false,
+        "observedTicks": 40,
+        "buckets": {
+          "observed_progress": 18,
+          "busy_without_proven_progress": 5,
+          "pending_helper_possible_idle": 13,
+          "cooldown": 4
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 6.473,
+          "busy_without_proven_progress": 1.995,
+          "pending_helper_possible_idle": 5.313000000000001,
+          "cooldown": 1.5819999999999999
+        },
+        "physicallyStationaryTicks": 28,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 13,
+        "busyOrProgressTicks": 23,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 15.363,
+        "automaticRequestLifetimeMs": 70033,
+        "unclaimedPrefetchMs": 54670
+      },
+      {
+        "index": 11,
+        "startSeconds": 704.04,
+        "endSeconds": 717.599,
+        "turnaroundMs": 13559,
+        "incomplete": false,
+        "observedTicks": 35,
+        "buckets": {
+          "busy_without_proven_progress": 5,
+          "pending_helper_possible_idle": 12,
+          "observed_progress": 13,
+          "cooldown": 5
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 1.872,
+          "pending_helper_possible_idle": 4.631,
+          "observed_progress": 5.201000000000001,
+          "cooldown": 1.8550000000000002
+        },
+        "physicallyStationaryTicks": 29,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 12,
+        "busyOrProgressTicks": 18,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 13.559,
+        "automaticRequestLifetimeMs": 60517,
+        "unclaimedPrefetchMs": 46958
+      },
+      {
+        "index": 12,
+        "startSeconds": 769.586,
+        "endSeconds": 785.274,
+        "turnaroundMs": 15688,
+        "incomplete": false,
+        "observedTicks": 40,
+        "buckets": {
+          "pending_helper_possible_idle": 16,
+          "observed_progress": 14,
+          "busy_without_proven_progress": 6,
+          "cooldown": 4
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 6.204,
+          "observed_progress": 5.564000000000001,
+          "busy_without_proven_progress": 2.259,
+          "cooldown": 1.661
+        },
+        "physicallyStationaryTicks": 32,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 16,
+        "busyOrProgressTicks": 20,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 15.688,
+        "automaticRequestLifetimeMs": 65483,
+        "unclaimedPrefetchMs": 49795
+      },
+      {
+        "index": 13,
+        "startSeconds": 835.107,
+        "endSeconds": 850.626,
+        "turnaroundMs": 15519,
+        "incomplete": false,
+        "observedTicks": 39,
+        "buckets": {
+          "pending_helper_possible_idle": 16,
+          "observed_progress": 15,
+          "cooldown": 4,
+          "busy_without_proven_progress": 4
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 6.277999999999999,
+          "observed_progress": 6.0169999999999995,
+          "cooldown": 1.566,
+          "busy_without_proven_progress": 1.658
+        },
+        "physicallyStationaryTicks": 30,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 16,
+        "busyOrProgressTicks": 19,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 15.519,
+        "automaticRequestLifetimeMs": 65171,
+        "unclaimedPrefetchMs": 49652
+      },
+      {
+        "index": 14,
+        "startSeconds": 901.891,
+        "endSeconds": 916.695,
+        "turnaroundMs": 14804,
+        "incomplete": false,
+        "observedTicks": 38,
+        "buckets": {
+          "cooldown": 5,
+          "busy_without_proven_progress": 6,
+          "observed_progress": 12,
+          "pending_helper_possible_idle": 15
+        },
+        "estimatedObservationIntervalSeconds": {
+          "cooldown": 1.917,
+          "busy_without_proven_progress": 2.359,
+          "observed_progress": 4.495,
+          "pending_helper_possible_idle": 6.0329999999999995
+        },
+        "physicallyStationaryTicks": 33,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 15,
+        "busyOrProgressTicks": 18,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.804,
+        "automaticRequestLifetimeMs": 64856,
+        "unclaimedPrefetchMs": 50052
+      },
+      {
+        "index": 15,
+        "startSeconds": 966.29,
+        "endSeconds": 979.275,
+        "turnaroundMs": 12985,
+        "incomplete": false,
+        "observedTicks": 33,
+        "buckets": {
+          "cooldown": 4,
+          "pending_helper_possible_idle": 14,
+          "observed_progress": 10,
+          "busy_without_proven_progress": 5
+        },
+        "estimatedObservationIntervalSeconds": {
+          "cooldown": 1.498,
+          "pending_helper_possible_idle": 5.6160000000000005,
+          "observed_progress": 3.971,
+          "busy_without_proven_progress": 1.9000000000000001
+        },
+        "physicallyStationaryTicks": 28,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 14,
+        "busyOrProgressTicks": 15,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 12.985,
+        "automaticRequestLifetimeMs": 62242,
+        "unclaimedPrefetchMs": 49257
+      },
+      {
+        "index": 16,
+        "startSeconds": 1031.47,
+        "endSeconds": 1045.811,
+        "turnaroundMs": 14341,
+        "incomplete": false,
+        "observedTicks": 37,
+        "buckets": {
+          "pending_helper_possible_idle": 11,
+          "observed_progress": 17,
+          "busy_without_proven_progress": 5,
+          "cooldown": 4
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 4.186,
+          "observed_progress": 6.942,
+          "busy_without_proven_progress": 1.605,
+          "cooldown": 1.608
+        },
+        "physicallyStationaryTicks": 26,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 11,
+        "busyOrProgressTicks": 22,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 14.341,
+        "automaticRequestLifetimeMs": 66448,
+        "unclaimedPrefetchMs": 52107
+      },
+      {
+        "index": 17,
+        "startSeconds": 1097.523,
+        "endSeconds": 1113.484,
+        "turnaroundMs": 15961,
+        "incomplete": false,
+        "observedTicks": 41,
+        "buckets": {
+          "observed_progress": 12,
+          "cooldown": 6,
+          "pending_helper_possible_idle": 17,
+          "busy_without_proven_progress": 6
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 4.5600000000000005,
+          "cooldown": 2.36,
+          "pending_helper_possible_idle": 7.057999999999999,
+          "busy_without_proven_progress": 1.9829999999999999
+        },
+        "physicallyStationaryTicks": 34,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 17,
+        "busyOrProgressTicks": 18,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 15.961,
+        "automaticRequestLifetimeMs": 66478,
+        "unclaimedPrefetchMs": 50517
+      },
+      {
+        "index": 18,
+        "startSeconds": 1165.612,
+        "endSeconds": 1175.235,
+        "turnaroundMs": 9623,
+        "incomplete": false,
+        "observedTicks": 25,
+        "buckets": {
+          "observed_progress": 10,
+          "cooldown": 3,
+          "pending_helper_possible_idle": 9,
+          "busy_without_proven_progress": 3
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 3.7059999999999995,
+          "cooldown": 1.245,
+          "pending_helper_possible_idle": 3.3700000000000006,
+          "busy_without_proven_progress": 1.302
+        },
+        "physicallyStationaryTicks": 19,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 9,
+        "busyOrProgressTicks": 13,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 9.623,
+        "automaticRequestLifetimeMs": 59793,
+        "unclaimedPrefetchMs": 50170
+      }
+    ],
+    "perMinute": [
+      {
+        "minute": 1,
+        "observedTicks": 150,
+        "buckets": {
+          "unknown": 1,
+          "no_approved_work_idle": 72,
+          "cooldown": 7,
+          "pending_helper_possible_idle": 40,
+          "observed_progress": 17,
+          "busy_without_proven_progress": 13
+        },
+        "estimatedObservationIntervalSeconds": {
+          "unknown": 0.362,
+          "no_approved_work_idle": 28.809000000000005,
+          "cooldown": 2.795,
+          "pending_helper_possible_idle": 16.374000000000006,
+          "observed_progress": 6.347999999999999,
+          "busy_without_proven_progress": 5.119
+        },
+        "physicallyStationaryTicks": 143,
+        "visibleIdleLowerBoundTicks": 72,
+        "visibleIdleLowerBoundPercent": 48,
+        "possibleAdditionalIdleTicks": 40,
+        "busyOrProgressTicks": 30,
+        "longestVisibleIdleStreakTicks": 72,
+        "longestVisibleIdleStreakEstimatedSeconds": 28.809,
+        "coveredObservationSeconds": 59.807
+      },
+      {
+        "minute": 2,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 65,
+          "cooldown": 18,
+          "busy_without_proven_progress": 18,
+          "pending_helper_possible_idle": 50
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 25.398,
+          "cooldown": 7.348999999999999,
+          "busy_without_proven_progress": 7.424000000000001,
+          "pending_helper_possible_idle": 19.828999999999994
+        },
+        "physicallyStationaryTicks": 111,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 50,
+        "busyOrProgressTicks": 83,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 3,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 59,
+          "cooldown": 19,
+          "pending_helper_possible_idle": 54,
+          "busy_without_proven_progress": 18,
+          "no_approved_work_idle": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 22.791,
+          "cooldown": 7.806,
+          "pending_helper_possible_idle": 22.29,
+          "busy_without_proven_progress": 6.829,
+          "no_approved_work_idle": 0.284
+        },
+        "physicallyStationaryTicks": 117,
+        "visibleIdleLowerBoundTicks": 1,
+        "visibleIdleLowerBoundPercent": 0.6622516556291391,
+        "possibleAdditionalIdleTicks": 54,
+        "busyOrProgressTicks": 77,
+        "longestVisibleIdleStreakTicks": 1,
+        "longestVisibleIdleStreakEstimatedSeconds": 0.284,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 4,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 81,
+          "busy_without_proven_progress": 15,
+          "pending_helper_possible_idle": 43,
+          "cooldown": 12
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 31.769000000000013,
+          "busy_without_proven_progress": 6.348000000000001,
+          "pending_helper_possible_idle": 17.064999999999998,
+          "cooldown": 4.818
+        },
+        "physicallyStationaryTicks": 88,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 43,
+        "busyOrProgressTicks": 96,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 5,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 60,
+          "observed_progress": 51,
+          "cooldown": 17,
+          "busy_without_proven_progress": 23
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 23.465999999999998,
+          "observed_progress": 20.358999999999995,
+          "cooldown": 6.735,
+          "busy_without_proven_progress": 9.440000000000001
+        },
+        "physicallyStationaryTicks": 126,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 60,
+        "busyOrProgressTicks": 74,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 6,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 77,
+          "observed_progress": 35,
+          "cooldown": 12,
+          "busy_without_proven_progress": 27
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 30.771,
+          "observed_progress": 13.717999999999998,
+          "cooldown": 4.769,
+          "busy_without_proven_progress": 10.741999999999997
+        },
+        "physicallyStationaryTicks": 133,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 77,
+        "busyOrProgressTicks": 62,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 7,
+        "observedTicks": 151,
+        "buckets": {
+          "busy_without_proven_progress": 20,
+          "observed_progress": 60,
+          "pending_helper_possible_idle": 54,
+          "cooldown": 17
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 7.816,
+          "observed_progress": 23.781000000000006,
+          "pending_helper_possible_idle": 21.886999999999997,
+          "cooldown": 6.516
+        },
+        "physicallyStationaryTicks": 117,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 54,
+        "busyOrProgressTicks": 80,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 8,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 56,
+          "observed_progress": 57,
+          "cooldown": 18,
+          "busy_without_proven_progress": 20
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 22.715999999999994,
+          "observed_progress": 22.201999999999998,
+          "cooldown": 7.012,
+          "busy_without_proven_progress": 8.07
+        },
+        "physicallyStationaryTicks": 119,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 56,
+        "busyOrProgressTicks": 77,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 9,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 46,
+          "cooldown": 17,
+          "pending_helper_possible_idle": 65,
+          "busy_without_proven_progress": 23
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 17.945,
+          "cooldown": 6.660000000000001,
+          "pending_helper_possible_idle": 26.011,
+          "busy_without_proven_progress": 9.384
+        },
+        "physicallyStationaryTicks": 131,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 65,
+        "busyOrProgressTicks": 69,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 10,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 57,
+          "observed_progress": 55,
+          "cooldown": 19,
+          "busy_without_proven_progress": 20
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 22.45500000000001,
+          "observed_progress": 21.640000000000008,
+          "cooldown": 7.375,
+          "busy_without_proven_progress": 8.529999999999998
+        },
+        "physicallyStationaryTicks": 120,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 57,
+        "busyOrProgressTicks": 75,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 11,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 52,
+          "observed_progress": 63,
+          "cooldown": 17,
+          "busy_without_proven_progress": 19
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 20.791999999999998,
+          "observed_progress": 24.972000000000005,
+          "cooldown": 6.258000000000001,
+          "busy_without_proven_progress": 7.977999999999999
+        },
+        "physicallyStationaryTicks": 113,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 52,
+        "busyOrProgressTicks": 82,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 12,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 51,
+          "observed_progress": 62,
+          "cooldown": 20,
+          "busy_without_proven_progress": 17,
+          "no_approved_work_idle": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 20.391,
+          "observed_progress": 24.282000000000004,
+          "cooldown": 8.106,
+          "busy_without_proven_progress": 6.824999999999999,
+          "no_approved_work_idle": 0.396
+        },
+        "physicallyStationaryTicks": 117,
+        "visibleIdleLowerBoundTicks": 1,
+        "visibleIdleLowerBoundPercent": 0.6622516556291391,
+        "possibleAdditionalIdleTicks": 51,
+        "busyOrProgressTicks": 79,
+        "longestVisibleIdleStreakTicks": 1,
+        "longestVisibleIdleStreakEstimatedSeconds": 0.396,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 13,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 44,
+          "cooldown": 16,
+          "pending_helper_possible_idle": 67,
+          "busy_without_proven_progress": 24
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 17.502,
+          "cooldown": 5.934000000000001,
+          "pending_helper_possible_idle": 27.149000000000004,
+          "busy_without_proven_progress": 9.415000000000003
+        },
+        "physicallyStationaryTicks": 130,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 67,
+        "busyOrProgressTicks": 68,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 14,
+        "observedTicks": 151,
+        "buckets": {
+          "cooldown": 18,
+          "busy_without_proven_progress": 22,
+          "observed_progress": 47,
+          "pending_helper_possible_idle": 64
+        },
+        "estimatedObservationIntervalSeconds": {
+          "cooldown": 6.609999999999999,
+          "busy_without_proven_progress": 8.921,
+          "observed_progress": 18.895,
+          "pending_helper_possible_idle": 25.574000000000005
+        },
+        "physicallyStationaryTicks": 129,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 64,
+        "busyOrProgressTicks": 69,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 15,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 59,
+          "observed_progress": 57,
+          "busy_without_proven_progress": 20,
+          "cooldown": 15
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 23.03,
+          "observed_progress": 23.226999999999993,
+          "busy_without_proven_progress": 8.12,
+          "cooldown": 5.623
+        },
+        "physicallyStationaryTicks": 115,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 59,
+        "busyOrProgressTicks": 77,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 16,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 56,
+          "observed_progress": 56,
+          "cooldown": 18,
+          "busy_without_proven_progress": 21
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 22.534000000000006,
+          "observed_progress": 22.26499999999999,
+          "cooldown": 7.1450000000000005,
+          "busy_without_proven_progress": 8.056
+        },
+        "physicallyStationaryTicks": 122,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 56,
+        "busyOrProgressTicks": 77,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 17,
+        "observedTicks": 151,
+        "buckets": {
+          "observed_progress": 48,
+          "cooldown": 17,
+          "pending_helper_possible_idle": 63,
+          "busy_without_proven_progress": 23
+        },
+        "estimatedObservationIntervalSeconds": {
+          "observed_progress": 18.866999999999994,
+          "cooldown": 6.828999999999999,
+          "pending_helper_possible_idle": 25.444000000000006,
+          "busy_without_proven_progress": 8.860000000000001
+        },
+        "physicallyStationaryTicks": 128,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 63,
+        "busyOrProgressTicks": 71,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 18,
+        "observedTicks": 151,
+        "buckets": {
+          "busy_without_proven_progress": 19,
+          "pending_helper_possible_idle": 50,
+          "observed_progress": 62,
+          "cooldown": 20
+        },
+        "estimatedObservationIntervalSeconds": {
+          "busy_without_proven_progress": 7.688999999999998,
+          "pending_helper_possible_idle": 20.221000000000004,
+          "observed_progress": 24.86,
+          "cooldown": 7.2299999999999995
+        },
+        "physicallyStationaryTicks": 118,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 50,
+        "busyOrProgressTicks": 81,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 19,
+        "observedTicks": 151,
+        "buckets": {
+          "cooldown": 19,
+          "pending_helper_possible_idle": 58,
+          "observed_progress": 53,
+          "busy_without_proven_progress": 21
+        },
+        "estimatedObservationIntervalSeconds": {
+          "cooldown": 7.226,
+          "pending_helper_possible_idle": 23.428000000000004,
+          "observed_progress": 20.951,
+          "busy_without_proven_progress": 8.395000000000001
+        },
+        "physicallyStationaryTicks": 122,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 58,
+        "busyOrProgressTicks": 74,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 20,
+        "observedTicks": 151,
+        "buckets": {
+          "pending_helper_possible_idle": 64,
+          "observed_progress": 48,
+          "cooldown": 17,
+          "busy_without_proven_progress": 22
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 25.038999999999998,
+          "observed_progress": 19.055000000000003,
+          "cooldown": 7.086,
+          "busy_without_proven_progress": 8.82
+        },
+        "physicallyStationaryTicks": 126,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 64,
+        "busyOrProgressTicks": 70,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 60
+      },
+      {
+        "minute": 21,
+        "observedTicks": 1,
+        "buckets": {
+          "pending_helper_possible_idle": 1
+        },
+        "estimatedObservationIntervalSeconds": {
+          "pending_helper_possible_idle": 0.005
+        },
+        "physicallyStationaryTicks": 1,
+        "visibleIdleLowerBoundTicks": 0,
+        "visibleIdleLowerBoundPercent": 0,
+        "possibleAdditionalIdleTicks": 1,
+        "busyOrProgressTicks": 0,
+        "longestVisibleIdleStreakTicks": 0,
+        "longestVisibleIdleStreakEstimatedSeconds": 0,
+        "coveredObservationSeconds": 0.005
+      }
+    ],
+    "cadenceMs": {
+      "n": 2999,
+      "p50": 400,
+      "p95": 480,
+      "p99": 512,
+      "min": 30,
+      "max": 1216
+    },
+    "jitterMs": {
+      "n": 2998,
+      "p50": 50,
+      "p95": 160,
+      "p99": 226,
+      "min": 0,
+      "max": 1186
+    },
+    "consistency": {
+      "exclusiveBucketSum": 3000,
+      "equalsObservedTicks": true,
+      "planningUnionDoesNotDoubleCount": true
+    },
+    "gameplayPlanningOnly": {
+      "selection": "Conservative transcript audit; exclude whole mixed development/report-support windows, with no within-window time estimates or outcome-based selection",
+      "includedWindowIndices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "excludedWindowIndices": [],
+      "claimedDurationMs": 262244,
+      "aggregate": {
+        "observedTicks": 672,
+        "buckets": {
+          "no_approved_work_idle": 39,
+          "cooldown": 72,
+          "busy_without_proven_progress": 89,
+          "observed_progress": 227,
+          "pending_helper_possible_idle": 245
+        },
+        "estimatedObservationIntervalSeconds": {
+          "no_approved_work_idle": 15.472999999999999,
+          "cooldown": 27.996999999999996,
+          "busy_without_proven_progress": 34.187,
+          "observed_progress": 87.52000000000002,
+          "pending_helper_possible_idle": 97.06700000000006
+        },
+        "physicallyStationaryTicks": 543,
+        "visibleIdleLowerBoundTicks": 39,
+        "visibleIdleLowerBoundPercent": 5.803571428571429,
+        "possibleAdditionalIdleTicks": 245,
+        "busyOrProgressTicks": 316,
+        "longestVisibleIdleStreakTicks": 39,
+        "longestVisibleIdleStreakEstimatedSeconds": 15.473,
+        "coveredObservationSeconds": 262.244
+      },
+      "windows": [
+        {
+          "index": 1,
+          "startSeconds": 13.891,
+          "endSeconds": 29.632,
+          "turnaroundMs": 15741,
+          "incomplete": false,
+          "observedTicks": 40,
+          "buckets": {
+            "no_approved_work_idle": 39,
+            "cooldown": 1
+          },
+          "estimatedObservationIntervalSeconds": {
+            "no_approved_work_idle": 15.472999999999999,
+            "cooldown": 0.268
+          },
+          "physicallyStationaryTicks": 40,
+          "visibleIdleLowerBoundTicks": 39,
+          "visibleIdleLowerBoundPercent": 97.5,
+          "possibleAdditionalIdleTicks": 0,
+          "busyOrProgressTicks": 0,
+          "longestVisibleIdleStreakTicks": 39,
+          "longestVisibleIdleStreakEstimatedSeconds": 15.473,
+          "coveredObservationSeconds": 15.741
+        },
+        {
+          "index": 2,
+          "startSeconds": 90.605,
+          "endSeconds": 107.789,
+          "turnaroundMs": 17184,
+          "incomplete": false,
+          "observedTicks": 45,
+          "buckets": {
+            "busy_without_proven_progress": 5,
+            "observed_progress": 22,
+            "pending_helper_possible_idle": 13,
+            "cooldown": 5
+          },
+          "estimatedObservationIntervalSeconds": {
+            "busy_without_proven_progress": 1.737,
+            "observed_progress": 8.679999999999998,
+            "pending_helper_possible_idle": 4.768,
+            "cooldown": 1.999
+          },
+          "physicallyStationaryTicks": 31,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 13,
+          "busyOrProgressTicks": 27,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 17.184
+        },
+        {
+          "index": 3,
+          "startSeconds": 153.925,
+          "endSeconds": 165.243,
+          "turnaroundMs": 11318,
+          "incomplete": false,
+          "observedTicks": 29,
+          "buckets": {
+            "pending_helper_possible_idle": 10,
+            "observed_progress": 13,
+            "cooldown": 3,
+            "busy_without_proven_progress": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 3.9480000000000004,
+            "observed_progress": 5.018999999999999,
+            "cooldown": 1.0899999999999999,
+            "busy_without_proven_progress": 1.2610000000000001
+          },
+          "physicallyStationaryTicks": 21,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 10,
+          "busyOrProgressTicks": 16,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 11.318
+        },
+        {
+          "index": 4,
+          "startSeconds": 215.794,
+          "endSeconds": 227.686,
+          "turnaroundMs": 11892,
+          "incomplete": false,
+          "observedTicks": 30,
+          "buckets": {
+            "observed_progress": 14,
+            "pending_helper_possible_idle": 9,
+            "busy_without_proven_progress": 4,
+            "cooldown": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 5.431,
+            "pending_helper_possible_idle": 3.6260000000000003,
+            "busy_without_proven_progress": 1.665,
+            "cooldown": 1.17
+          },
+          "physicallyStationaryTicks": 21,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 9,
+          "busyOrProgressTicks": 18,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 11.892
+        },
+        {
+          "index": 5,
+          "startSeconds": 285.822,
+          "endSeconds": 299.417,
+          "turnaroundMs": 13595,
+          "incomplete": false,
+          "observedTicks": 35,
+          "buckets": {
+            "pending_helper_possible_idle": 13,
+            "observed_progress": 13,
+            "cooldown": 4,
+            "busy_without_proven_progress": 5
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 5.13,
+            "observed_progress": 4.893000000000001,
+            "cooldown": 1.6010000000000002,
+            "busy_without_proven_progress": 1.9709999999999999
+          },
+          "physicallyStationaryTicks": 28,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 13,
+          "busyOrProgressTicks": 18,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 13.595
+        },
+        {
+          "index": 6,
+          "startSeconds": 349.977,
+          "endSeconds": 367.982,
+          "turnaroundMs": 18005,
+          "incomplete": false,
+          "observedTicks": 46,
+          "buckets": {
+            "pending_helper_possible_idle": 26,
+            "busy_without_proven_progress": 9,
+            "observed_progress": 8,
+            "cooldown": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 10.373000000000001,
+            "busy_without_proven_progress": 3.324,
+            "observed_progress": 3.0690000000000004,
+            "cooldown": 1.239
+          },
+          "physicallyStationaryTicks": 42,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 26,
+          "busyOrProgressTicks": 17,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 18.005
+        },
+        {
+          "index": 7,
+          "startSeconds": 415.387,
+          "endSeconds": 430.027,
+          "turnaroundMs": 14640,
+          "incomplete": false,
+          "observedTicks": 37,
+          "buckets": {
+            "pending_helper_possible_idle": 15,
+            "observed_progress": 13,
+            "cooldown": 5,
+            "busy_without_proven_progress": 4
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 6.050000000000001,
+            "observed_progress": 4.917000000000001,
+            "cooldown": 1.896,
+            "busy_without_proven_progress": 1.7770000000000001
+          },
+          "physicallyStationaryTicks": 29,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 15,
+          "busyOrProgressTicks": 17,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.64
+        },
+        {
+          "index": 8,
+          "startSeconds": 504.397,
+          "endSeconds": 518.409,
+          "turnaroundMs": 14012,
+          "incomplete": false,
+          "observedTicks": 36,
+          "buckets": {
+            "observed_progress": 8,
+            "cooldown": 3,
+            "pending_helper_possible_idle": 18,
+            "busy_without_proven_progress": 7
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 3.039,
+            "cooldown": 1.168,
+            "pending_helper_possible_idle": 7.027000000000001,
+            "busy_without_proven_progress": 2.778
+          },
+          "physicallyStationaryTicks": 32,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 18,
+          "busyOrProgressTicks": 15,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.012
+        },
+        {
+          "index": 9,
+          "startSeconds": 566.5,
+          "endSeconds": 584.514,
+          "turnaroundMs": 18014,
+          "incomplete": false,
+          "observedTicks": 46,
+          "buckets": {
+            "busy_without_proven_progress": 7,
+            "observed_progress": 15,
+            "pending_helper_possible_idle": 18,
+            "cooldown": 6
+          },
+          "estimatedObservationIntervalSeconds": {
+            "busy_without_proven_progress": 2.7409999999999997,
+            "observed_progress": 5.542999999999999,
+            "pending_helper_possible_idle": 7.456,
+            "cooldown": 2.274
+          },
+          "physicallyStationaryTicks": 40,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 18,
+          "busyOrProgressTicks": 22,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 18.014
+        },
+        {
+          "index": 10,
+          "startSeconds": 639.665,
+          "endSeconds": 655.028,
+          "turnaroundMs": 15363,
+          "incomplete": false,
+          "observedTicks": 40,
+          "buckets": {
+            "observed_progress": 18,
+            "busy_without_proven_progress": 5,
+            "pending_helper_possible_idle": 13,
+            "cooldown": 4
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 6.473,
+            "busy_without_proven_progress": 1.995,
+            "pending_helper_possible_idle": 5.313000000000001,
+            "cooldown": 1.5819999999999999
+          },
+          "physicallyStationaryTicks": 28,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 13,
+          "busyOrProgressTicks": 23,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 15.363
+        },
+        {
+          "index": 11,
+          "startSeconds": 704.04,
+          "endSeconds": 717.599,
+          "turnaroundMs": 13559,
+          "incomplete": false,
+          "observedTicks": 35,
+          "buckets": {
+            "busy_without_proven_progress": 5,
+            "pending_helper_possible_idle": 12,
+            "observed_progress": 13,
+            "cooldown": 5
+          },
+          "estimatedObservationIntervalSeconds": {
+            "busy_without_proven_progress": 1.872,
+            "pending_helper_possible_idle": 4.631,
+            "observed_progress": 5.201000000000001,
+            "cooldown": 1.8550000000000002
+          },
+          "physicallyStationaryTicks": 29,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 12,
+          "busyOrProgressTicks": 18,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 13.559
+        },
+        {
+          "index": 12,
+          "startSeconds": 769.586,
+          "endSeconds": 785.274,
+          "turnaroundMs": 15688,
+          "incomplete": false,
+          "observedTicks": 40,
+          "buckets": {
+            "pending_helper_possible_idle": 16,
+            "observed_progress": 14,
+            "busy_without_proven_progress": 6,
+            "cooldown": 4
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 6.204,
+            "observed_progress": 5.564000000000001,
+            "busy_without_proven_progress": 2.259,
+            "cooldown": 1.661
+          },
+          "physicallyStationaryTicks": 32,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 16,
+          "busyOrProgressTicks": 20,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 15.688
+        },
+        {
+          "index": 13,
+          "startSeconds": 835.107,
+          "endSeconds": 850.626,
+          "turnaroundMs": 15519,
+          "incomplete": false,
+          "observedTicks": 39,
+          "buckets": {
+            "pending_helper_possible_idle": 16,
+            "observed_progress": 15,
+            "cooldown": 4,
+            "busy_without_proven_progress": 4
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 6.277999999999999,
+            "observed_progress": 6.0169999999999995,
+            "cooldown": 1.566,
+            "busy_without_proven_progress": 1.658
+          },
+          "physicallyStationaryTicks": 30,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 16,
+          "busyOrProgressTicks": 19,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 15.519
+        },
+        {
+          "index": 14,
+          "startSeconds": 901.891,
+          "endSeconds": 916.695,
+          "turnaroundMs": 14804,
+          "incomplete": false,
+          "observedTicks": 38,
+          "buckets": {
+            "cooldown": 5,
+            "busy_without_proven_progress": 6,
+            "observed_progress": 12,
+            "pending_helper_possible_idle": 15
+          },
+          "estimatedObservationIntervalSeconds": {
+            "cooldown": 1.917,
+            "busy_without_proven_progress": 2.359,
+            "observed_progress": 4.495,
+            "pending_helper_possible_idle": 6.0329999999999995
+          },
+          "physicallyStationaryTicks": 33,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 15,
+          "busyOrProgressTicks": 18,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.804
+        },
+        {
+          "index": 15,
+          "startSeconds": 966.29,
+          "endSeconds": 979.275,
+          "turnaroundMs": 12985,
+          "incomplete": false,
+          "observedTicks": 33,
+          "buckets": {
+            "cooldown": 4,
+            "pending_helper_possible_idle": 14,
+            "observed_progress": 10,
+            "busy_without_proven_progress": 5
+          },
+          "estimatedObservationIntervalSeconds": {
+            "cooldown": 1.498,
+            "pending_helper_possible_idle": 5.6160000000000005,
+            "observed_progress": 3.971,
+            "busy_without_proven_progress": 1.9000000000000001
+          },
+          "physicallyStationaryTicks": 28,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 14,
+          "busyOrProgressTicks": 15,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 12.985
+        },
+        {
+          "index": 16,
+          "startSeconds": 1031.47,
+          "endSeconds": 1045.811,
+          "turnaroundMs": 14341,
+          "incomplete": false,
+          "observedTicks": 37,
+          "buckets": {
+            "pending_helper_possible_idle": 11,
+            "observed_progress": 17,
+            "busy_without_proven_progress": 5,
+            "cooldown": 4
+          },
+          "estimatedObservationIntervalSeconds": {
+            "pending_helper_possible_idle": 4.186,
+            "observed_progress": 6.942,
+            "busy_without_proven_progress": 1.605,
+            "cooldown": 1.608
+          },
+          "physicallyStationaryTicks": 26,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 11,
+          "busyOrProgressTicks": 22,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 14.341
+        },
+        {
+          "index": 17,
+          "startSeconds": 1097.523,
+          "endSeconds": 1113.484,
+          "turnaroundMs": 15961,
+          "incomplete": false,
+          "observedTicks": 41,
+          "buckets": {
+            "observed_progress": 12,
+            "cooldown": 6,
+            "pending_helper_possible_idle": 17,
+            "busy_without_proven_progress": 6
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 4.5600000000000005,
+            "cooldown": 2.36,
+            "pending_helper_possible_idle": 7.057999999999999,
+            "busy_without_proven_progress": 1.9829999999999999
+          },
+          "physicallyStationaryTicks": 34,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 17,
+          "busyOrProgressTicks": 18,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 15.961
+        },
+        {
+          "index": 18,
+          "startSeconds": 1165.612,
+          "endSeconds": 1175.235,
+          "turnaroundMs": 9623,
+          "incomplete": false,
+          "observedTicks": 25,
+          "buckets": {
+            "observed_progress": 10,
+            "cooldown": 3,
+            "pending_helper_possible_idle": 9,
+            "busy_without_proven_progress": 3
+          },
+          "estimatedObservationIntervalSeconds": {
+            "observed_progress": 3.7059999999999995,
+            "cooldown": 1.245,
+            "pending_helper_possible_idle": 3.3700000000000006,
+            "busy_without_proven_progress": 1.302
+          },
+          "physicallyStationaryTicks": 19,
+          "visibleIdleLowerBoundTicks": 0,
+          "visibleIdleLowerBoundPercent": 0,
+          "possibleAdditionalIdleTicks": 9,
+          "busyOrProgressTicks": 13,
+          "longestVisibleIdleStreakTicks": 0,
+          "longestVisibleIdleStreakEstimatedSeconds": 0,
+          "coveredObservationSeconds": 9.623
+        }
+      ]
+    }
+  },
+  "coverage": {
+    "duplicates": 0,
+    "resets": 0,
+    "gappedTicks": 0,
+    "invalid": 0,
+    "droppedRows": 0
+  },
+  "collectorOverhead": {
+    "callbacks": 5137,
+    "totalMs": 393.1894680000405,
+    "maxMs": 12.429789999965578
+  },
+  "eventCaptureCoverage": {
+    "started": 1794877592823,
+    "ended": 1794878792828,
+    "droppedEvidenceRows": 0,
+    "enqueuedRows": 948
+  },
+  "planningAudit": {
+    "reviewedAllWindows": true,
+    "excludedWindowIndices": [],
+    "notes": "All18 actual claim-to-accepted-completion windows serviced current live gameplay: fresh context, normal-tree selection, approval and intervening progress/status commentary where it occurred. Reasoning/tool/scheduling/status overhead remains included; not isolated inference. Root pin/code review occurred before timer start; its later progress-sync request was handled between claims. No developer/code/report/ledger authoring or runtime tuning occurred within the fixed window. Observation waits were outside completed claims. No rejected or declined proposal was removed; none occurred in this live window. All startup idle and unserved scheduling gaps remain in whole-run totals."
+  },
+  "planningLatency": {
+    "actualClaimToCompletionMs": {
+      "n": 18,
+      "p50": 14640,
+      "p95": 18014,
+      "p99": 18014,
+      "min": 9623,
+      "max": 18014
+    },
+    "automaticRequestLifetimeMs": {
+      "n": 18,
+      "p50": 65171,
+      "p95": 755071,
+      "p99": 755071,
+      "min": 54681,
+      "max": 755071
+    },
+    "unservedPrefetchIsThinking": false,
+    "meaning": "Current claims end after successful validation/commit or explicit null decline. Rejected submissions remain inside the open claim through correction. Claim time includes reasoning/tools/scheduling/status commentary, not isolated inference.",
+    "requestLifetimeMeaning": "Automatic request lifetime can begin before the measured window; the prepared owner already had one request pending before root review. That preparation lifetime is not measured thinking or idle. All actual claim windows remain included.",
+    "requestsBornWithinWindowMs": {
+      "n": 17,
+      "p50": 65171,
+      "p95": 86209,
+      "p99": 86209,
+      "min": 54681,
+      "max": 86209
+    }
+  },
+  "throughput": {
+    "verifiedActions": 328,
+    "verifiedActionsPerMinute": 16.39993166695139,
+    "failedResults": 4,
+    "countsDelta": {
+      "avoidableIdleTicks": 0,
+      "noApprovedRoutineTicks": 0,
+      "plannerStarvedTicks": 82,
+      "continuationApprovals": 1,
+      "dispatches": 333,
+      "dispatchesWhilePlannerPending": 333,
+      "plannerPlansAccepted": 18,
+      "currentAgentToolPlansAccepted": 18,
+      "packetDispatches:interactLoc": 161,
+      "helperPendingTicks": 2590,
+      "helperPendingWithoutObservedProgressTicks": 1686,
+      "ongoingActionTicks": 2590,
+      "observedProgressPublications": 910,
+      "animationObservedTicks": 432,
+      "observedGatherProgressPublications": 158,
+      "verifiedActions": 328,
+      "helperVerifiedCompletions": 328,
+      "verifiedActionsWhilePlannerPending": 311,
+      "routineCycles": 328,
+      "continuationActionsGenerated": 315,
+      "cooldownDecisions": 328,
+      "episodes": 332,
+      "eligibleTicks": 328,
+      "packetDispatches:clickDialogOption": 53,
+      "packetDispatches:useItemOnItem": 160,
+      "packetDispatches:walkTo": 12,
+      "helperReportedFailures": 4,
+      "failures": 4,
+      "boundedContinuationRecoveries": 4,
+      "standingChunksStarted": 3
+    },
+    "skillProgress": {
+      "Woodcutting": {
+        "startLevel": 71,
+        "endLevel": 79,
+        "startXp": 152812,
+        "endXp": 251562,
+        "xpGain": 98750
+      },
+      "Firemaking": {
+        "startLevel": 78,
+        "endLevel": 85,
+        "startXp": 244500,
+        "endXp": 402500,
+        "xpGain": 158000
+      }
+    },
+    "failureReasons": {
+      "FIRE_BLOCKED": 2,
+      "RESOURCE_DEPLETED": 2
+    },
+    "dispatchesDuringPlanning": 71,
+    "observedProgressTicksDuringPlanning": 227,
+    "helperVerifiedCompletions": 328,
+    "continuedOwnedEffectSteps": 0,
+    "totalVerifiedEffectSteps": 328,
+    "failedAttemptCount": 4,
+    "completedDispatchAttempts": 332,
+    "inFlightAtCutoff": 1,
+    "helperReportedFailures": 4,
+    "reconciledHelperFailures": 0,
+    "failureRate": {
+      "denominator": "Completed helper dispatch attempts = helper-verified completions + failed attempts; excludes passive effect steps and in-flight attempts.",
+      "previousFailed": 18,
+      "previousCompleted": 263,
+      "previousPercent": 6.844106463878327,
+      "currentFailed": 4,
+      "currentCompleted": 332,
+      "currentPercent": 1.2048192771084338,
+      "changePercentagePoints": -5.639287186769893,
+      "absoluteChange": -14
+    },
+    "failureCounting": {
+      "failedAttemptCounter": 4,
+      "routineFailedEvents": 4,
+      "otherFailedOrInvalidatedHelperAttempts": 0,
+      "note": "Do not invent a category or successful outcome for a failed counter increment without routine_failed evidence. All failures remain in the completed-attempt rate."
+    },
+    "episodeOutcomes": {
+      "counts": {
+        "chop:verified": 158,
+        "burn_logs:verified": 158,
+        "walk:verified": 12,
+        "burn_logs:failed": 2,
+        "chop:failed": 2
+      },
+      "missingEpisodes": 0,
+      "meaning": "Only episode events captured within exact boundary, joined to private persisted action outcomes. No raw state/name/chat or private path is published."
+    },
+    "resourceVerifiedCompletions": 316,
+    "resourceVerifiedPerMinute": 15.799934166940972,
+    "inFlightAgeAtCutoffMs": 6634
+  },
+  "actionTiming": {
+    "tickCadenceMs": {
+      "n": 3000,
+      "p50": 400.3637349999044,
+      "p95": 480.3795290000271,
+      "p99": 511.2161540000234,
+      "min": 30.087459000060335,
+      "max": 1216.6295229999814
+    },
+    "tickJitterMs": {
+      "n": 3000,
+      "p50": 49.65262799989432,
+      "p95": 159.83400699985214,
+      "p99": 225.40219600009732,
+      "min": 0.02387500018812716,
+      "max": 1186.542063999921
+    },
+    "plannerRequestMs": {
+      "n": 18,
+      "p50": 65170.905411999905,
+      "p95": 755065.262753,
+      "p99": 755065.262753,
+      "min": 54680.611389000085,
+      "max": 755065.262753
+    },
+    "plannerTurnaroundMs": {
+      "n": 18,
+      "p50": 65170.905411999905,
+      "p95": 755065.262753,
+      "p99": 755065.262753,
+      "min": 54680.611389000085,
+      "max": 755065.262753
+    },
+    "observationToDispatchMs": {
+      "n": 333,
+      "p50": 0.2827149999793619,
+      "p95": 0.8644789999816567,
+      "p99": 4.923473999951966,
+      "min": 0.17535499995574355,
+      "max": 263.7000920000719
+    },
+    "publicationAgeAtDispatchMs": {
+      "n": 333,
+      "p50": 32,
+      "p95": 40,
+      "p99": 59,
+      "min": 27,
+      "max": 299
+    },
+    "dispatchAckMs": {
+      "n": 386,
+      "p50": 104.10635800007731,
+      "p95": 145.0377439998556,
+      "p99": 175.37711000000127,
+      "min": 81.01921499986202,
+      "max": 362.19794199988246
+    },
+    "actionToEffectMs": {
+      "n": 328,
+      "p50": 2478.7559539999347,
+      "p95": 5615.414224999957,
+      "p99": 9579.928311000112,
+      "min": 740.1228879999835,
+      "max": 12448.094883000012
+    }
+  },
+  "continuityEvents": [
+    {
+      "atSeconds": 138.149,
+      "type": "continuation_recovery",
+      "action": "burn_logs",
+      "reason": "FIRE_BLOCKED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 196.222,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 217.366,
+      "type": "continuation_recovery",
+      "action": "chop",
+      "reason": "RESOURCE_DEPLETED",
+      "backoffTicks": 2
+    },
+    {
+      "atSeconds": 682.571,
+      "type": "continuation_recovery",
+      "action": "burn_logs",
+      "reason": "FIRE_BLOCKED",
+      "backoffTicks": 2
+    }
+  ],
+  "comparison": {
+    "auditedGameplayPlanning": {
+      "baselinePercent": 15.56420233463035,
+      "followupPercent": 5.803571428571429,
+      "improvementPercentagePoints": 9.760630906058921,
+      "relativeReductionPercent": 62.71205357142856
+    },
+    "wholeRun": {
+      "baselinePercent": 15.3,
+      "followupPercent": 2.466666666666667,
+      "improvementPercentagePoints": 12.833333333333334,
+      "relativeReductionPercent": 83.87799564270153
+    },
+    "baselineAuditedWindowIndices": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "baselineMixedWindowIndices": [
+      1
+    ],
+    "baselineWholeRunCaveat": "Immediate reliability baseline retains15 claimed-submission windows, including mixed support/gameplay claim1. Its separately audited subset excludes entire claim1. Current all18 claims are audited gameplay service; no current exclusion. Historical reports remain unchanged.",
+    "verifiedActionsPerMinute": {
+      "baseline": 12.249979583367361,
+      "followup": 16.39993166695139,
+      "difference": 4.149952083584028
+    },
+    "baselineFailedResults": 18,
+    "followupFailedResults": 4,
+    "higherSkillAndWorkloadCaveat": "Same character has higher starting skill levels. Adaptive inventory/target decisions and random resource success differ; this is an observed before/after session, not a randomized isolated controller-speed experiment.",
+    "allClaimIntervals": {
+      "baselinePercent": 30.128205128205128,
+      "followupPercent": 5.803571428571429,
+      "improvementPercentagePoints": 24.3246336996337,
+      "relativeReductionPercent": 80.7370820668693
+    },
+    "primaryMeaning": "Immediate previous reliability run is primary; retain whole/all-claim and any separately audited subset. Prior continuity is an additional historical comparator.",
+    "priorContinuity": {
+      "sourceCommit": "0ad0cab7af4aa85be996642cbd8ad008d17fac5d",
+      "whole": {
+        "baselinePercent": 18.733333333333334,
+        "followupPercent": 2.466666666666667,
+        "improvementPercentagePoints": 16.266666666666666,
+        "relativeReductionPercent": 86.83274021352312
+      },
+      "allClaims": {
+        "baselinePercent": 35.90504451038576,
+        "followupPercent": 5.803571428571429,
+        "improvementPercentagePoints": 30.101473081814326,
+        "relativeReductionPercent": 83.83633412042502
+      },
+      "helperCompletions": 187,
+      "failedAttempts": 29
+    }
+  },
+  "checks": {
+    "passed": 15,
+    "failed": 0,
+    "assertions": {
+      "exactTwentyMinuteTarget": true,
+      "boundaryMetricsMatchPassiveEnd": true,
+      "exclusiveBucketSum": true,
+      "atLeastTenClaimWindows": true,
+      "noIncompleteClaims": true,
+      "sameOwnerCharacterWorldSessionLife": true,
+      "sourceUnchangedDuringMeasurement": true,
+      "noLostEvidenceRows": true,
+      "noDroppedTickRows": true,
+      "noTickNumberGapsOrResets": true,
+      "auditedAllClaims": true,
+      "helperCompletionMetricPreserved": true,
+      "nonnegativeDispatchAccounting": true,
+      "episodeHelperCountMatches": true,
+      "noMissingEpisodeEvidence": true
+    }
+  },
+  "jointAssessment": {
+    "planningIdleReduced": true,
+    "throughputNotLowerThanBaseline": true,
+    "actualSkillProgress": true,
+    "note": "Lower idle alone does not establish success; inspect helper ambiguity, action rate, failures and actual progress. Skill/workload/network differences remain."
+  },
+  "operatorNotes": [
+    "All runtime, capture/ledger/report tools and tests prepared and published before the measured window. Root preflight review occurs before timer start.",
+    "Standing ordinary-resource goal is approved explicitly; no wall-clock renewal. Finite proposal/action deadlines, cooldowns and bounded retry/backoff chunks remain.",
+    "Same owned account with higher skills; this cloud agent is planner through current tools. No second provider, synthetic thinking sleep, game-rate change or public chat.",
+    "Keep startup idle and any unserved scheduling gaps; a helper promise is ambiguous, not productive evidence.",
+    "The unchanged legacy no_approved_work_idle bucket describes no materialized active/queued routine, not absence of standing-goal authority; resource/backoff waits remain visible idle rather than being relabeled productive.",
+    "Initial startup planning/status/tool overhead is retained. The original standing goal was approved once; later actual agent plans omit continuation to preserve it rather than renewing authority.",
+    "After auto-cutoff, stop was requested and exact owned process identities were checked. No new/replacement account, no provider or public chat.",
+    "The first automatic planner request was born during readiness before root review; its full755071ms lifetime includes preparation. All actual planning claims remain timed only inside the fixed window. Initial72-tick/28.809s visible-idle stretch includes actual start/tool/status/initial plan handling, not discarded preparation.",
+    "No artificial >180s planner delay was inserted. Live evidence is one standing approval lasting the full session while genuine later plans omit continuation; the preflight virtual-clock test separately exercises181s of unserved planning. In-window request lifetimes and actual claim times are reported, not claimed as isolated inference.",
+    "Compared with reliability, routes moved into a different normal-tree area and starting skills were higher; gains are observed before/after, not causally isolated controller improvements. Helper ambiguity rose by94ticks (3.13percentage points) while progress ticks rose968→1060; a helper promise remains unproven work."
+  ],
+  "limitations": [
+    "This cloud agent supplied plans with current tools; no second provider/API key or inaccessible Wartime identity was tested.",
+    "A standing tile, helper promise or no-XP tick alone does not establish idle/productivity. Hidden server work remains uncertain.",
+    "All-claim and whole-run measurements retain every failure, pause and mixed window; any gameplay-only audit excludes entire mixed windows, without invented developer durations.",
+    "Single character and 20-minute window do not prove unlimited autonomy, PvP ability or a causal timing result independent of higher skills/workload."
+  ],
+  "longPauses": {
+    "whole": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 0,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 28.809,
+      "longPauses": [
+        {
+          "startSeconds": 0.555,
+          "endSeconds": 29.364,
+          "ticks": 72,
+          "observedSeconds": 28.809
+        }
+      ]
+    },
+    "claims": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 0,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 15.473,
+      "longPauses": [
+        {
+          "startSeconds": 13.891,
+          "endSeconds": 29.364,
+          "ticks": 39,
+          "observedSeconds": 15.473
+        }
+      ]
+    },
+    "previousWhole": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 3,
+      "atLeast30Seconds": 2,
+      "atLeast50Seconds": 1,
+      "longestSeconds": 107.541,
+      "longPauses": [
+        {
+          "startSeconds": 0.571,
+          "endSeconds": 43.766,
+          "ticks": 108,
+          "observedSeconds": 43.195
+        },
+        {
+          "startSeconds": 421.029,
+          "endSeconds": 528.57,
+          "ticks": 269,
+          "observedSeconds": 107.541
+        },
+        {
+          "startSeconds": 845.425,
+          "endSeconds": 861.019,
+          "ticks": 39,
+          "observedSeconds": 15.594
+        }
+      ]
+    },
+    "previousClaims": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 2,
+      "atLeast30Seconds": 1,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 43.195,
+      "longPauses": [
+        {
+          "startSeconds": 0.571,
+          "endSeconds": 43.766,
+          "ticks": 108,
+          "observedSeconds": 43.195
+        },
+        {
+          "startSeconds": 471.73,
+          "endSeconds": 482.29,
+          "ticks": 28,
+          "observedSeconds": 10.56
+        }
+      ]
+    },
+    "auditedClaims": {
+      "definition": "Consecutive observed visible-idle buckets, breaking at missing ticks or excluded time; no invented missing time.",
+      "atLeast10Seconds": 1,
+      "atLeast30Seconds": 0,
+      "atLeast50Seconds": 0,
+      "longestSeconds": 15.473,
+      "longPauses": [
+        {
+          "startSeconds": 13.891,
+          "endSeconds": 29.364,
+          "ticks": 39,
+          "observedSeconds": 15.473
+        }
+      ]
+    },
+    "originalOverlapAccounting": {
+      "previousWholeTicks": 269,
+      "previousWholeSeconds": 107.541,
+      "previousClaimTicks": 108,
+      "previousClaimSeconds": 43.195,
+      "currentWholeTicks": 72,
+      "currentWholeSeconds": 28.809,
+      "currentClaimTicks": 39,
+      "currentClaimSeconds": 15.473,
+      "note": "Unchanged historical overlap/streak values for immediate reliability and current standing runs. Supplemental strict timelines clip exact claim boundaries and break gaps; no historical value is replaced."
+    }
+  },
+  "previousReference": {
+    "sourceCommit": "01e6ad76f3b6becd1eb432a90c3ac39e2c6c9ee7",
+    "planningIdle": 80,
+    "planningTicks": 514,
+    "wholeIdle": 459,
+    "wholeTicks": 3000
+  },
+  "shipment": {
+    "measuredRuntimeCommit": "7181b7a69458d70e7d5df75ebb72b5d0f081f260",
+    "finalRuntimeSameAsMeasured": true
+  },
+  "validation": {
+    "preflight": "standing-preflight.json",
+    "node": {
+      "passed": 58,
+      "failed": 0
+    },
+    "bun": {
+      "passed": 91,
+      "failed": 0
+    },
+    "overlap": true,
+    "reportOnlyPostRun": {
+      "node": {
+        "passed": 3,
+        "failed": 0
+      },
+      "bun": {
+        "passed": 3,
+        "failed": 0
+      },
+      "note": "Reporting-only refinements after deadline/cleanup: correct inherited baseline wording, disclose pre-window request lifetime, join sanitized episode outcomes. Runtime remained unchanged."
+    }
+  },
+  "agentSubmissionAudit": null,
+  "proposalAccounting": {
+    "submissions": 18,
+    "accepted": 18,
+    "rejected": 0,
+    "declined": 0,
+    "correctedAccepted": 0,
+    "rejections": []
+  },
+  "captureSemantics": {
+    "ticks": "Unchanged passive tick classifier and overlap/streak definitions.",
+    "claims": "Current claims end after successful validation/commit or explicit null decline. Rejected submissions remain inside the open claim through correction. Claim time includes reasoning/tools/scheduling/status commentary, not isolated inference.",
+    "previous": "Reliability claims closed at submission before validation:15 claims,14 accepted; one claimed invalid submission plus one later unclaimed stale correction. Historical traces/reports unchanged. This claim-boundary improvement limits strict before/after equivalence when there are rejections."
+  },
+  "pendingAtCutoff": {
+    "count": 1,
+    "oldestRequestAgeMs": 22599,
+    "notThinkingWithoutClaim": true
+  },
+  "standingExecution": {
+    "approvedGoals": 1,
+    "boundedChunksStarted": 3,
+    "continuationExpirations": 0,
+    "finalMode": "standing",
+    "maximumGeneratedAttemptsPerChunk": 80,
+    "perActionDeadlineStillEnforced": true,
+    "totalChunksEntered": 4,
+    "chunkCounterMeaning": "boundedChunksStarted counts additional chunk transitions after initial chunk1."
+  },
+  "privateEvidence": {
+    "tickTraceSha256": "a91cbfc24db9b0a803041b57e6ceddb3b463050528a93b190c023baf5e07d771",
+    "eventTraceSha256": "aa4776e16dddf71456ccebe5b061580e89ced7235f27627bec4c189adad4095e",
+    "rawPublished": false
+  }
+}

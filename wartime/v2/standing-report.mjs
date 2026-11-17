@@ -4,7 +4,17 @@ import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {reliabilityReport} from './reliability-report.mjs';
 import {comparePercent} from './continuity-report.mjs';
+import {distribution} from './analyze-long-run.mjs';
+import path from 'node:path';
 const parse=t=>t.trim().split('\n').filter(Boolean).map(JSON.parse);
+export function episodeOutcomes(evidence,loadEpisode){
+ const duration=evidence.findLast(x=>x.kind==='end').at,counts={};let missing=0;
+ for(const row of evidence.filter(x=>x.kind==='event'&&x.event.type==='episode'&&x.at>=0&&x.at<=duration)){
+  let episode;try{episode=loadEpisode(row.event.id);}catch{missing++;continue;}
+  for(const step of episode.steps??[]){if(!['chop','burn_logs','walk'].includes(step.action)||!['verified','failed','already_satisfied'].includes(step.status))continue;const key=step.action+':'+step.status;counts[key]=(counts[key]??0)+1;}
+ }
+ return {counts,missingEpisodes:missing,meaning:'Only episode events captured within exact boundary, joined to private persisted action outcomes. No raw state/name/chat or private path is published.'};
+}
 export function standingReport(input,previousTrace,continuity){
  const r=reliabilityReport(input,previousTrace),end=input.evidence.findLast(x=>x.kind==='end');
  const marks=input.evidence.filter(x=>x.at>=0&&x.at<=end.at&&x.kind.startsWith('completion_'));
@@ -12,14 +22,24 @@ export function standingReport(input,previousTrace,continuity){
  for(const m of marks){if(m.kind==='completion_rejected')rejected.add(m.id);if(m.kind==='completion_accepted'&&rejected.has(m.id))corrected++;}
  r.scope='Explicit standing ordinary-resource goal; this authorized cloud agent supplies live plans through existing tools, online only.';
  r.proposalAccounting={submissions:marks.filter(m=>m.kind==='completion_submission').length,accepted:marks.filter(m=>m.kind==='completion_accepted').length,rejected:marks.filter(m=>m.kind==='completion_rejected').length,declined:marks.filter(m=>m.kind==='completion_declined').length,correctedAccepted:corrected,rejections:marks.filter(m=>m.kind==='completion_rejected').map(m=>({atSeconds:m.at/1000,reason:m.reason}))};
+ r.throughput.episodeOutcomes=input.episodeOutcomes??null;
+ if(input.episodeOutcomes){r.throughput.resourceVerifiedCompletions=(input.episodeOutcomes.counts['chop:verified']??0)+(input.episodeOutcomes.counts['burn_logs:verified']??0);r.throughput.resourceVerifiedPerMinute=r.throughput.resourceVerifiedCompletions/(end.at/60000);}
  r.captureSemantics={ticks:'Unchanged passive tick classifier and overlap/streak definitions.',claims:'Current claims end after successful validation/commit or explicit null decline. Rejected submissions remain inside the open claim through correction. Claim time includes reasoning/tools/scheduling/status commentary, not isolated inference.',previous:'Reliability claims closed at submission before validation:15 claims,14 accepted; one claimed invalid submission plus one later unclaimed stale correction. Historical traces/reports unchanged. This claim-boundary improvement limits strict before/after equivalence when there are rejections.'};
+ r.planningLatency.meaning=r.captureSemantics.claims;
+ r.planningLatency.requestLifetimeMeaning='Automatic request lifetime can begin before the measured window; the prepared owner already had one request pending before root review. That preparation lifetime is not measured thinking or idle. All actual claim windows remain included.';
+ const beginTime=end.ended-end.at;
+ r.planningLatency.requestsBornWithinWindowMs=distribution(r.analysis.planningWindows.filter(w=>beginTime+w.endSeconds*1000-w.automaticRequestLifetimeMs>=beginTime).map(w=>w.automaticRequestLifetimeMs));
+ r.comparison.baselineWholeRunCaveat='Immediate reliability baseline retains15 claimed-submission windows, including mixed support/gameplay claim1. Its separately audited subset excludes entire claim1. Current all18 claims are audited gameplay service; no current exclusion. Historical reports remain unchanged.';
+ r.longPauses.originalOverlapAccounting.note='Unchanged historical overlap/streak values for immediate reliability and current standing runs. Supplemental strict timelines clip exact claim boundaries and break gaps; no historical value is replaced.';
  r.comparison.primaryMeaning='Immediate previous reliability run is primary; retain whole/all-claim and any separately audited subset. Prior continuity is an additional historical comparator.';
  r.comparison.priorContinuity={sourceCommit:continuity.sourceCommit,whole:comparePercent(continuity.analysis.whole.visibleIdleLowerBoundPercent,r.analysis.whole.visibleIdleLowerBoundPercent),allClaims:comparePercent(continuity.analysis.claimedAgentToolIntervals.visibleIdleLowerBoundPercent,r.analysis.claimedAgentToolIntervals.visibleIdleLowerBoundPercent),helperCompletions:continuity.throughput.verifiedActions,failedAttempts:continuity.throughput.failedResults};
  const births=new Map((input.evidence[0].pendingRequests??[]).map(x=>[x.id,x.requestedAt]));
  for(const x of input.evidence)if(x.kind==='event'&&x.event.type==='planner_requested')births.set(x.event.id,x.event.at);
  const done=new Set(input.evidence.filter(x=>x.kind==='event'&&x.event.type==='planner_response').map(x=>x.event.id));
  r.pendingAtCutoff={count:[...births].filter(([id])=>!done.has(id)).length,oldestRequestAgeMs:Math.max(0,...[...births].filter(([id])=>!done.has(id)).map(([,at])=>end.ended-at)),notThinkingWithoutClaim:true};
- r.standingExecution={approvedGoals:end.countsDelta.continuationApprovals??0,boundedChunksStarted:end.countsDelta.standingChunksStarted??0,continuationExpirations:end.countsDelta.continuationExpirations??0,finalMode:end.snapshot.continuation?.mode??null,maximumGeneratedAttemptsPerChunk:80,perActionDeadlineStillEnforced:true};
+ const lastDispatch=input.evidence.findLast(x=>x.kind==='event'&&x.event.type==='dispatch'&&x.at<=end.at);r.throughput.inFlightAgeAtCutoffMs=r.throughput.inFlightAtCutoff===1&&lastDispatch?end.at-lastDispatch.at:null;
+ r.standingExecution={approvedGoals:end.countsDelta.continuationApprovals??0,boundedChunksStarted:end.countsDelta.standingChunksStarted??0,continuationExpirations:end.countsDelta.continuationExpirations??0,finalMode:end.snapshot.continuation?.mode??null,maximumGeneratedAttemptsPerChunk:80,perActionDeadlineStillEnforced:true,totalChunksEntered:1+(end.countsDelta.standingChunksStarted??0),chunkCounterMeaning:'boundedChunksStarted counts additional chunk transitions after initial chunk1.'};
+ if(input.episodeOutcomes){const verified=Object.entries(input.episodeOutcomes.counts).filter(([k])=>k.endsWith(':verified')).reduce((s,[,n])=>s+n,0);r.checks.assertions.episodeHelperCountMatches=verified===r.throughput.helperVerifiedCompletions;r.checks.assertions.noMissingEpisodeEvidence=input.episodeOutcomes.missingEpisodes===0;r.checks.passed=Object.values(r.checks.assertions).filter(Boolean).length;r.checks.failed=Object.values(r.checks.assertions).filter(v=>!v).length;}
  r.validation=input.metadata.validation??null;
  return r;
 }
@@ -48,6 +68,8 @@ ${scopes.map(([n,v])=>`${n}: visible-idle observed intervals${fmt(Object.entries
 
 Helpers completed **${r.throughput.helperVerifiedCompletions}**, versus245 reliability /187 continuity; **${r.throughput.verifiedActionsPerMinute.toFixed(2)}/minute**. Continued-owned observed effect steps **${r.throughput.continuedOwnedEffectSteps}** are separate, not completed dispatch attempts. Failures **${f.currentFailed}/${f.currentCompleted} (${fmt(f.currentPercent)}%)**, versus18/263 (6.844%) reliability and29/216 (13.426%) continuity. Absolute failure change${f.absoluteChange}; rate change${fmt(f.changePercentagePoints)}points. ${r.throughput.inFlightAtCutoff} in flight at cutoff; later effects/stop cancellation excluded. Dispatch total${r.throughput.countsDelta.dispatches}=helper completions+failed attempts+in-flight; passive effects excluded.
 
+Verified episode action breakdown:${JSON.stringify(r.throughput.episodeOutcomes)}. Resource-only verified completions:${r.throughput.resourceVerifiedCompletions??'not captured'} (${r.throughput.resourceVerifiedPerMinute?.toFixed(2)??'unknown'}/minute), separate from movement. In-flight helper age at cutoff:${r.throughput.inFlightAgeAtCutoffMs??'unknown'}ms.
+
 Routine-failure causes:${JSON.stringify(r.throughput.failureReasons)}. Failed-counter/event distinction:${JSON.stringify(r.throughput.failureCounting)}. Helper-reported failures${r.throughput.helperReportedFailures}; proven fresh-effect reconciliations${r.throughput.reconciledHelperFailures}; bounded recoveries${r.throughput.countsDelta.boundedContinuationRecoveries??0}; no-resource wait rounds${r.throughput.countsDelta.resourceWaitRounds??0}. These counts remain visible, never relabeled as successes. A depleted tree without required log/XP is still failure.
 
 ${Object.entries(r.throughput.skillProgress).map(([name,s])=>`- ${name}:${s.startLevel}→${s.endLevel}, +${s.xpGain} observed modified-server XP.`).join('\n')}
@@ -62,7 +84,7 @@ ${[['Whole','whole','previousWhole'],['All claims','claims','previousClaims']].m
 
 Unchanged historical whole streak:${a.whole.longestVisibleIdleStreakTicks}ticks /${fmt(a.whole.longestVisibleIdleStreakEstimatedSeconds)}s, versus269ticks/107.541s reliability. Claims:${a.claimedAgentToolIntervals.longestVisibleIdleStreakTicks}ticks /${fmt(a.claimedAgentToolIntervals.longestVisibleIdleStreakEstimatedSeconds)}s. Strict timelines clip claim gaps; historical overlap values are preserved separately in JSON.
 
-Standing execution:${JSON.stringify(r.standingExecution)}. It executes an approved ordinary resource goal through bounded chunks, independent of a pending planner's wall clock; each action still has finite timeout, cooldown, proof checks and bounded backoff. It cannot invent new goals or wake an inactive chat. Manual stop/cancel, goal replacement and actual owner/connection/session failure revoke authority. No church/automatic HP/combat/region gameplay pauses. All ≥10s whole pauses:
+The initial startup planning/status/tool interval is retained in every whole-run metric. Any further ≥10s pauses are listed below; no start/recovery period was removed. Standing execution:${JSON.stringify(r.standingExecution)}. It executes an approved ordinary resource goal through bounded chunks, independent of a pending planner's wall clock; each action still has finite timeout, cooldown, proof checks and bounded backoff. It cannot invent new goals or wake an inactive chat. Manual stop/cancel, goal replacement and actual owner/connection/session failure revoke authority. No church/automatic HP/combat/region gameplay pauses. All ≥10s whole pauses:
 
 ${r.longPauses.whole.longPauses.length?'| Relative start–end(s) | Ticks | Seconds |\n|---:|---:|---:|\n'+r.longPauses.whole.longPauses.map(p=>`|${fmt(p.startSeconds)}–${fmt(p.endSeconds)}|${p.ticks}|${fmt(p.observedSeconds)}|`).join('\n'):'None observed.'}
 
@@ -70,7 +92,7 @@ ${r.longPauses.whole.longPauses.length?'| Relative start–end(s) | Ticks | Seco
 
 ${plans.join('\n')}
 
-Proposals:${JSON.stringify(r.proposalAccounting)}. ${r.captureSemantics.claims} ${r.captureSemantics.previous} Pending-at-cutoff:${JSON.stringify(r.pendingAtCutoff)}. An unserved prefetch is not proof a model was thinking. Observation waits are outside completed claims; status commentary within a claim remains included. No synthetic thinking sleeps, game tick changes or code/report/ledger authoring during gameplay claims.
+Proposals:${JSON.stringify(r.proposalAccounting)}. ${r.captureSemantics.claims} ${r.captureSemantics.previous} ${r.planningLatency.requestLifetimeMeaning} Requests born within window:${JSON.stringify(r.planningLatency.requestsBornWithinWindowMs)}. Pending-at-cutoff:${JSON.stringify(r.pendingAtCutoff)}. An unserved prefetch is not proof a model was thinking. Observation waits are outside completed claims; status commentary within a claim remains included. No synthetic thinking sleeps, game tick changes or code/report/ledger authoring during gameplay claims.
 
 ${timing.join('\n')}
 
@@ -85,4 +107,4 @@ Checks:${r.checks.passed}passed/${r.checks.failed}failed. Validation:${JSON.stri
 One finite live session cannot establish zero hidden idle, unlimited autonomy, all transient failures eliminated, or performance of the separate Wartime runtime. Raw character/account/state/chat evidence stays private; published evidence hashes identify the retained private trace.
 `;
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const [tf,ef,mf,out]=process.argv.slice(2),metadata=JSON.parse(await readFile(mf,'utf8')),tt=await readFile(tf,'utf8'),et=await readFile(ef,'utf8');const r=standingReport({trace:parse(tt),evidence:parse(et),baseline:JSON.parse(await readFile(metadata.baselineFile,'utf8')),traceSummary:JSON.parse(await readFile(tf+'.summary.json','utf8')),evidenceSummary:JSON.parse(await readFile(ef+'.summary.json','utf8')),metadata},parse(await readFile(metadata.previousTraceFile,'utf8')),JSON.parse(await readFile(metadata.continuityFile,'utf8')));r.privateEvidence={tickTraceSha256:createHash('sha256').update(tt).digest('hex'),eventTraceSha256:createHash('sha256').update(et).digest('hex'),rawPublished:false};await writeFile(out+'.json',JSON.stringify(r,null,2)+'\n');await writeFile(out+'.md',readableStanding(r));console.log(JSON.stringify({window:r.window,checks:r.checks,allClaims:r.comparison.allClaimIntervals,whole:r.comparison.wholeRun,helper:r.throughput.helperVerifiedCompletions,failures:r.throughput.failureRate,longest:r.longPauses.whole.longestSeconds}));}
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const [tf,ef,mf,out]=process.argv.slice(2),metadata=JSON.parse(await readFile(mf,'utf8')),tt=await readFile(tf,'utf8'),et=await readFile(ef,'utf8');const evidence=parse(et);const episodes=new Map();if(metadata.episodeDirectory)for(const row of evidence.filter(x=>x.kind==='event'&&x.event.type==='episode')){try{episodes.set(row.event.id,JSON.parse(await readFile(path.join(metadata.episodeDirectory,row.event.id+'.json'),'utf8')));}catch{}}const outcomes=metadata.episodeDirectory?episodeOutcomes(evidence,id=>{if(!episodes.has(id))throw Error('MISSING_EPISODE');return episodes.get(id);}):null;const r=standingReport({trace:parse(tt),evidence,episodeOutcomes:outcomes,baseline:JSON.parse(await readFile(metadata.baselineFile,'utf8')),traceSummary:JSON.parse(await readFile(tf+'.summary.json','utf8')),evidenceSummary:JSON.parse(await readFile(ef+'.summary.json','utf8')),metadata},parse(await readFile(metadata.previousTraceFile,'utf8')),JSON.parse(await readFile(metadata.continuityFile,'utf8')));r.privateEvidence={tickTraceSha256:createHash('sha256').update(tt).digest('hex'),eventTraceSha256:createHash('sha256').update(et).digest('hex'),rawPublished:false};await writeFile(out+'.json',JSON.stringify(r,null,2)+'\n');await writeFile(out+'.md',readableStanding(r));console.log(JSON.stringify({window:r.window,checks:r.checks,allClaims:r.comparison.allClaimIntervals,whole:r.comparison.wholeRun,helper:r.throughput.helperVerifiedCompletions,failures:r.throughput.failureRate,longest:r.longPauses.whole.longestSeconds}));}

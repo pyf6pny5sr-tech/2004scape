@@ -2,7 +2,7 @@
 
 # Wartime · 2004Scape controller
 
-**New implementation:** [Wartime v2: persistent host and current-agent bridge](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [latest live reliability report](v2/reliability-run-report.md) records a fixed20-minute online run, measured idle/failures and remaining long pauses. The [original v2 validation](v2/validation-report.json) remains historical. The v1 implementation and historical report below remain intact.
+**New implementation:** [Wartime v2: persistent host and current-agent bridge](v2/README.md). Start there for the new controller and [copy/paste handoff](v2/HANDOFF.txt). Its [latest standing-goal live report](v2/standing-run-report.md) records a fixed20-minute online run:2.47% visible idle,328 verified helper completions and4/332 failed attempts, with37.70% ambiguous helper ticks retained. The [previous reliability report](v2/reliability-run-report.md) remains unchanged. The [original v2 validation](v2/validation-report.json) remains historical. The v1 implementation and historical report below remain intact.
 
 This project combines cited 2004Scape knowledge with a model-driven RS-SDK controller. Current v2 runs use an explicitly configured world/gateway; the legacy target was https://rs-sdk-demo.fly.dev/. It provides:
 - the model supplies Voyager-style curriculum, planning and critique;

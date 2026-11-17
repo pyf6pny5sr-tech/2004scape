@@ -4,7 +4,15 @@ Start here for the new implementation. v1 and its historical report remain uncha
 
 **Current contract:** church maintenance and automatic HP/combat/region gameplay pauses are retired at the user's request. Manual `cancel`/`stop` remain authoritative; stale/disconnected/auth/ownership state still cannot dispatch. Historical maintenance and prior live reports below preserve what those older versions exercised, not current requirements. No church detour or staged in-game policy update is part of startup or play.
 
-## Latest live reliability follow-up
+## Latest standing-goal live validation
+
+The [new fixed20-minute online report](standing-run-report.md) measured **7181b7a** on the same owned account, with18 actual agent/tool planning intervals and the resource goal approved only once. Whole visible idle fell **459/3000 (15.30%)→74/3000 (2.47%)**, an **83.88% relative reduction**. All-claim idle fell **188/624 (30.13%)→39/672 (5.80%)**; all18 current claims are gameplay service, with no filtered window. The longest visible-idle stretch fell **107.541s→28.809s**, entirely at measured startup; no ≥30s or ≥50s visible-idle pause occurred.
+
+Verified helpers rose **245→328** (158 chops,158 burns,12 moves); failed completed attempts fell **18/263 (6.84%)→4/332 (1.20%)**. Two fire-location refusals and two depleted trees remain failures. Helper ambiguity **increased34.57%→37.70%**; it is not proof of productivity. Higher skills, different routes and current-agent/tool scheduling confound causality. [JSON](standing-run-report.json) retains every tick/claim, actual timing, initial idle, unknown coverage, action denominators and exact source identity. Owned processes stopped; no new/replacement account or second provider.
+
+This is the new standard agent path: explicitly approve `continuation.mode:"standing"` once; it continues checked bounded chunks without a model renewal timer. Correctable rejected proposals keep their request and work; claims close on actual acceptance/explicit null decline. The older reliability report used submission-before-validation closure, so comparisons disclose that difference. Preflight passed58 Node/91 Bun checks; post-run reporting-only checks passed3 each. The shipped runtime is unchanged from measured7181b7a.
+
+## Historical reliability follow-up
 
 The [new fixed20-minute online report](reliability-run-report.md) measured runtime **01e6ad7**: **245 helper-verified completions** versus187; failed dispatches **18/263 (6.84%)** versus29/216 (13.43%). Whole-run visible idle fell **18.73%→15.30%**; all15 actual claim-to-submission intervals fell **35.91%→30.13%**. The separate audited subset excludes entire mixed support/gameplay claim1: **80/514 (15.56%)**, with every claim retained in the all-claim/whole totals.
 

@@ -160,3 +160,21 @@ test('life transition invalidates old commands but retains finite ordinary goal 
 for(const command of ['cancel','stop'])test('manual '+command+' wins over retained life/stale resume authority',async t=>{const f=await fixture(t);resources(f);f.emit();f.executor.continuation=validateContinuation(grant(f.state),f.state,f.executor.token());f.setAge(5000);f.state.player.lifeId++;f.emit();assert.ok(f.executor.pendingResourceResume);await f.executor[command]();assert.equal(f.executor.pendingResourceResume,null);const n=f.calls.length;f.setAge(0);f.state.player.hp=10;f.state.player.isDead=false;for(let i=0;i<8;i++){f.emit();await flush();}assert.equal(f.calls.length,n);assert.equal(f.executor.continuation,null);assert.equal(f.executor.phase,command==='stop'?'STOPPED':'PAUSED');});
 
 test('unexpected helper exceptions are retained and never retried as resource failures',async t=>{const f=await fixture(t);resources(f);f.adapter.execute=async()=>{throw Error('UNEXPECTED_IMPLEMENTATION_ERROR');};f.executor.submit(f.proposal([chop],{continuation:grant(f.state)}));await flush();assert.equal(f.executor.phase,'BLOCKED');assert.equal(f.executor.blockReason,'UNEXPECTED_IMPLEMENTATION_ERROR');assert.equal(f.executor.continuation,null);assert.equal(f.executor.metrics.counts.boundedContinuationRecoveries,undefined);});
+
+for (const transition of ['life', 'clock', 'life_and_clock']) test('manual cancel survives later '+transition+' publications without refill or dispatch', async t => {
+  const f = await fixture(t); resources(f); f.emit();
+  f.executor.continuation = validateContinuation(grant(f.state), f.state, f.executor.token());
+  f.executor.cancel();
+  const calls = f.calls.length;
+  const requests = f.executor.events.filter(e => e.type === 'planner_requested').length;
+  if (transition.includes('life')) f.state.player.lifeId++;
+  if (transition.includes('clock')) { f.state.tick = -1; f.state.revision = -1; }
+  for (let i = 0; i < 8; i++) { f.emit(); await flush(); }
+  assert.equal(f.executor.phase, 'PAUSED');
+  assert.equal(f.executor.blockReason, 'MANUAL_CANCEL');
+  assert.equal(f.executor.continuation, null);
+  assert.equal(f.executor.pendingResourceResume, null);
+  assert.equal(f.executor.plannerRequests().length, 0);
+  assert.equal(f.executor.events.filter(e => e.type === 'planner_requested').length, requests);
+  assert.equal(f.calls.length, calls);
+});

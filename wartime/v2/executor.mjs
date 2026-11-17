@@ -308,6 +308,7 @@ export class Executor {
   }
   observe(input) {
     if (this.phase === "STOPPED") return;
+    const manualHold = this.phase === "PAUSED" && this.blockReason === "MANUAL_CANCEL";
     const previous = this.state;
     const s = copy(input),
       now = performance.now();
@@ -408,8 +409,10 @@ export class Executor {
       this.invalidate("LIFE_CHANGED", { session: true });
       this.pendingResourceResume=retained;
       this.cooldownUntil = 0;
-      if(this.phase!=="BLOCKED")this.phase="PLAYING";
-      this.blockReason="WAITING_FOR_LIVE_STATE";
+      if (!manualHold) {
+        if(this.phase!=="BLOCKED")this.phase="PLAYING";
+        this.blockReason="WAITING_FOR_LIVE_STATE";
+      }
     }
     this.life = s.player?.lifeId ?? 0;
     if (!this.adapter.bound(this.identity)) {
